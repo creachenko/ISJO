@@ -98,7 +98,7 @@ $parciales = $obj->obtenerParcialesActuales();
 
       		$.ajax({
       			method:"POST",
-      			url:"class/ck-scriptActualizarParcialActual.php",
+      			url:"class/scriptActualizarParcialActual.php",
       			data:{idParcialActual: idParcialActual1,idParcialSet:idParcial},
       			success:function (respuesta) {
                 location.reload();
@@ -140,7 +140,7 @@ $parciales = $obj->obtenerParcialesActuales();
      $.ajax({
        method:"post",
        data: {identidadEstudiante:identidad},
-       url:"class/ck-scriptComprobarIdentidadEstudiante.php",
+       url:"class/scriptComprobarIdentidadEstudiante.php",
        success:function (respuesta) {
          if (respuesta > 0) {
            $("#divIdentidadEstudiante").removeClass("has-success has-feedback");
@@ -168,7 +168,7 @@ $parciales = $obj->obtenerParcialesActuales();
      $.ajax({
        method:'POST',
        data: {identidad: identidadEncargado},
-       url:"class/ck-scriptObtenerInformacionEncargadoConIdentidad.php",
+       url:"class/scriptObtenerInformacionEncargadoConIdentidad.php",
        dataType:'json',
        success:function (respuesta) {
 
@@ -208,7 +208,7 @@ $parciales = $obj->obtenerParcialesActuales();
    //Calculo la edad del Estudiantes
    $("#nacimientoEstudiante").on("blur",function () {
      $.ajax({
-       url:"class/ck-calcularEdad.php",
+       url:"class/calcularEdad.php",
        method:"post",
        data:{nacimiento:$(this).val()},
        success: function (respuesta) {

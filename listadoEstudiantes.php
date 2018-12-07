@@ -39,14 +39,14 @@ $estudiantes = $obj->obtenerEstudiantes();
                 <i class="fa fa-barcode" aria-hidden="true"></i> Listado Estudiantes
             </li>
 
-            <a href="ck-iniciarMatricula.php" class="btn btn-primary btn-xs pull-right">Matricular Alumno</a>
+            <a href="iniciarMatricula.php" class="btn btn-primary btn-xs pull-right">Matricular Alumno</a>
 
         </ol>
     </div>
     <div class="col-md-5">
       <ul class="nav nav-tabs">
         <li role="presentation" class="active"><a href="#">Estudiantes</a></li>
-        <li role="presentation"><a href="ck-modificarEncargados.php">Padres de Familia</a></li>
+        <li role="presentation"><a href="modificarEncargados.php">Padres de Familia</a></li>
       </ul>
     </div>
 </div>
@@ -96,7 +96,7 @@ $estudiantes = $obj->obtenerEstudiantes();
    function comprobarIdentidad() {
      $.ajax({
        method:"POST",
-       url:"class/ck-scriptComprobarIdentidadEncargado.php",
+       url:"class/scriptComprobarIdentidadEncargado.php",
        data:{identidad: $("#identidadEncargado").val()},
        success:function (respuesta) {
          console.log(respuesta);
@@ -168,7 +168,7 @@ $estudiantes = $obj->obtenerEstudiantes();
      $.ajax({
        method:'POST',
        data: {idEncargado: idEncargadoBoton},
-       url:"class/ck-scriptObtenerEncargados.php",
+       url:"class/scriptObtenerEncargados.php",
        dataType:'json',
        success:function (respuesta) {
          console.log(respuesta);

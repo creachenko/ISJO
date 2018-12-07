@@ -751,9 +751,9 @@ Licensed under the MIT license.
             if (options.yaxis.color == null)
                 options.yaxis.color = $.color.parse(options.grid.color).scale('a', 0.22).toString();
 
-            if (options.xaxis.tickColor == null) // grid.tickColor for back-compatibility
+            if (options.xaxis.tickColor == null) // grid.tickColor for bacompatibility
                 options.xaxis.tickColor = options.grid.tickColor || options.xaxis.color;
-            if (options.yaxis.tickColor == null) // grid.tickColor for back-compatibility
+            if (options.yaxis.tickColor == null) // grid.tickColor for bacompatibility
                 options.yaxis.tickColor = options.grid.tickColor || options.yaxis.color;
 
             if (options.grid.borderColor == null)
@@ -1405,7 +1405,7 @@ Licensed under the MIT license.
                 maxWidth = labelWidth || (axis.direction == "x" ? Math.floor(surface.width / (ticks.length || 1)) : null),
                 legacyStyles = axis.direction + "Axis " + axis.direction + axis.n + "Axis",
                 layer = "flot-" + axis.direction + "-axis flot-" + axis.direction + axis.n + "-axis " + legacyStyles,
-                font = opts.font || "flot-tick-label tickLabel";
+                font = opts.font || "flot-tilabel tickLabel";
 
             for (var i = 0; i < ticks.length; ++i) {
 
@@ -2185,7 +2185,7 @@ Licensed under the MIT license.
                 var box = axis.box,
                     legacyStyles = axis.direction + "Axis " + axis.direction + axis.n + "Axis",
                     layer = "flot-" + axis.direction + "-axis flot-" + axis.direction + axis.n + "-axis " + legacyStyles,
-                    font = axis.options.font || "flot-tick-label tickLabel",
+                    font = axis.options.font || "flot-tilabel tickLabel",
                     tick, x, y, halign, valign;
 
                 // Remove text before checking for axis.show and ticks.length;

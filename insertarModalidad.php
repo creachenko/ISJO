@@ -42,7 +42,7 @@ if (isset($_POST['guardar'])){
                 <i class="fa fa-pencil" aria-hidden="true"></i> Modalidades
             </li>
 
-            <a href="ck-modificarModalidades.php" class="btn btn-default btn-xs pull-right">Regresar</a>
+            <a href="modificarModalidades.php" class="btn btn-default btn-xs pull-right">Regresar</a>
         </ol>
     </div>
 </div>

@@ -32,8 +32,8 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
     </div>
     <div class="col-md-4">
       <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="ck-clases.php">Clases</a></li>
-        <li role="presentation"><a href="ck-tareas.php">Tareas</a></li>
+        <li role="presentation" class="active"><a href="clases.php">Clases</a></li>
+        <li role="presentation"><a href="tareas.php">Tareas</a></li>
       </ul>
     </div>
 </div>
@@ -55,10 +55,10 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 						<button type="button" class="btn btn-danger btn-block" name="asignarTarea" value="<?php echo $row['idClase'] ?>" data-toggle='modal' data-target='#modalAsignarTarea'> <i class="fa fa-plus"></i> Asignar Tarea</button>
 					</div>
 					<div class="btn-group">
-						<button type="button" class="btn btn-success btn-block" name="button"><i class="fa fa-check-square-o"></i>Tareas</button>
+						<button type="button" class="btn btn-success btn-block" name="button"><i class="fa fa-chesquare-o"></i>Tareas</button>
 					</div>
 					<div class="btn-group">
-						<button type="button" class="btn btn-info btn-block" name="button"><i class="fa fa-check-square-o"></i>Examen</button>
+						<button type="button" class="btn btn-info btn-block" name="button"><i class="fa fa-chesquare-o"></i>Examen</button>
 					</div>
 				</div>
 
@@ -205,7 +205,7 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 
 		$.ajax({
 			method:"POST",
-			url:"class/ck-scriptObtenerEstudiantesPorClase.php",
+			url:"class/scriptObtenerEstudiantesPorClase.php",
 			data:{idClase: idClase1},
 			dataType: "json",
 			success:function (respuesta) {
@@ -229,7 +229,7 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 
 		$.ajax({
 			method:"POST",
-			url:"class/ck-scriptObtenerTareasPorClase.php",
+			url:"class/scriptObtenerTareasPorClase.php",
 			data:{idClase: idClase1},
 			dataType: "json",
 			success:function (respuesta) {

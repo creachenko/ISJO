@@ -136,7 +136,7 @@ $clases = $obj->obtenerClases();
 
       $.ajax({
         method:"POST",
-        url:"class/ck-scriptObtenerCursosAnioLectivo.php",
+        url:"class/scriptObtenerCursosAnioLectivo.php",
         data:{idModalidad: idModalidad1},
         dataType: "json",
         success:function (respuesta) {
@@ -161,7 +161,7 @@ $clases = $obj->obtenerClases();
 
       $.ajax({
         method:"POST",
-        url:"class/ck-scriptObtenerAsignaturasConIdModalidad.php",
+        url:"class/scriptObtenerAsignaturasConIdModalidad.php",
         data:{idModalidad: idModalidad1},
         dataType: "json",
         success:function (respuesta) {

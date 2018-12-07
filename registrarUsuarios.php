@@ -9,7 +9,6 @@ if (isset($_SESSION["ses_id"])) {
   window.location= "index.php";
   </script>';
 };
-
 if (isset($_POST["guardar"])) {
 		$obj->registroUsuario();
     // $notifyVerification = ["Credenciales de Acceso Establecida",'success'];
@@ -36,14 +35,14 @@ $empleados2 = $obj->obtenerEmpleados();
             <li class="active">
                 <i class="fa fa-briefcase" aria-hidden="true"></i> Lista Empleados
             </li>
-            <a href="ck-insertarEmpleado.php" class="btn btn-primary btn-sm pull-right">+ Agregar Empleado</a>
+            <a href="insertarEmpleado.php" class="btn btn-primary btn-sm pull-right">+ Agregar Empleado</a>
         </ol>
     </div>
     <div class="col-md-4">
       <ul class="nav nav-tabs">
-        <li role="presentation" ><a href="ck-modificarEmpleados.php">Empleados</a></li>
-        <li role="presentation"><a href="ck-modificarCargos.php">Cargos</a></li>
-        <li role="presentation"  class="active" ><a href="ck-registrarUsuarios.php">usuario</a></li>
+        <li role="presentation" ><a href="modificarEmpleados.php">Empleados</a></li>
+        <li role="presentation"><a href="modificarCargos.php">Cargos</a></li>
+        <li role="presentation"  class="active" ><a href="registrarUsuarios.php">usuario</a></li>
       </ul>
     </div>
 </div>

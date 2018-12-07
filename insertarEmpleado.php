@@ -14,7 +14,7 @@ if (isset($_POST['guardarEmpleado'])) {
   $nombreEmpleado = ucwords(strtolower($_POST["nombreEmpleado"]));
   $apellidoEmpleado = ucwords(strtolower($_POST["apellidoEmpleado"]));
   $obj->insertarEmpleado($nombreEmpleado,$apellidoEmpleado,$_POST['identidadEmpleado'],$_POST['correoEmpleado'],$_POST['cumpleEmpleado'],$_POST['selectGenero'],$_POST['imprema'],$_POST['cargoEmpleado'],$_POST['direccionEmpleado'],$_POST['fechaIniLabores'],$_POST['celularEmpleado'],$_POST['tituloMedia'],$_POST['tituloUniversitario']);
-  $notifyVerification=['Empleado Ingresados con Exito <strong><a href="ck-modificarEmpleados.php"> Ir a Empleados</a></strong>','success'];
+  $notifyVerification=['Empleado Ingresados con Exito <strong><a href="modificarEmpleados.php"> Ir a Empleados</a></strong>','success'];
 }
 
 $cargos = $obj->obtenercargos();
@@ -39,7 +39,7 @@ $anios = $obj->obtenerAnioLectivos();
               <li class="active">
                   <i class="fa fa-briefcase" aria-hidden="true"></i> Agregar Empleado
               </li>
-              <a href="ck-modificarEmpleados.php" class="btn btn-default btn-sm pull-right"><i class="fa fa-arrow-left" aria-hidden="true"></i> Regresar </a>
+              <a href="modificarEmpleados.php" class="btn btn-default btn-sm pull-right"><i class="fa fa-arrow-left" aria-hidden="true"></i> Regresar </a>
           </ol>
       </div>
   </div>

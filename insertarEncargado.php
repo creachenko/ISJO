@@ -35,13 +35,13 @@ if (isset($_POST['guardar'])){
           <li class="active">
               <i class="fa fa-barcode" aria-hidden="true"></i> Agregar P.F
           </li>
-          <a href="ck-modificarEncargadoS.php" class="btn btn-primary btn-xs pull-right"><i class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</a>
+          <a href="modificarEncargadoS.php" class="btn btn-primary btn-xs pull-right"><i class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</a>
       </ol>
   </div>
   <div class="col-md-4">
     <ul class="nav nav-tabs">
-      <li role="presentation"><a href="ck-listadoEstudiantes.php">Estudiantes</a></li>
-      <li role="presentation" class="active"><a href="ck-modificarEncargados.php">Padres de Familia</a></li>
+      <li role="presentation"><a href="listadoEstudiantes.php">Estudiantes</a></li>
+      <li role="presentation" class="active"><a href="modificarEncargados.php">Padres de Familia</a></li>
     </ul>
   </div>
 </div>
@@ -126,7 +126,7 @@ if (isset($_POST['guardar'])){
       function comprobarIdentidad() {
         $.ajax({
           method:"POST",
-          url:"class/ck-scriptComprobarIdentidadEncargado.php",
+          url:"class/scriptComprobarIdentidadEncargado.php",
           data:{identidad: $("#identidadEncargado").val()},
           success:function (respuesta) {
             console.log(respuesta);

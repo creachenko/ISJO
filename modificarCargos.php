@@ -9,29 +9,32 @@ if (isset($_SESSION["ses_id"])) {
   window.location= "index.php";
   </script>';
 };
-//Escucho si se quiere eliminar una modalidad, de ser asi la Eliminado
-if (isset($_POST['eliminarEmpleadoConfirmado'])) {
-  echo "<script>console.log('".$_POST['eliminarEmpleadoConfirmado']."')</script>";
-  $obj->eliminarEmpleado($_POST['eliminarEmpleadoConfirmado']);
-  $notifyVerification=['Empleado Removido con Exito','danger'];
 
+if (isset($_POST['submitCargo'])) {
+  $nombreCargo = ucwords(strtolower($_POST["nombreCargo"]));
+  $obj->ingresarCargo($nombreCargo,$_POST['descripcion']);
+  $notifyVerification = ["Cargo ingresado con Exito","primary"];
 }
 
-//Escucho si se quiere editar datos en Cursos, de ser asi lo editor
-if (isset($_POST['guardarNuevoEmpleado'])) {
-  $idCargo = $_POST['idCargoEmpleado'];
-  $genero = $_POST['nuevoGeneroEmpleado'];
-  $resEditar = $obj->editarEmpleado($_POST['guardarNuevoEmpleado'],$_POST['nuevoNombreEmpleado'],$_POST['nuevoApellidoEmpleado'],$_POST['nuevoIdentidad'],$_POST['nuevoCorreo'],$_POST['nuevoNacimiento'],$genero,$_POST['nuevoImprema'],$idCargo,$_POST['nuevoDireccion'],$_POST['nuevoFechaInicioLabores'],$_POST['nuevoCelular'],$_POST['nuevoTituloMedia'],$_POST['nuevoTituloUni']);
+//Generar tabla cargos-----------------------------
 
-
-  $notifyVerification = ["Informacion Actualizada con Exito: <strong>".$_POST['nuevoNombreEmpleado']."</strong>",'info']; // Muestro notificacion de exito
-}
-
-$empleados = $obj->obtenerEmpleados();
-$totalEmpleados = mysqli_num_rows($obj->obtenerEmpleados());
 $cargos = $obj->obtenerCargos();
-
-
+function tablaCargos($cargos){
+  $i = 0;
+  while ($aux = mysqli_fetch_assoc($cargos)) {
+    echo "<tr>";
+    echo "<td id='".$i."'>".$aux['nombreCargo']."</td>";
+    //botnes de accion
+    echo "<td>
+      <div class='btn-group btn-group-sm'>
+        <button name='eliminarCargo' value='".$aux['idCargo']."' id='confirmarEliminarCargo'  class='btn btn-danger' title='Eliminar Tarea'><span class='glyphicon glyphicon-remove' aria-hidden='true' ></span></button>
+        <button name='editarCargo' value='".$aux['idCargo']."' id='$i' class='btn btn-warning' title='Editar Tarea'><span class='glyphicon glyphicon-pencil' aria-hidden='true' ></span></button>
+      </div>
+    </td>";
+    echo "</tr>";
+    $i++;
+  }
+}
 ?>
 <?php include_once('layouts/header.php'); ?>
 <h1 class="page-header">
@@ -48,16 +51,14 @@ $cargos = $obj->obtenerCargos();
                 <i class="fa fa-briefcase" aria-hidden="true"></i> Empleados
             </li>
             <li class="active">
-                <i class="fa fa-briefcase" aria-hidden="true"></i> Lista Empleados
+                <i class="fa fa-briefcase" aria-hidden="true"></i> Cargos
             </li>
-            <a href="ck-insertarEmpleado.php" class="btn btn-primary btn-sm pull-right">+ Agregar Empleado</a>
         </ol>
     </div>
     <div class="col-md-4">
       <ul class="nav nav-tabs">
-        <li role="presentation"  class="active" ><a href="ck-modificarEmpleados.php">Empleados</a></li>
-        <li role="presentation"><a href="ck-modificarCargos.php">Cargos</a></li>
-        <li role="presentation"><a href="ck-registrarUsuarios.php">Usuarios</a></li>
+        <li role="presentation" ><a href="modificarEmpleados.php">Empleados</a></li>
+        <li role="presentation" class="active"><a href="modificarCargos.php">Cargos</a></li>
       </ul>
     </div>
 </div>
@@ -65,48 +66,67 @@ $cargos = $obj->obtenerCargos();
 <form action="#" method="post">
 <div class="row">
     <div class="col-md-12">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        <strong>
-          <span class="glyphicon glyphicon-pencil"></span>
-          <span>Lista de Empleados</span>
-       </strong>
-      </div>
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h1 class="panel-title">Agregar Cargo</h1>
+        </div>
         <div class="panel-body">
-          <table class="table table-bordered table-striped table-hover">
-            <thead>
-                <tr>
-                    <th class="text-center" >Nombre</th>
-                    <th class="text-center" >Apellidos</th>
-                    <th class="text-center" >Cargo</th>
-                    <th class="text-center">Acciones</th>
+          <p>Estos son los cargos que los empleados en la institucion pueden ostentar, cree y edite los cargos segun corresponda.</p>
+          <div class="col-md-6">
+            <div class="panel panel-green">
+              <div class="panel-heading">
+                <h1 class="panel-title">Agregar Cargo</h1>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <input type="text" name="nombreCargo" class="form-control" placeholder="P.j Secretaria" required>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-md-12">
+                    <input type="text" name="descripcion" value="" class="form-control" placeholder="Descripcion (opcional)">
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-md-12">
+                    <button type="submit" class="btn btn-success btn-block" name="submitCargo"> <i class="material-icons" style="font-size:15px">done</i> </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </form>
+          <form class="" action="#" method="post">
+          <div class="col-md-6">
+            <div class="panel panel-yellow">
+              <div class="panel-heading">
+                <h1 class="panel-title">Cargos Ingresados</h1>
+              </div>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Cargo</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php tablaCargos($obj->obtenerCargos()); ?>
+                  </tbody>
+                </table>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="row" id="inputEditarCargo">
 
-                </tr>
-            </thead>
-            <tbody>
-              <?php
-              if ($totalEmpleados == 0) {
-                echo "<script>console.log('chivas')</script>";
-                echo "<tr><td colspan='4'>Nada Para Mostrar, dirijase a <a href='ck-insertarEmpleado.php'>Ingresar Empleados</a></td><tr>";
-              }
-
-               while ($row = mysqli_fetch_assoc($empleados)){ ?>
-                <tr>
-                    <td class="text-center" ><?php echo $row['nombreEmpleado']; ?></td>
-                    <td class="text-center" ><?php echo $row['apellidoEmpleado']; ?></td>
-                    <td class="text-center" ><?php echo $row['nombreCargo']; ?></td>
-                    <td class="text-center">
-                        <div class='btn-group btn-group-sm'>
-                          <button name='eliminarEmpleado' class='btn btn-danger' value="<?php echo $row['idEmpleado']; ?>" title='Eliminar Empleado'><span class='glyphicon glyphicon-remove' aria-hidden='true' ></span></button>
-                          <button name='editarEmpleado' type="button" value="<?php echo $row['idEmpleado']; ?>" data-toggle='modal' data-target='#modalEditarEmpleado' class='btn btn-warning' title='Editar Empleado' ><span class='glyphicon glyphicon-pencil' aria-hidden='true' ></span></button>
-                        </div>
-                    </td>
-                </tr>
-              <?php }; ?>
-            </tbody>
-          </table>
-       </div>
-    </div>
+            </div>
+          </div>
+        </div>
+      </form>
+        </div>
+      </div>
   </div>
 </div>
 <!-- Modal -->
@@ -236,7 +256,7 @@ $cargos = $obj->obtenerCargos();
      $.ajax({
        method:'POST',
        data: {idEmpleado: $(this).val()},
-       url:"class/ck-scriptObtenerEmpleados.php",
+       url:"class/scriptObtenerEmpleados.php",
        dataType:'json',
        success:function (respuesta) {
          // console.log(respuesta);

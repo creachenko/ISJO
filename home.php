@@ -130,7 +130,7 @@ include 'layouts/header.php'; ?>
                     <div class="col-lg-4">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Tasks Panel</h3>
+                                <h3 class="panel-title"><i class="fa fa-cloo fa-fw"></i> Tasks Panel</h3>
                             </div>
                             <div class="panel-body">
                                 <div class="list-group">

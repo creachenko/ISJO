@@ -47,13 +47,13 @@ $totalEncargados = mysqli_num_rows($obj->obtenerEncargados());
           <li class="active">
               <i class="fa fa-barcode" aria-hidden="true"></i> Padres de Familia
           </li>
-          <a href="ck-insertarEncargado.php" class="btn btn-primary btn-xs pull-right">+ Agregar Padre de F.</a>
+          <a href="insertarEncargado.php" class="btn btn-primary btn-xs pull-right">+ Agregar Padre de F.</a>
       </ol>
   </div>
   <div class="col-md-5">
     <ul class="nav nav-tabs">
-      <li role="presentation"><a href="ck-listadoEstudiantes.php">Estudiantes</a></li>
-      <li role="presentation" class="active"><a href="ck-modificarEncargados.php">Padres de Familia</a></li>
+      <li role="presentation"><a href="listadoEstudiantes.php">Estudiantes</a></li>
+      <li role="presentation" class="active"><a href="modificarEncargados.php">Padres de Familia</a></li>
     </ul>
   </div>
 </div>
@@ -84,7 +84,7 @@ $totalEncargados = mysqli_num_rows($obj->obtenerEncargados());
               <?php
               if ($totalEncargados == 0) {
                 echo "<script>console.log('chivas')</script>";
-                echo "<tr><td colspan='4'>Nada Para Mostrar, dirijase a <a href='ck-insertarEncargado.php'>Ingresar Padre de Familia/Encargado</a></td><tr>";
+                echo "<tr><td colspan='4'>Nada Para Mostrar, dirijase a <a href='insertarEncargado.php'>Ingresar Padre de Familia/Encargado</a></td><tr>";
               }
 
                while ($row = mysqli_fetch_assoc($encargados)){ ?>
@@ -199,7 +199,7 @@ $totalEncargados = mysqli_num_rows($obj->obtenerEncargados());
    function comprobarIdentidad() {
      $.ajax({
        method:"POST",
-       url:"class/ck-scriptComprobarIdentidadEncargado.php",
+       url:"class/scriptComprobarIdentidadEncargado.php",
        data:{identidad: $("#identidadEncargado").val()},
        success:function (respuesta) {
          console.log(respuesta);
@@ -271,7 +271,7 @@ $totalEncargados = mysqli_num_rows($obj->obtenerEncargados());
      $.ajax({
        method:'POST',
        data: {idEncargado: idEncargadoBoton},
-       url:"class/ck-scriptObtenerEncargados.php",
+       url:"class/scriptObtenerEncargados.php",
        dataType:'json',
        success:function (respuesta) {
          console.log(respuesta);

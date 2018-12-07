@@ -46,7 +46,7 @@ $modalidades = $obj->obtenerModalidades();
                 <i class="fa fa-pencil" aria-hidden="true"></i> Modificar Cursos
             </li>
 
-            <a href="ck-insertarCurso.php" class="btn btn-primary btn-xs pull-right">+ Agregar Curso</a>
+            <a href="insertarCurso.php" class="btn btn-primary btn-xs pull-right">+ Agregar Curso</a>
         </ol>
     </div>
 </div>

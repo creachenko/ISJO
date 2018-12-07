@@ -26,7 +26,7 @@
 .#{$fa-css-prefix}-trash-o:before { content: $fa-var-trash-o; }
 .#{$fa-css-prefix}-home:before { content: $fa-var-home; }
 .#{$fa-css-prefix}-file-o:before { content: $fa-var-file-o; }
-.#{$fa-css-prefix}-clock-o:before { content: $fa-var-clock-o; }
+.#{$fa-css-prefix}-cloo:before { content: $fa-var-cloo; }
 .#{$fa-css-prefix}-road:before { content: $fa-var-road; }
 .#{$fa-css-prefix}-download:before { content: $fa-var-download; }
 .#{$fa-css-prefix}-arrow-circle-o-down:before { content: $fa-var-arrow-circle-o-down; }
@@ -75,7 +75,7 @@
 .#{$fa-css-prefix}-edit:before,
 .#{$fa-css-prefix}-pencil-square-o:before { content: $fa-var-pencil-square-o; }
 .#{$fa-css-prefix}-share-square-o:before { content: $fa-var-share-square-o; }
-.#{$fa-css-prefix}-check-square-o:before { content: $fa-var-check-square-o; }
+.#{$fa-css-prefix}-chesquare-o:before { content: $fa-var-chesquare-o; }
 .#{$fa-css-prefix}-arrows:before { content: $fa-var-arrows; }
 .#{$fa-css-prefix}-step-backward:before { content: $fa-var-step-backward; }
 .#{$fa-css-prefix}-fast-backward:before { content: $fa-var-fast-backward; }
@@ -92,12 +92,12 @@
 .#{$fa-css-prefix}-plus-circle:before { content: $fa-var-plus-circle; }
 .#{$fa-css-prefix}-minus-circle:before { content: $fa-var-minus-circle; }
 .#{$fa-css-prefix}-times-circle:before { content: $fa-var-times-circle; }
-.#{$fa-css-prefix}-check-circle:before { content: $fa-var-check-circle; }
+.#{$fa-css-prefix}-checircle:before { content: $fa-var-checircle; }
 .#{$fa-css-prefix}-question-circle:before { content: $fa-var-question-circle; }
 .#{$fa-css-prefix}-info-circle:before { content: $fa-var-info-circle; }
 .#{$fa-css-prefix}-crosshairs:before { content: $fa-var-crosshairs; }
 .#{$fa-css-prefix}-times-circle-o:before { content: $fa-var-times-circle-o; }
-.#{$fa-css-prefix}-check-circle-o:before { content: $fa-var-check-circle-o; }
+.#{$fa-css-prefix}-checircle-o:before { content: $fa-var-checircle-o; }
 .#{$fa-css-prefix}-ban:before { content: $fa-var-ban; }
 .#{$fa-css-prefix}-arrow-left:before { content: $fa-var-arrow-left; }
 .#{$fa-css-prefix}-arrow-right:before { content: $fa-var-arrow-right; }
@@ -319,7 +319,7 @@
 .#{$fa-css-prefix}-html5:before { content: $fa-var-html5; }
 .#{$fa-css-prefix}-css3:before { content: $fa-var-css3; }
 .#{$fa-css-prefix}-anchor:before { content: $fa-var-anchor; }
-.#{$fa-css-prefix}-unlock-alt:before { content: $fa-var-unlock-alt; }
+.#{$fa-css-prefix}-unloalt:before { content: $fa-var-unloalt; }
 .#{$fa-css-prefix}-bullseye:before { content: $fa-var-bullseye; }
 .#{$fa-css-prefix}-ellipsis-h:before { content: $fa-var-ellipsis-h; }
 .#{$fa-css-prefix}-ellipsis-v:before { content: $fa-var-ellipsis-v; }
@@ -330,7 +330,7 @@
 .#{$fa-css-prefix}-minus-square-o:before { content: $fa-var-minus-square-o; }
 .#{$fa-css-prefix}-level-up:before { content: $fa-var-level-up; }
 .#{$fa-css-prefix}-level-down:before { content: $fa-var-level-down; }
-.#{$fa-css-prefix}-check-square:before { content: $fa-var-check-square; }
+.#{$fa-css-prefix}-chesquare:before { content: $fa-var-chesquare; }
 .#{$fa-css-prefix}-pencil-square:before { content: $fa-var-pencil-square; }
 .#{$fa-css-prefix}-external-link-square:before { content: $fa-var-external-link-square; }
 .#{$fa-css-prefix}-share-square:before { content: $fa-var-share-square; }
@@ -375,7 +375,7 @@
 .#{$fa-css-prefix}-xing-square:before { content: $fa-var-xing-square; }
 .#{$fa-css-prefix}-youtube-play:before { content: $fa-var-youtube-play; }
 .#{$fa-css-prefix}-dropbox:before { content: $fa-var-dropbox; }
-.#{$fa-css-prefix}-stack-overflow:before { content: $fa-var-stack-overflow; }
+.#{$fa-css-prefix}-staoverflow:before { content: $fa-var-staoverflow; }
 .#{$fa-css-prefix}-instagram:before { content: $fa-var-instagram; }
 .#{$fa-css-prefix}-flickr:before { content: $fa-var-flickr; }
 .#{$fa-css-prefix}-adn:before { content: $fa-var-adn; }
@@ -406,7 +406,7 @@
 .#{$fa-css-prefix}-weibo:before { content: $fa-var-weibo; }
 .#{$fa-css-prefix}-renren:before { content: $fa-var-renren; }
 .#{$fa-css-prefix}-pagelines:before { content: $fa-var-pagelines; }
-.#{$fa-css-prefix}-stack-exchange:before { content: $fa-var-stack-exchange; }
+.#{$fa-css-prefix}-staexchange:before { content: $fa-var-staexchange; }
 .#{$fa-css-prefix}-arrow-circle-o-right:before { content: $fa-var-arrow-circle-o-right; }
 .#{$fa-css-prefix}-arrow-circle-o-left:before { content: $fa-var-arrow-circle-o-left; }
 .#{$fa-css-prefix}-toggle-left:before,

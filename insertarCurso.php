@@ -16,7 +16,7 @@ if (isset($_POST['guardar'])){
     echo "<script>console.log('".$_POST['nombreCurso'.$i],$_POST['seccionCurso'.$i],$_POST['selectModalidad'],$_POST['selectAnioLectivo']."')</script>";
     $obj->insertarCurso($_POST['nombreCurso'.$i],$_POST['seccionCurso'.$i],$_POST['selectModalidad'],$_POST['selectAnioLectivo']);
   }
-  $notifyVerification=['Cursos Ingresados con Exito <strong><a href="ck-modificarCursos.php"> Ir a Cursos</a></strong>','success'];
+  $notifyVerification=['Cursos Ingresados con Exito <strong><a href="modificarCursos.php"> Ir a Cursos</a></strong>','success'];
 }
 
 $modalidades = $obj->obtenerModalidades();

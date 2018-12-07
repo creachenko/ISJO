@@ -304,7 +304,7 @@ $modalidades = $obj->obtenerModalidades();
      $("#modalidadResumen").html($(this).html());
       $.ajax({
         method:"POST",
-        url:"class/ck-scriptObtenerCursosAnioLectivo.php",
+        url:"class/scriptObtenerCursosAnioLectivo.php",
         data:{idModalidad: idModalidad1},
         dataType: "json",
         success:function (respuesta) {
@@ -341,7 +341,7 @@ $modalidades = $obj->obtenerModalidades();
      $.ajax({
        method:"post",
        data: {identidadEstudiante:identidad},
-       url:"class/ck-scriptComprobarIdentidadEstudiante.php",
+       url:"class/scriptComprobarIdentidadEstudiante.php",
        success:function (respuesta) {
          if (respuesta > 0) {
            $("#divIdentidadEstudiante").removeClass("has-success has-feedback");
@@ -370,7 +370,7 @@ $modalidades = $obj->obtenerModalidades();
      $.ajax({
        method:'POST',
        data: {identidad: identidadEncargado},
-       url:"class/ck-scriptObtenerInformacionEncargadoConIdentidad.php",
+       url:"class/scriptObtenerInformacionEncargadoConIdentidad.php",
        dataType:'json',
        success:function (respuesta) {
 
@@ -440,7 +440,7 @@ $modalidades = $obj->obtenerModalidades();
    //Calculo la edad del Estudiantes
    $("#nacimientoEstudiante").on("blur",function () {
      $.ajax({
-       url:"class/ck-calcularEdad.php",
+       url:"class/calcularEdad.php",
        method:"post",
        data:{nacimiento:$(this).val()},
        success: function (respuesta) {
@@ -452,7 +452,7 @@ $modalidades = $obj->obtenerModalidades();
    function comprobarIdentidad() {
      $.ajax({
        method:"POST",
-       url:"class/ck-scriptComprobarIdentidadEncargado.php",
+       url:"class/scriptComprobarIdentidadEncargado.php",
        data:{identidad: $("#identidadNewEncargado").val()},
        success:function (respuesta) {
          console.log(respuesta);

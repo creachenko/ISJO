@@ -36,7 +36,7 @@ $totalModalidades = mysqli_num_rows($obj->obtenerModalidades());
                 <i class="fa fa-pencil" aria-hidden="true"></i> Modalidades
             </li>
 
-            <a href="ck-insertarModalidad.php" class="btn btn-primary btn-xs pull-right">+ Insertar Modalidad</a>
+            <a href="insertarModalidad.php" class="btn btn-primary btn-xs pull-right">+ Insertar Modalidad</a>
         </ol>
     </div>
 </div>
@@ -64,7 +64,7 @@ $totalModalidades = mysqli_num_rows($obj->obtenerModalidades());
             <tbody>
               <?php
               if ($totalModalidades == 0) {
-                echo "Nada Para Mostrar, dirijase a <a href='ck-insertarModalidad.php'>Ingresar Modalidades</a>";
+                echo "Nada Para Mostrar, dirijase a <a href='insertarModalidad.php'>Ingresar Modalidades</a>";
               }
 
                while ($row = mysqli_fetch_assoc($modalidades)){ ?>
