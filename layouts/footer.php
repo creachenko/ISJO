@@ -20,11 +20,7 @@
     <script type="text/javascript" src="js/stacktable.js"></script>
     <script type="text/javascript" src="js/notify.js"></script>
     <script src="js/bootbox.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function() {
-      $("#tabla").stacktable();
-      });
-</script>
+    <script src="js/typeahead.js"></script>
 </body>
 
 </html>

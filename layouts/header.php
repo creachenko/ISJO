@@ -12,7 +12,7 @@
     <title>Instituto San Jorge de Olancho</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
@@ -71,6 +71,14 @@
                     </ul>
                 </li>
             </ul>
+            <form class="navbar-form navbar-right" role="search">
+              <div class="input-group col-sm-12 col-lg-12" >
+                <input type="text" class="form-control" placeholder="Buscar Estudiante">
+                <span class="input-group-btn">
+                  <button class="btn btn-warning btn-block" type="button">Buscar</button>
+                </span>
+              </div>
+            </form>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <?php
