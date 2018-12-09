@@ -67,9 +67,14 @@ $modalidades = $obj->obtenerModalidades();
         </div>
         <hr>
         <div class="row">
-          <div class="col-md-3 form-group" id="divIdentidadEstudiante">
+          <div class="col-md-3" id="divIdentidadEstudiante">
             <label for="">Identidad</label>
-            <input type="number" class="form-control" name="identidadEstudiante" id="identidadEstudiante" value="">
+            <div class="form-group">
+              <input type="number" class="form-control" name="identidadEstudiante" id="identidadEstudiante" value="">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-primary" id="buttonVerficarIdentidadEncargado" name="buttonVerficarIdentidadEncargado">Verificar</button>
+            </span>
+            </div>
           </div>
           <div class="col-md-3">
             <label>Genero</label>
