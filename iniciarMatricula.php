@@ -56,6 +56,16 @@ $modalidades = $obj->obtenerModalidades();
       </div>
       <div class="panel-body">
         <div class="row">
+          <div class="col-md-4" id="divIdentidadEstudiante">
+            <label for="">Identidad</label>
+            <div class="input-group">
+              <input type="number" class="form-control" name="identidadEstudiante" id="identidadEstudiante" value="">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-primary" id="buttonVerficarIdentidadEstudiante" name="buttonVerficarIdentidadEncargado">Verificar</button>
+            </span>
+          </div>
+
+        <div class="row">
           <div class="col-md-6">
             <label for="">Nombre</label>
             <input type="text" class="form-control" name="nombreEstudiante" id="nombreEstudiante" onkeyup="nombreEstudianteCorfirmar()" value="">
@@ -66,14 +76,7 @@ $modalidades = $obj->obtenerModalidades();
           </div>
         </div>
         <hr>
-        <div class="row">
-          <div class="col-md-3" id="divIdentidadEstudiante">
-            <label for="">Identidad</label>
-            <div class="form-group">
-              <input type="number" class="form-control" name="identidadEstudiante" id="identidadEstudiante" value="">
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-primary" id="buttonVerficarIdentidadEncargado" name="buttonVerficarIdentidadEncargado">Verificar</button>
-            </span>
+        
             </div>
           </div>
           <div class="col-md-3">
@@ -341,8 +344,8 @@ $modalidades = $obj->obtenerModalidades();
      $("#cursoResumen").html($('option:selected', optionSelected).html());
    }
    //Comprobar si no existe otra Identidad Igual
-   $("#identidadEstudiante").on("blur",function () {
-     var identidad = $(this).val()
+   $("#buttonVerficarIdentidadEstudiante").on("click",function () {
+     var identidad = $("#identidadEstudiante").val()
      $.ajax({
        method:"post",
        data: {identidadEstudiante:identidad},
