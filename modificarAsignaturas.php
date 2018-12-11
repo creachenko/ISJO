@@ -1,4 +1,5 @@
 <?php
+$arr;
 session_start();
 include 'class/funciones.php';
 if (isset($_SESSION["ses_id"])) {
