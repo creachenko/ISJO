@@ -10,7 +10,9 @@ $sql ="SELECT * FROM estudiantes INNER JOIN matricula
         ON matricula.idCurso = cursos.idCurso
         INNER JOIN clases
         ON cursos.idCurso = clases.idCurso
-        WHERE idClase='$idClase'";
+        WHERE idClase='$idClase'
+        ORDER BY genero,nombreEstudiante
+        ";
 
 $resp = $conexion->bd->query($sql);
 

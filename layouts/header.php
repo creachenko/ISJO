@@ -16,6 +16,7 @@
 
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="css/plugins/morris.css" rel="stylesheet">
@@ -73,7 +74,7 @@
             </ul>
             <form class="navbar-form navbar-right" role="search">
               <div class="input-group col-sm-12 col-lg-12" >
-                <input type="text" class="form-control" placeholder="Buscar Estudiante">
+                <input type="text" class="form-control" placeholder="Buscar Estudiante" id='busqueda'>
                 <span class="input-group-btn">
                   <button class="btn btn-warning btn-block" type="button">Buscar</button>
                 </span>

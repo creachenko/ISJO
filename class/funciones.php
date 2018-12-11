@@ -15,6 +15,63 @@ class funcionesBD extends conexionBD{
 
    }
 
+	 //funcion para registrar usuarios
+			 public function registroUsuario(){
+
+			 $ing=" SELECT idEmpleado from usuario where idEmpleado='".$_POST["idEmpleado"]."'";
+			 $respuesta =$this->bd->query($ing);
+					 if (mysqli_num_rows($respuesta)==0){
+			 $query="INSERT into usuario VALUES (not null ,'".$_POST["idEmpleado"]."','".$_POST["nombre"]."','".md5($_POST["pass"])."','".($_POST["idNivelAcceso"])."')";
+			 $this->bd->query($query);
+						echo '<script type="text/javascript">alert("Usted se ha registrado correctamente");window.location="index.php";</script>';
+			 }
+			 else{
+			 echo '<script type="text/javascript">alert("El empleado ya tiene un usuario");window.location="nuevoUsuario.php";</script>';
+			 }}
+
+	 //
+
+	 public function passEstablecida($idEmpleado){
+		 $sql = "SELECT * FROM usuario WHERE idEmpleado = '$idEmpleado'";
+		 $resp = $this->bd->query($sql);
+		 return  mysqli_num_rows($resp);
+	 }
+
+	 public function questions(){
+		 $sql="SELECT * FROM sq WHERE idEmpleado = '".$_POST["idempleado"]."'";
+		 return $this->bd->query($sql);
+	 }
+
+
+	 public function verificar_questions(){
+		 $sql = "SELECT empleados.idEmpleado, sq.respuesta1, sq.respuesta2, sq.respuesta3, sq.idEmpleado FROM empleados
+		 INNER JOIN sq ON
+		 empleados.idEmpleado= sq.idEmpleado
+		 WHERE respuesta1 = '".$_POST["question1"]."' and respuesta2 = '".$_POST["question2"]."' and respuesta3 = '".$_POST["question3"]."'";
+		 return $this->bd->query($sql);
+	 }
+
+
+	 public function vertarif(){
+		 $sql="SELECT empleados.idEmpleado, empleados.nombreEmpleado, empleados.apellidoEmpleado, cargos.idCargo, cargos.nombreCargo FROM empleados
+		 INNER JOIN cargos ON empleados.idCargo = cargos.idCargo
+		 WHERE identidad = '".$_POST["identidad"]."' AND nombreCargo = 'Director'";
+		 return $this->bd->query($sql);
+	 }
+
+	 public function verificar_empleado(){
+		 $sql="SELECT * FROM empleados WHERE idEmpleado = '1'";
+		 return $this->bd->query($sql);
+	 }
+
+
+
+	 public function obtenerNivelAccesos(){
+		 $sql = "SELECT * FROM nivelacceso";
+
+		 return $this->bd->query($sql);
+	 }
+
 
 	//funcion para loguearse
 	 public function logueo2($a,$b){
@@ -42,33 +99,8 @@ class funcionesBD extends conexionBD{
 	  }
 
 
-	//funcion para registrar usuarios
-	    public function registroUsuario(){
 
-	    $ing=" SELECT idEmpleado from usuario where idEmpleado='".$_POST["idEmpleado"]."'";
-	    $respuesta =$this->bd->query($ing);
-	        if (mysqli_num_rows($respuesta)==0){
-	    $query="INSERT into usuario VALUES (not null ,'".$_POST["idEmpleado"]."','".$_POST["nombre"]."','".md5($_POST["pass"])."','".($_POST["idNivelAcceso"])."')";
-	    $this->bd->query($query);
-	         echo '<script type="text/javascript">alert("Usted se ha registrado correctamente");window.location="index.php";</script>';
-	    }
-	    else{
-	    echo '<script type="text/javascript">alert("El empleado ya tiene un usuario");window.location="nuevoUsuario.php";</script>';
-	    }}
 
-	//
-
-	public function passEstablecida($idEmpleado){
-		$sql = "SELECT * FROM usuario WHERE idEmpleado = '$idEmpleado'";
-		$resp = $this->bd->query($sql);
-		return  mysqli_num_rows($resp);
-	}
-
-	public function obtenerNivelAccesos(){
-		$sql = "SELECT * FROM nivelacceso";
-
-		return $this->bd->query($sql);
-	}
 
 	//Inicio FUNCIONES PARA LA GESTION DE Cargos
 	public function obtenerCargos(){
@@ -222,7 +254,30 @@ class funcionesBD extends conexionBD{
 		return $this->bd->query($sql)->fetch_assoc();
 	}
 
-	public function obtenerEstudiantesPorClase($a){
+	public function obtenerEstudiantesPorClase($idClase){
+		$sql = "SELECT parcialespormodalidad.nombreParcialPorModalidad,parcialespormodalidad.idParcialPorModalidad FROM parcialactual
+				INNER JOIN parcialespormodalidad
+						ON parcialactual.idParcialPorModalidad = parcialespormodalidad.idParcialPorModalidad
+						INNER JOIN modalidades
+						ON parcialespormodalidad.idModalidad = modalidades.idModalidad
+						INNER JOIN cursos
+						ON modalidades.idModalidad = cursos.idModalidad
+						INNER JOIN clases
+						ON clases.idCurso = cursos.idCurso
+						WHERE clases.idClase = $idClase";
+		$resp = $this->bd->query($sql)->fetch_assoc();
+		$idParcialActual = $resp['idParcialPorModalidad'];
+
+		$sql ="SELECT estudiantes.idEstudiante,nombreEstudiante FROM estudiantes INNER JOIN matricula
+		        ON matricula.idEstudiante = estudiantes.idEstudiante
+		        INNER JOIN cursos
+		        ON matricula.idCurso = cursos.idCurso
+		        INNER JOIN clases
+		        ON cursos.idCurso = clases.idCurso
+		        WHERE idClase='$idClase'
+		        ORDER BY genero,nombreEstudiante
+		        ";
+		return $this->bd->query($sql);
 
 	}
 
@@ -291,6 +346,69 @@ public function obtenerTareas($idClase,$parcial){
 				AND anio = YEAR(CURDATE())";
 
 	return $this->bd->query($sql);
+}
+
+public function revisarSiExisteTarea($idEstudiante,$idTarea){
+	$sql ="SELECT idEstadoTarea FROM estadotareas
+								WHERE idEstudiante = '$idEstudiante' AND
+											idTarea = '$idTarea'";
+	return $this->bd->query($sql);
+}
+
+public function obtenerTareaPorId($idTarea){
+	$sql = "SELECT * FROM tareas WHERE idTarea = '$idTarea'";
+	return $this->bd->query($sql);
+}
+
+public function obtenerEstudiantesPorTarea($idTarea,$idClase){
+
+	$sql = "SELECT parcialespormodalidad.nombreParcialPorModalidad,parcialespormodalidad.idParcialPorModalidad FROM parcialactual
+			INNER JOIN parcialespormodalidad
+					ON parcialactual.idParcialPorModalidad = parcialespormodalidad.idParcialPorModalidad
+					INNER JOIN modalidades
+					ON parcialespormodalidad.idModalidad = modalidades.idModalidad
+					INNER JOIN cursos
+					ON modalidades.idModalidad = cursos.idModalidad
+					INNER JOIN clases
+					ON clases.idCurso = cursos.idCurso
+					WHERE clases.idClase = $idClase";
+	$resp = $this->bd->query($sql)->fetch_assoc();
+	$idParcialActual = $resp['idParcialPorModalidad'];
+
+
+	$sql ="SELECT estudiantes.idEstudiante,nombreEstudiante
+			FROM estudiantes
+        INNER JOIN estadotareas
+        ON estadotareas.idEstudiante = estudiantes.idEstudiante
+        INNER JOIN tareas
+        ON estadotareas.idTarea = tareas.idTarea
+        INNER JOIN clases
+        ON clases.idClase = tareas.idClase
+        WHERE tareas.idClase = $idClase AND
+            tareas.idParcialPorModalidad = $idParcialActual";
+		return $this->bd->query($sql);
+}
+
+public function insertarTarea($nombreTarea,$valorTarea,$fechaEntrega,$idClase){
+	$sql = "SELECT parcialespormodalidad.nombreParcialPorModalidad,parcialespormodalidad.idParcialPorModalidad FROM parcialactual
+			INNER JOIN parcialespormodalidad
+	        ON parcialactual.idParcialPorModalidad = parcialespormodalidad.idParcialPorModalidad
+	        INNER JOIN modalidades
+	        ON parcialespormodalidad.idModalidad = modalidades.idModalidad
+	        INNER JOIN cursos
+	        ON modalidades.idModalidad = cursos.idModalidad
+	        INNER JOIN clases
+	        ON clases.idCurso = cursos.idCurso
+	        WHERE clases.idClase = $idClase";
+	$resp = $this->bd->query($sql)->fetch_assoc();
+	$idParcialActual = $resp['idParcialPorModalidad'];
+
+
+
+	$sql="INSERT INTO tareas (nombreTarea,valorTarea,fechaEntrega,idClase,idParcialPorModalidad)
+							VALUES ('$nombreTarea','$valorTarea','$fechaEntrega','$idClase','$idParcialActual')";
+
+	$this->bd->query($sql);
 }
 
 public function obtenerParcialesActuales(){
