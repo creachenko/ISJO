@@ -3,7 +3,7 @@ require_once "conexionbd.php";
 
 $conexion = new conexionBD;
 
-$sql ="SELECT estudiantes.idEstudiante AS id,CONCAT(nombreEstudiante,'  ',apellidoEstudiante,' // ',nombreCurso,'-',seccion) AS name,identidad 
+$sql ="SELECT estudiantes.idEstudiante AS id,CONCAT(nombreEstudiante,'  ',apellidoEstudiante,' // ',nombreCurso,'-',seccion) AS name,identidad
         FROM estudiantes INNER JOIN matricula
         ON matricula.idEstudiante = estudiantes.idEstudiante
         INNER JOIN cursos

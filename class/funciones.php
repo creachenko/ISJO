@@ -268,7 +268,7 @@ class funcionesBD extends conexionBD{
 		$resp = $this->bd->query($sql)->fetch_assoc();
 		$idParcialActual = $resp['idParcialPorModalidad'];
 
-		$sql ="SELECT estudiantes.idEstudiante,nombreEstudiante FROM estudiantes INNER JOIN matricula
+		$sql ="SELECT estudiantes.idEstudiante,CONCAT(nombreEstudiante,' ',apellidoEstudiante) AS nombreCompleto FROM estudiantes INNER JOIN matricula
 		        ON matricula.idEstudiante = estudiantes.idEstudiante
 		        INNER JOIN cursos
 		        ON matricula.idCurso = cursos.idCurso
@@ -325,6 +325,16 @@ public function obtenerClasesDeMaestro($a){
 					INNER JOIN aniolectivo
 					ON cursos.idAnioLectivo = aniolectivo.idAnioLectivo
 					WHERE anio = YEAR(CURDATE()) AND clases.idEmpleado = '$a'";
+	return $this->bd->query($sql);
+}
+
+public function obtenerClasePorId($a){
+	$sql = "SELECT CONCAT(nombreCurso,' - ',seccion,' // ',nombreAsignatura) AS curso FROM clases
+					INNER JOIN cursos
+					ON clases.idCurso = cursos.idCurso
+					INNER JOIN asignaturas
+					ON clases.idAsignatura = asignaturas.idAsignatura
+					WHERE clases.idClase ='$a'";
 	return $this->bd->query($sql);
 }
 

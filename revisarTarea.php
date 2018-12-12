@@ -20,7 +20,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6bababa', e
 }
 
 </style>
-<?php include_once('layouts/header.php');
+<?php
 
 if (isset($_POST["checkTarea"])) {
 
@@ -31,9 +31,53 @@ if (isset($_POST["checkTarea"])) {
 
 $estudiantes = $obj->obtenerEstudiantesPorClase($_POST["idClaseCheckTarea"]);
 $tarea = $obj->obtenerTareaPorId($_POST["checkTarea"])->fetch_assoc();
+$nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_assoc();
+
  ?>
+
+ <!DOCTYPE html>
+ <html lang="en">
+
+ <head>
+
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="description" content="">
+     <meta name="author" content="">
+
+     <title>Instituto San Jorge de Olancho</title>
+
+     <!-- Bootstrap Core CSS -->
+     <link href="css/bootstrap.css" rel="stylesheet">
+
+     <!-- Custom CSS -->
+     <link href="css/sb-admin.css" rel="stylesheet">
+     <link href="css/animate.css" rel="stylesheet">
+
+     <!-- Morris Charts CSS -->
+     <link href="css/plugins/morris.css" rel="stylesheet">
+
+     <!-- Custom Fonts -->
+     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+     <link href="fonts/material-icons.css" rel="stylesheet" type="text/css">
+
+     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+     <!--[if lt IE 9]>
+         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+ <script src="js/jquery.js"></script>
+ </head>
+
+ <body>
+   <div id="page-wrapper">
+
+       <div class="container-fluid">
+
  <h1 class="page-header">
-     Revisar Tarea
+     Revisar Tarea <small>Seleccione un Estudiante del panel amarillo y asignele un Puntaje</small>
  </h1>
  <div class="row">
      <div class="col-md-12">
@@ -46,6 +90,9 @@ $tarea = $obj->obtenerTareaPorId($_POST["checkTarea"])->fetch_assoc();
                  <i class="fa fa-briefcase" aria-hidden="true"></i> Mis Clases
              </li>
              <li>
+                  <i class="fa fa-graduation-cap" aria-hidden="true"></i><?php echo $nombreCurso['curso'] ?>
+             </li>
+             <li>
                  <i class="fa fa-briefcase" aria-hidden="true"></i> Revisar Tarea
              </li>
              <a href="clases.php" class="btn btn-default btn-xs pull-right">Regresar</a>
@@ -56,29 +103,28 @@ $tarea = $obj->obtenerTareaPorId($_POST["checkTarea"])->fetch_assoc();
    <div class="panel panel-yellow">
      <div class="panel-heading">
        <h1 class="panel-title">Listado Alumnos</h1>
+       <hr style="margin-top: 3px;margin-bottom: 1px;">
+       <small>Rojo: Tarea no Revisada </small> <br>
+       <small>Verde: Tarea Revisada </small>
      </div>
-     <table class="table">
-       <thead>
-         <tr>
-           <th>Nombre</th>
-           <th>Revisado</th>
-         </tr>
-       </thead>
-     </table>
-     <ul class="list-group">
+     <input type="hidden" id="idTarea" value="<?php echo $_POST["checkTarea"] ?>">
+     <div class="list-group">
 
-         <?php while ($row = mysqli_fetch_assoc($estudiantes)) { ?>
-             <li class="list-group-item">
-               <?php echo "<a value=".$row["idEstudiante"].">".$row["nombreEstudiante"]."</a>" ?>
-             <?php $check = $obj->revisarSiExisteTarea($row["idEstudiante"],$_POST["checkTarea"]);
-                        $rows = $check->num_rows;
-                         if ($rows > 0) { ?>
-                          <span class="label label-success pull-right">Tarea Revisada</span>
-                        <?php }else{ ?>
-                          <span class="label label-danger pull-right">No Revisada</span>
-                        <?php }  ?></li>
-         <?php } ?>
-      </ul>
+         <?php $i = 1;
+          while ($row = mysqli_fetch_assoc($estudiantes)) { ?>
+             <button name="buttonEstudiante" class="list-group-item <?php $check = $obj->revisarSiExisteTarea($row["idEstudiante"],$_POST["checkTarea"]);
+                           $rows = $check->num_rows;
+                            if ($rows > 0) { ?>
+                             <?php echo "list-group-item-success";
+                                    $icono = "<i class='fa fa-check' aria-hidden='true'></i>";?>
+                           <?php }else{ ?>
+                             <?php echo "list-group-item-danger" ;
+                                    $icono = "<i class='fa fa-times-circle-o' aria-hidden='true'></i>";?>
+                           <?php }?>" value="<?php echo $row["idEstudiante"] ?>">
+               <?php echo $i.". ".$icono." ".$row["nombreCompleto"]."" ?>
+               </button>
+         <?php $i++;} ?>
+      </div>
 
    </div>
  </div>
@@ -110,13 +156,13 @@ $tarea = $obj->obtenerTareaPorId($_POST["checkTarea"])->fetch_assoc();
               <div class="form-row">
                 <div class="form-group col-md-9">
                   <label>Nombre Estudiante</label>
-                  <input type="text" name="nombreEstudiante" value="Luis Santiago Cruz" class="form-control" disabled>
+                  <input type="text" name="nombreEstudiante" value="---" class="form-control" disabled>
                 </div>
               </div>
               <div class="form-row">
                 <div class="form-group col-md-3">
-                  <label for="inputCity">Puntaje Obtenido</label>
-                  <input type="number" class="form-control">
+                  <label for="">Puntaje Obtenido</label>
+                  <input type="number" name="puntaje" value="0" class="form-control">
 
                 </div>
          </div>
@@ -138,5 +184,29 @@ $tarea = $obj->obtenerTareaPorId($_POST["checkTarea"])->fetch_assoc();
        </div>
       </form>
 
+<script type="text/javascript">
+  $("button[name='buttonEstudiante']").on("click",function () {
+    var idEstudiante1 = $(this).val();
+    var idTarea1 = $("#idTarea").val();
+    console.log(idEstudiante1 + idTarea1);
+    $.ajax({
+      method:"POST",
+      url:"class/scriptObtenerTarea.php",
+      data:{idEstudiante: idEstudiante1,idTarea:idTarea1},
+      dataType: "json",
+      success:function (respuesta) {
+        console.log(respuesta);
+
+        $("input[name='nombreEstudiante']").val(respuesta.nombreCompleto);
+        $("input[name='puntaje']").val(respuesta.puntajeObtenido);
+
+
+      },
+      error:function (error,error1,error2) {
+        console.log(error2);
+      }
+    })
+  })
+</script>
 
    <?php include_once('layouts/footer.php'); ?>
