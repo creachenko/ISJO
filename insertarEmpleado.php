@@ -9,6 +9,7 @@ if (isset($_SESSION["ses_id"])) {
   window.location= "index.php";
   </script>';
 };
+if($_SESSION['nivelAcceso'] == 3){
 //Escucho si se quiere guardar un empleado y de ser asi lo guardo
 if (isset($_POST['guardarEmpleado'])) {
   $nombreEmpleado = ucwords(strtolower($_POST["nombreEmpleado"]));
@@ -161,4 +162,12 @@ $anios = $obj->obtenerAnioLectivos();
   if (isset($notifyVerification)) {
     echo $obj->notify($notifyVerification[0],$notifyVerification[1]);
   }
+  }
+else{
+   echo '<script>
+  alert("No Tienes acceso a esta pagina");
+   window.location= "home.php";
+
+  </script>';
+}
   include_once('layouts/footer.php'); ?>
