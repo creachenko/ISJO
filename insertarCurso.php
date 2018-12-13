@@ -10,7 +10,7 @@ if (isset($_SESSION["ses_id"])) {
   </script>';
 };
 
-
+if($_SESSION['nivelAcceso'] == 3){
 if (isset($_POST['guardar'])){
   for ($i=1; $i <= $_POST['cantCursos'] ; $i++) {
     echo "<script>console.log('".$_POST['nombreCurso'.$i],$_POST['seccionCurso'.$i],$_POST['selectModalidad'],$_POST['selectAnioLectivo']."')</script>";
@@ -127,4 +127,12 @@ $anios = $obj->obtenerAnioLectivos();
   if (isset($notifyVerification)) {
     echo $obj->notify($notifyVerification[0],$notifyVerification[1]);
   }
+  }
+else{
+   echo '<script>
+  alert("No Tienes acceso a esta pagina");
+   window.location= "home.php";
+
+  </script>';
+}
   include_once('layouts/footer.php'); ?>
