@@ -11,7 +11,7 @@ $idEstudiante = $_POST['idEstudiante'];
 $sql ="INSERT INTO estadotareas (puntajeObtenido,idTarea,idEstudiante)
 				VALUES ('$puntaje','$idTarea',$idEstudiante)";
 
-// $conexion->bd->query($sql);
+$conexion->bd->query($sql);
 
 
 

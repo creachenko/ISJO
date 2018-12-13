@@ -172,6 +172,7 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
              <button type="button" name="asignarPuntaje" id="asignarPuntaje" value="" class="btn btn-success btn-lg btn-block" >Asignar Puntaje</button>
             <input type="hidden" name="idTarea" id="idTarea" value="<?php echo $_POST["checkTarea"] ?>">
             <input type="hidden" name="idEstudiante" id="idEstudiante" value="">
+            <input type="hidden" name="idClase" value="<?php echo $_POST['idClaseCheckTarea'] ?>">
            </div>
          </div>
        </div>
@@ -218,7 +219,7 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
         $(this).removeClass('list-group-item-danger')
       }else {
         itemClass = 'list-group-item-success'
-        $(this).addClass('listkarla-group-item-success')
+        $(this).removeClass('list-group-item-success')
       }
       $(this).addClass('list-group-item-info')
 
@@ -265,16 +266,17 @@ $("#asignarPuntaje").on("click",function () {
       type:"danger"
     })
   }else{
-
-  var datos = $("form[name='form']").serialize();
-  console.log(datos);
-
-  $.ajax({
+    var datos = $("form[name='form']").serialize();
+    console.log(datos);
+    $.ajax({
     method:"POST",
     url:"class/scriptAsignarPuntaje.php",
     data:datos,
     success:function (respuesta) {
-      console.log(respuesta);
+
+      //Actualizo la lista de Alumnos
+
+      itemClass = "list-group-item-success";
 
       $.notify({
         icon: 'glyphicon glyphicon-ok',
