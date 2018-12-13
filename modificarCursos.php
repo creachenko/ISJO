@@ -9,7 +9,7 @@ if (isset($_SESSION["ses_id"])) {
   window.location= "index.php";
   </script>';
 };
-
+if($_SESSION['nivelAcceso'] == 3){
 //Escucho si se quiere eliminar datos en Cursos, de ser asi lo elimino
 if (isset($_POST['eliminarCursoConfirmado'])) {
   $obj->eliminarCurso($_POST['eliminarCursoConfirmado']);
@@ -182,4 +182,13 @@ $modalidades = $obj->obtenerModalidades();
       $("#nuevoIdCurso").val($(this).val());
     })
     </script>
+
+}
+else{
+   echo '<script>
+  alert("No Tienes acceso a esta pagina");
+   window.location= "home.php";
+
+  </script>';
+}
   <?php include_once('layouts/footer.php'); ?>
