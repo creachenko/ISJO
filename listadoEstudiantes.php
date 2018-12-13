@@ -76,7 +76,7 @@ $estudiantes = $obj->obtenerEstudiantes();
 
 
 <?php
-$CantidadMostrar=5;
+$CantidadMostrar=25;
 
 //Conexion  al servidor mysql
 $conetar = new mysqli("localhost", "root", "", "isjobd");

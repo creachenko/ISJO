@@ -107,7 +107,6 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
        <small>Rojo: Tarea no Revisada </small> <br>
        <small>Verde: Tarea Revisada </small>
      </div>
-     <input type="hidden" id="idTarea" value="<?php echo $_POST["checkTarea"] ?>">
      <input type="hidden" id="activeItem" value="">
      <div class="list-group">
 
@@ -138,7 +137,7 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
           <span>Revisar Tarea</span>
        </strong>
       </div>
-        <form>
+        <form name="form">
           <div class="panel-body">
               <div class="col-md-7 degradadoGris">
                 <div class="page-header text-center">
@@ -170,7 +169,9 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
          </div>
          <div class="form-row">
            <div class="col-md-12">
-             <button type="button" name="button" class="btn btn-success btn-lg btn-block" >Asignar Puntaje</button>
+             <button type="button" name="asignarPuntaje" id="asignarPuntaje" value="" class="btn btn-success btn-lg btn-block" >Asignar Puntaje</button>
+            <input type="hidden" name="idTarea" id="idTarea" value="<?php echo $_POST["checkTarea"] ?>">
+            <input type="hidden" name="idEstudiante" id="idEstudiante" value="">
            </div>
          </div>
        </div>
@@ -185,10 +186,10 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
        <hr>
        <div class="panel-body">
          <div class="col-md-8">
-           <textarea name="name" placeholder="Razon por la que el estudiante no presento la tarea (Opcional)" class="form-control"></textarea>
+           <textarea name="motivoNoPresentada" placeholder="Razon por la que el estudiante no presento la tarea (Opcional)" class="form-control"></textarea>
          </div>
          <div class="col-md-4">
-           <button type="button" class="btn btn-danger btn-block" name="button">No hizo la Tarea</button>
+           <input type="button" class="btn btn-danger btn-block" name="noHizoLaTarea" value="No hizo la Tarea">
          </div>
 
        </div>
@@ -217,11 +218,12 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
         $(this).removeClass('list-group-item-danger')
       }else {
         itemClass = 'list-group-item-success'
-        $(this).addClass('list-group-item-success')
+        $(this).addClass('listkarla-group-item-success')
       }
       $(this).addClass('list-group-item-info')
 
       var idEstudiante1 = $(this).val();
+      $("#idEstudiante").val(idEstudiante1);
       var idTarea1 = $("#idTarea").val();
       console.log(idEstudiante1 + idTarea1);
       $.ajax({
@@ -243,11 +245,63 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
       })
     }
   })
+  //Asignar puntaje
+$("#asignarPuntaje").on("click",function () {
+
+  if ($("input[name='puntaje']").val() == 0) {
+    $.notify({
+      icon: 'glyphicon glyphicon-remove',
+      message:"Por Favor, ingrese un puntaje"
+    },{
+      placement: {
+        from: "bottom",
+        align: "center"
+      },
+      animate: {
+        enter: 'animated zoomInUp',
+        exit: 'animated zoomOutDown'
+      },
+      delay : 2000,
+      type:"danger"
+    })
+  }else{
+
+  var datos = $("form[name='form']").serialize();
+  console.log(datos);
+
+  $.ajax({
+    method:"POST",
+    url:"class/scriptAsignarPuntaje.php",
+    data:datos,
+    success:function (respuesta) {
+      console.log(respuesta);
+
+      $.notify({
+        icon: 'glyphicon glyphicon-ok',
+        message:"Puntaje Asignado"
+      },{
+        placement: {
+      		from: "bottom",
+      		align: "center"
+      	},
+        animate: {
+      		enter: 'animated zoomInUp',
+      		exit: 'animated zoomOutDown'
+      	},
+        delay : 1000,
+        type:'success'
+      })
+    }
+  })
+  }
+})
   //seleccionar primer elemento
   $(function () {
       $("#1").click();
   })
   //Control de la paginacion
+
+
   $("#siguiente").on("click",function (ev) {
     ev.preventDefault();
     var activeItem = parseInt($("#activeItem").val(),10);
