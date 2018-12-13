@@ -9,6 +9,7 @@ if (isset($_SESSION["ses_id"])) {
   window.location= "index.php";
   </script>';
 };
+if($_SESSION['nivelAcceso'] == 3){
 if (isset($_POST['guardar'])){
   $obj->insertarEncargado($_POST['nombre'],$_POST['apellido'],$_POST['telefono'],$_POST['genero'],$_POST['identidadEncargado'],$_POST['correo'],$_POST['profesion'],$_POST['direccion']);
   $notifyVerification=["Registro Exitoso: ".$_POST['nombre'].$_POST['apellido'],'success'];
@@ -168,5 +169,13 @@ if (isset($_POST['guardar'])){
     <?php
     if (isset($notifyVerification)) {
       echo $obj->notify($notifyVerification[0],$notifyVerification[1]);
-    }?>
+    }
+}
+else{
+   echo '<script>
+  alert("No Tienes acceso a esta pagina");
+   window.location= "home.php";
+
+  </script>';
+}?>
   <?php include_once('layouts/footer.php'); ?>
