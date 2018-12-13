@@ -95,14 +95,14 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
              <li>
                  <i class="fa fa-briefcase" aria-hidden="true"></i> Revisar Tarea
              </li>
-             <a href="clases.php" class="btn btn-default btn-xs pull-right">Regresar</a>
+             <a href="clases.php" class="btn btn-default btn-xs pull-right"><i class="fa fa-arrow-left" aria-hidden="true"></i> Regresar</a>
        	</ol>
      </div>
  </div>
  <div class="col-md-3">
    <div class="panel panel-yellow">
      <div class="panel-heading">
-       <h1 class="panel-title">Listado Alumnos</h1>
+       <h1 class="panel-title"><i class="fa fa-list-ol" aria-hidden="true"></i><strong> Listado Alumnos</strong></h1>
        <hr style="margin-top: 3px;margin-bottom: 1px;">
        <small>Rojo: Tarea no Revisada </small> <br>
        <small>Verde: Tarea Revisada </small>
@@ -112,17 +112,18 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
 
          <?php $i = 1;
           while ($row = mysqli_fetch_assoc($estudiantes)) { ?>
-             <button name="buttonEstudiante" class="list-group-item <?php $check = $obj->revisarSiExisteTarea($row["idEstudiante"],$_POST["checkTarea"]);
-                           $rows = $check->num_rows;
-                            if ($rows > 0) { ?>
-                             <?php echo "list-group-item-success";
-                                    $icono = "<i class='fa fa-check' aria-hidden='true'></i>";?>
-                           <?php }else{ ?>
-                             <?php echo "list-group-item-danger" ;
-                                    $icono = "<i class='fa fa-times-circle-o' aria-hidden='true'></i>";?>
-                           <?php }?>" value="<?php echo $row["idEstudiante"] ?>">
-               <?php echo $i.". ".$icono." ".$row["nombreCompleto"]."" ?>
-               </button>
+                <button name="buttonEstudiante" class="list-group-item <?php $check = $obj->revisarSiExisteTarea($row["idEstudiante"],$_POST["checkTarea"]);
+                              $rows = $check->num_rows;
+                               if ($rows > 0) { ?>
+                                <?php echo "list-group-item-success";
+                                       $icono = "<i class='fa fa-check' aria-hidden='true'></i>";?>
+                              <?php }else{ ?>
+                                <?php echo "list-group-item-danger" ;
+                                       $icono = "<i class='fa fa-times-circle-o' aria-hidden='true'></i>";?>
+                              <?php }?>" value="<?php echo $row["idEstudiante"] ?>" id="item<?php echo $i ?>" >
+                  <text id="flecha" class=""></text> <?php echo $i.". ".$icono." ".$row["nombreCompleto"]."" ?>
+                  </button>
+
          <?php $i++;} ?>
       </div>
 
@@ -185,28 +186,60 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
       </form>
 
 <script type="text/javascript">
+  //Obtengo la informacion del boton que se apreto
+    var itemId;
+    var itemClass;
   $("button[name='buttonEstudiante']").on("click",function () {
-    var idEstudiante1 = $(this).val();
-    var idTarea1 = $("#idTarea").val();
-    console.log(idEstudiante1 + idTarea1);
-    $.ajax({
-      method:"POST",
-      url:"class/scriptObtenerTarea.php",
-      data:{idEstudiante: idEstudiante1,idTarea:idTarea1},
-      dataType: "json",
-      success:function (respuesta) {
-        console.log(respuesta);
+    console.log(itemId+" <->"+$(this).attr("id"));
 
-        $("input[name='nombreEstudiante']").val(respuesta.nombreCompleto);
-        $("input[name='puntaje']").val(respuesta.puntajeObtenido);
+    if (itemId != $(this).attr("id")) {
+      $("#"+itemId).children("#flecha").removeClass("fa fa-arrow-right");
+      $("#"+itemId).removeClass('list-group-item-info')
+      $("#"+itemId).addClass(itemClass);
+      
+      itemId = $(this).attr('id');
 
+      $(this).toggleClass('animated pulse');
+      $(this).children("#flecha").addClass("fa fa-arrow-right");
 
-      },
-      error:function (error,error1,error2) {
-        console.log(error2);
+      if ($(this).hasClass("list-group-item-danger")) {
+        itemClass = 'list-group-item-danger'
+        $(this).removeClass('list-group-item-danger')
+      }else {
+        itemClass = 'list-group-item-success'
+        $(this).addClass('list-group-item-success')
       }
-    })
+      $(this).addClass('list-group-item-info')
+
+      var idEstudiante1 = $(this).val();
+      var idTarea1 = $("#idTarea").val();
+      console.log(idEstudiante1 + idTarea1);
+      $.ajax({
+        method:"POST",
+        url:"class/scriptObtenerTarea.php",
+        data:{idEstudiante: idEstudiante1,idTarea:idTarea1},
+        dataType: "json",
+        success:function (respuesta) {
+          console.log(respuesta);
+
+          $("input[name='nombreEstudiante']").val(respuesta.nombreCompleto);
+          $("input[name='puntaje']").val(respuesta.puntajeObtenido);
+
+
+        },
+        error:function (error,error1,error2) {
+          console.log(error2);
+        }
+      })
+    }else {
+
+
+    }
+
   })
+
+  function volver() {
+    }
 </script>
 
    <?php include_once('layouts/footer.php'); ?>

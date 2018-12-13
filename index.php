@@ -30,6 +30,8 @@ require_once("class/funciones.php");
             <label for="Password" class="control-label">Contraseña</label>
             <input type="password" name= "contrasena" class="form-control" placeholder="Contraseña">
         </div>
+        <div class="copyRightInfo"><a href="restpass.php">Olvide mi contraseña</a></div>
+        <p>
          <div class="copyRightInfo">Copyright &copy; 2018 <br/>Proyecto Ucenm. <br/>Derechos Reservados.</div>
           <br>
         <div class="form-group">
