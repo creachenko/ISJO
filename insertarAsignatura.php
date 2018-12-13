@@ -9,6 +9,7 @@ if (isset($_SESSION["ses_id"])) {
   window.location= "index.php";
   </script>';
 };
+if($_SESSION['nivelAcceso'] == 3){
   if (isset($_POST['guardar'])){
 
     for ($i=1; $i <= $_POST['cantAsignaturas'] ; $i++) {
@@ -169,5 +170,13 @@ if (isset($_SESSION["ses_id"])) {
   if (isset($notifyVerification)) {
     echo $obj->notify($notifyVerification[0],$notifyVerification[1]);
   }
+}
+else{
+   echo '<script>
+  alert("No Tienes acceso a esta pagina");
+   window.location= "home.php";
+
+  </script>';
+}
 
   include_once('layouts/footer.php'); ?>
