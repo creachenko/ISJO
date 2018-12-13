@@ -10,9 +10,7 @@ if (isset($_SESSION["ses_id"])) {
   </script>';
 };
 if($_SESSION['nivelAcceso'] == 3){
-if (isset($_POST[])) {
-  // code...
-}
+
 
 $modalidades = $obj->obtenerModalidades();
 
