@@ -9,6 +9,7 @@ if (isset($_SESSION["ses_id"])) {
   window.location= "index.php";
   </script>';
 };
+if($_SESSION['nivelAcceso'] == 3){
 if (isset($_POST['guardar'])){
   $obj->insertarEncargado($_POST['nombre'],$_POST['apellido'],$_POST['telefono'],$_POST['genero'],$_POST['identidadNewEncargado'],$_POST['correo'],$_POST['profesion'],$_POST['direccion']);
   $notifyVerification=["Padre de Familia/ Encargado: ".$_POST['nombre'].$_POST['apellido']." ha sido registrado, proceda a llenar datos del alumno",'success'];
@@ -497,5 +498,13 @@ $modalidades = $obj->obtenerModalidades();
   //Recibo cualquier notificacion y la muestro
    if (isset($notifyVerification)) {
      echo $obj->notify($notifyVerification[0],$notifyVerification[1]);
-   }?>
+   }
+}
+else{
+   echo '<script>
+  alert("No Tienes acceso a esta pagina");
+   window.location= "home.php";
+
+  </script>';
+}?>
    <?php include_once('layouts/footer.php'); ?>
