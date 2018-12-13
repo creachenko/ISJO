@@ -51,15 +51,7 @@
                 <a class="navbar-brand" href="index.php">Instituto San Jorde de Olancho</a>
             </div>
             <!-- Top Menu Items -->
-            <form class="navbar-form navbar-left" role="search">
-              <div class="input-group col-sm-12 col-lg-12" >
-                <input type="text" class="form-control" placeholder="Buscar Estudiante" id='busqueda'>
-                <span class="input-group-btn">
-                  <button class="btn btn-warning btn-block" type="button">Buscar</button>
-                </span>
-              </div>
-            </form>
-            <ul class="nav navbar-left top-nav">
+            <ul class="nav navbar-right top-nav">
 
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['nombreUsuario'] ?><b class="caret"></b></a>
@@ -80,6 +72,14 @@
                     </ul>
                 </li>
             </ul>
+            <form class="navbar-form navbar-right" role="search">
+              <div class="input-group col-sm-12 col-lg-12" >
+                <input type="text" class="form-control" placeholder="Buscar Estudiante" id='busqueda'>
+                <span class="input-group-btn">
+                  <button class="btn btn-warning btn-block" type="button">Buscar</button>
+                </span>
+              </div>
+            </form>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <?php

@@ -108,6 +108,7 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
        <small>Verde: Tarea Revisada </small>
      </div>
      <input type="hidden" id="idTarea" value="<?php echo $_POST["checkTarea"] ?>">
+     <input type="hidden" id="activeItem" value="">
      <div class="list-group">
 
          <?php $i = 1;
@@ -120,7 +121,7 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
                               <?php }else{ ?>
                                 <?php echo "list-group-item-danger" ;
                                        $icono = "<i class='fa fa-times-circle-o' aria-hidden='true'></i>";?>
-                              <?php }?>" value="<?php echo $row["idEstudiante"] ?>" id="item<?php echo $i ?>" >
+                              <?php }?>" value="<?php echo $row["idEstudiante"] ?>" id="<?php echo $i ?>" >
                   <text id="flecha" class=""></text> <?php echo $i.". ".$icono." ".$row["nombreCompleto"]."" ?>
                   </button>
 
@@ -173,6 +174,14 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
            </div>
          </div>
        </div>
+       <div class="panel-body">
+         <nav aria-label="...">
+          <ul class="pager">
+            <li class="previous"><a href="#" id='anterior' ><span aria-hidden="true">&larr;</span> Estudiante Anterior</a></li>
+            <li class="next"><a href="#" id='siguiente'>Siguiente Estudiante <span aria-hidden="true">&rarr;</span></a></li>
+          </ul>
+        </nav>
+       </div>
        <hr>
        <div class="panel-body">
          <div class="col-md-8">
@@ -196,8 +205,9 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
       $("#"+itemId).children("#flecha").removeClass("fa fa-arrow-right");
       $("#"+itemId).removeClass('list-group-item-info')
       $("#"+itemId).addClass(itemClass);
-      
+
       itemId = $(this).attr('id');
+      $("#activeItem").val(itemId);
 
       $(this).toggleClass('animated pulse');
       $(this).children("#flecha").addClass("fa fa-arrow-right");
@@ -231,15 +241,28 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
           console.log(error2);
         }
       })
-    }else {
-
-
     }
-
+  })
+  //seleccionar primer elemento
+  $(function () {
+      $("#1").click();
+  })
+  //Control de la paginacion
+  $("#siguiente").on("click",function (ev) {
+    ev.preventDefault();
+    var activeItem = parseInt($("#activeItem").val(),10);
+    console.log((activeItem+1));
+    $("#"+(activeItem+1)).click();
   })
 
-  function volver() {
-    }
+  $("#anterior").on("click",function (ev) {
+    ev.preventDefault();
+    var activeItem = parseInt($("#activeItem").val(),10);
+    console.log((activeItem-1));
+    $("#"+(activeItem-1)).click();
+  })
+
+
 </script>
 
    <?php include_once('layouts/footer.php'); ?>
