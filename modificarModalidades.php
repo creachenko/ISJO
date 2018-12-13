@@ -9,6 +9,7 @@ if (isset($_SESSION["ses_id"])) {
   window.location= "index.php";
   </script>';
 };
+if($_SESSION['nivelAcceso'] == 3){
 //Escucho si se quiere eliminar una modalidad, de ser asi la Eliminado
 if (isset($_POST['eliminarModalidadConfirmado'])) {
   $obj->eliminarModalidad($_POST['eliminarModalidadConfirmado']);
@@ -107,4 +108,12 @@ $totalModalidades = mysqli_num_rows($obj->obtenerModalidades());
 
    })
    </script>
+}
+else{
+   echo '<script>
+  alert("No Tienes acceso a esta pagina");
+   window.location= "home.php";
+
+  </script>';
+}
    <?php include_once('layouts/footer.php'); ?>

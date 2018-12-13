@@ -9,6 +9,7 @@ if (isset($_SESSION["ses_id"])) {
   window.location= "index.php";
   </script>';
 };
+if($_SESSION['nivelAcceso'] == 3){
 //Escucho si se quiere eliminar una modalidad, de ser asi la Eliminado
 if (isset($_POST['eliminarEmpleadoConfirmado'])) {
   echo "<script>console.log('".$_POST['eliminarEmpleadoConfirmado']."')</script>";
@@ -284,5 +285,14 @@ $cargos = $obj->obtenerCargos();
    <?php
    if (isset($notifyVerification)) {
      echo $obj->notify($notifyVerification[0],$notifyVerification[1]);
-   }?>
+   }
+}
+else{
+   echo '<script>
+  alert("No Tienes acceso a esta pagina");
+   window.location= "home.php";
+
+  </script>';
+}
+?>
    <?php include_once('layouts/footer.php'); ?>

@@ -9,6 +9,7 @@ if (isset($_SESSION["ses_id"])) {
   window.location= "index.php";
   </script>';
 };
+if($_SESSION['nivelAcceso'] == 3){
 if (isset($_POST['asignarAsignatura'])) {
   $resp = $obj->insertarClase($_POST["idAsignatura"],$_POST["idEmpleado"],$_POST["idCurso"],$_POST["horaClase"]);
   echo "<script>console.log(".$_POST["idEmpleado"].")</script>";
@@ -187,5 +188,14 @@ $clases = $obj->obtenerClases();
   //Recibo cualquier notificacion y la muestro
    if (isset($notifyVerification)) {
      echo $obj->notify($notifyVerification[0],$notifyVerification[1]);
-   }?>
+   }
+
+}
+else{
+   echo '<script>
+  alert("No Tienes acceso a esta pagina");
+   window.location= "home.php";
+
+  </script>';
+}?>
    <?php include_once('layouts/footer.php'); ?>
