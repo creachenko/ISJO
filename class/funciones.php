@@ -8,6 +8,23 @@ class funcionesBD extends conexionBD{
 
 	}
 
+	
+	public function infoc(){
+		$sql = "SELECT * FROM informacioncolegio ";
+		$resp = $this->bd->query($sql);
+		return  $resp;
+	}
+
+
+
+
+	/*Reporte1*/
+	public function report(){
+		$sql = "SELECT * FROM Estudiantes ";
+		$resp = $this->bd->query($sql);
+		return  $resp;
+	}
+
 
 /*esta funcion es para hacer la conexion a la base de datos*/
   public function conexion(){

@@ -8,7 +8,6 @@ if (isset($_SESSION["ses_id"])) {
   alert("Tienes que loguearte");
   window.location= "index.php";
   </script>';
-};
 
 //hasta aqui es la parte del logueo//
 if($_SESSION['nivelAcceso'] == 3){
