@@ -44,6 +44,7 @@ $modalidades = $obj->obtenerModalidades();
             <li class="active">
                 <i class="fa fa-briefcase" aria-hidden="true"></i> Matricular Alumno
             </li>
+            <a href="listadoEstudiantes.php" class="btn btn-primary btn-xs pull-right"> Regresar</a>
         </ol>
     </div>
 </div>

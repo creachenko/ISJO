@@ -350,6 +350,11 @@ public function obtenerClasePorId($a){
 }
 
 //fin FUNCIONES GESTION DE Clases
+
+
+
+
+
 //PARCIALES
 
 public function obtenerTareas($idClase,$parcial){
@@ -657,73 +662,11 @@ public function obtenerParcialesDeModalidades($idModalidad){
 
 
 
-         /*esta funcion sirve para ver el id de los estudiantes*/
-
-
-          public function obtener_estudiantes($id){
-          $empleados = "SELECT * FROM estudiantes WHERE idEstudiante ='".$id."'";
-          $resultado=$this->bd->query($empleados);
-          $emp = $resultado->fetch_all(MYSQLI_ASSOC);
-
-          return $emp;
-          }
-
-            /*funcion para actualizar datos de estudiantes*/
-                  public function editar_estudiante(){
-          $sql = "UPDATE estudiantes SET nombreEstudiante = '".$_POST["nombre"]."',
-          apellidoEstudiante ='".$_POST["apellido"]."',
-          identidad ='".$_POST["identidad"]."',
-          correo ='".$_POST["correo"]."',
-          genero ='".$_POST["genero"]."',
-          fechaNacimiento ='".$_POST["fechaNacimiento"]."',
-          genero ='".$_POST["genero"]."',
-          direccion ='".$_POST["direccion"]."',
-          telefono ='".$_POST["celular"]."'
-          WHERE
-          idestudiante ='".$_POST["id"]."'";
-          $this->bd->query($sql);
-                             echo "<script>
-                    alert('Registro Actualizado con Exito');
-                    window.location = 'modificar_estudiantes.php';
-                    </script>";
-          }
+         
 
 
 
-          /*esta funcion sirve para ver el id de los encargados*/
-
-
-          public function obtener_encargados($id){
-          $empleados = "SELECT * FROM encargados WHERE idEncargado ='".$id."'";
-          $resultado=$this->bd->query($empleados);
-          $emp = $resultado->fetch_all(MYSQLI_ASSOC);
-
-          return $emp;
-          }
-
-
-/*funcion para actualizar datos de encargados*/
-                  public function editar_encargados(){
-          $sql = "UPDATE encargados SET nombreEncargado = '".$_POST["nombre"]."',
-          apellidoEncargado ='".$_POST["apellido"]."',
-          telefono ='".$_POST["telefono"]."',
-          genero ='".$_POST["genero"]."',
-          identidad ='".$_POST["identidad"]."',
-          correo ='".$_POST["correo"]."',
-          genero ='".$_POST["genero"]."',
-          identidad ='".$_POST["identidad"]."',
-          correo ='".$_POST["correo"]."',
-          parentezco ='".$_POST["parentezco"]."',
-          profesion ='".$_POST["profesion"]."',
-          direccion ='".$_POST["direccion"]."'
-          WHERE
-          idEncargado ='".$_POST["id"]."'";
-          $this->bd->query($sql);
-                             echo "<script>
-                    alert('Registro Actualizado con Exito');
-                    window.location = 'modificar_encargados.php';
-                    </script>";
-          }
+          
 
            /*consulta para busqueda en la opcion de con tratos*/
 
@@ -836,6 +779,100 @@ public function selec_encargado(){
 		return "<script>".$notify."</script>";
 
 	}
+
+
+	          /*aqui empieza las funciones que hay que agregar al proyecto*/
+         /*esta funcion sirve para ver el id de los estudiantes*/
+
+
+          public function obtener_estudiantes($id){
+          $empleados = "SELECT * FROM estudiantes WHERE idEstudiante ='".$id."'";
+          $resultado=$this->bd->query($empleados);
+          $emp = $resultado->fetch_all(MYSQLI_ASSOC);
+
+          return $emp;
+          }
+
+            /*funcion para actualizar datos de estudiantes*/
+                  public function editar_estudiante(){
+          $sql = "UPDATE estudiantes SET nombreEstudiante = '".$_POST["nombre"]."',
+          apellidoEstudiante ='".$_POST["apellido"]."',
+          identidad ='".$_POST["identidad"]."',
+          correo ='".$_POST["correo"]."',
+          genero ='".$_POST["genero"]."',
+          fechaNacimiento ='".$_POST["fechaNacimiento"]."',
+          genero ='".$_POST["genero"]."',
+          direccion ='".$_POST["direccion"]."',
+          telefono ='".$_POST["celular"]."'
+          WHERE
+          idestudiante ='".$_POST["id"]."'";
+          $this->bd->query($sql);
+                             echo "<script>
+                    alert('Registro Actualizado con Exito');
+                    window.location = 'listadoEstudiantes.php';
+                    </script>";
+          }
+              // funcion para eliminar estudiantes//
+  public function eliminar_estudiantes(){
+   $consult ="DELETE FROM estudiantes WHERE idEstudiante='".$_GET["id"]."'";
+
+   $this->bd->query($consult);
+
+   echo "<script>
+                    alert('Registro Eliminado con Exito');
+                    window.location = 'listadoEstudiantes.php';
+                    </script>";
+
+
+  }
+
+
+          /*esta funcion sirve para ver el id de los encargados*/
+
+
+          public function obtener_encargados($id){
+          $empleados = "SELECT * FROM encargados WHERE idEncargado ='".$id."'";
+          $resultado=$this->bd->query($empleados);
+          $emp = $resultado->fetch_all(MYSQLI_ASSOC);
+
+          return $emp;
+          }
+
+
+/*funcion para actualizar datos de encargados*/
+                  public function editar_encargados(){
+          $sql = "UPDATE encargados SET nombreEncargado = '".$_POST["nombre"]."',
+          apellidoEncargado ='".$_POST["apellido"]."',
+          telefono ='".$_POST["telefono"]."',
+          genero ='".$_POST["genero"]."',
+          identidad ='".$_POST["identidad"]."',
+          correo ='".$_POST["correo"]."',
+          profesion ='".$_POST["profesion"]."',
+          direccion ='".$_POST["direccion"]."'
+          WHERE
+          idEncargado ='".$_POST["id"]."'";
+          $this->bd->query($sql);
+                             echo "<script>
+                    alert('Registro Actualizado con Exito');
+                    window.location = 'modificarEncargados.php';
+                    </script>";
+          }
+
+ // funcion para eliminar encargados//
+  public function eliminar_encargados(){
+   $consult ="DELETE FROM encargados WHERE idEncargado='".$_GET["id"]."'";
+
+   $this->bd->query($consult);
+
+   echo "<script>
+                    alert('Registro Eliminado con Exito');
+                    window.location = 'modificarEncargados.php';
+                    </script>";
+
+
+  }
+
+  /*aqui termina las funciones que hice*/
 //fin de la clase
 
 //clase
