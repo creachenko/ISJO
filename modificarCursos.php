@@ -183,12 +183,11 @@ $modalidades = $obj->obtenerModalidades();
     })
     </script>
 
-}
-else{
+<?php }else{
    echo '<script>
   alert("No Tienes acceso a esta pagina");
    window.location= "home.php";
 
   </script>';
 }
-  <?php include_once('layouts/footer.php'); ?>
+   include_once('layouts/footer.php'); ?>
