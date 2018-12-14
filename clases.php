@@ -15,6 +15,13 @@ if (isset($_POST['programar'])) {
   $notifyVerification = ['Tarea Programada: <strong>'.$_POST['nombreTarea']."</strong>","success"];
 }
 
+if (isset($_POST['revisarHoy'])) {
+  $obj->insertarTareaHoy($_POST['nombreTarea'],$_POST['valorTarea'],'CURDATE()',$_POST['programar']);
+
+
+  $notifyVerification = ['Tarea Programada: <strong>'.$_POST['nombreTarea']."</strong>","success"];
+}
+
 $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 
 ?>
@@ -128,7 +135,7 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 						         </div>
 						         <div class="form-row">
 						           <div class="col-md-6">
-						             <button type="button" name="button" class="btn btn-primary btn-lg btn-block">Revisar Tarea Hoy</button>
+						             <button type="submit" name="revisarHoy" class="btn btn-primary btn-lg btn-block">Revisar Tarea Hoy</button>
 						           </div>
 						           <div class="col-md-6">
 						             <button type="submit" name="programar" value="" class="btn btn-warning btn-lg btn-block" >Programar</button>
