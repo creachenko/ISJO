@@ -9,198 +9,223 @@ if (isset($_SESSION["ses_id"])) {
   window.location= "index.php";
   </script>';
 };
-if($_SESSION['nivelAcceso'] == 3){
-//Escucho si se quiere eliminar una modalidad, de ser asi la Eliminado
-if (isset($_POST['eliminarEncargadoConfirmado'])) {
-  echo "<script>console.log('Orale, Ya funciona man: Registro Eliminado".$_POST['eliminarEncargadoConfirmado']."')</script>";
-  $obj->eliminarEncargado($_POST['eliminarEncargadoConfirmado']);
-  $notifyVerification=['<strong>Encargado</strong> Removido con Exito','danger'];
 
+//hasta aqui es la parte del logueo//
+if (isset($_POST['guardar'])){
+
+echo "<script>console.log('Apretado')</script>";
+
+$obj->insertarEncargado($_POST['nombre'],$_POST['apellido'],$_POST['telefono'],$_POST['genero'],$_POST['identidadEncargado'],$_POST['correo'],$_POST['profesion'],$_POST['direccion']);
+  $notifyVerification=["Registro Exitoso: ".$_POST['nombre'].$_POST['apellido'],'success'];
 }
 
-//Escucho si se quiere editar datos en Cursos, de ser asi lo editor
-if (isset($_POST['editarEncargadoConfirmado'])) {
+//aqui termina la validacion del post
+$estudiantes = $obj->obtenerEstudiantes();
+?>
+<!--aqui empieza  el header-->
 
-  $obj->editarEncargado($_POST['editarEncargadoConfirmado'],$_POST['nuevoNombreEncargado'],$_POST['nuevoApellidoEncargado'],$_POST['telefono'],$_POST['identidadEncargado'],$_POST['nuevoGeneroEncargado'],$_POST['direccionEncargado'],$_POST['profesion'],$_POST['correo']);
+<?php include_once('layouts/header.php'); ?>
 
-  $notifyVerification = ["Informacion Actualizada con Exito: <strong>".$_POST['nuevoNombreEncargado']." ".$_POST['nuevoApellidoEncargado']."</strong>",'info']; // Muestro notificacion de exito
+<div class="row">
+  <h1 class="page-header">
+      Listado Padres </h1>
+    
+    <div class="col-md-12">
+         <ol class="breadcrumb">
+            <li><i class="fa fa-dashboard"></i>  <a href="index.php">Dashboard</a>
+            </li>
+            <li><i class="fa fa-barcode" aria-hidden="true"></i> Padres
+            </li>
+            <li class="active"><i class="fa fa-barcode" aria-hidden="true"></i> Listado Padres
+            </li>
+             <a href="insertarEncargado.php" class="btn btn-primary btn-xs pull-right">Agregar Padre</a>
+
+           </ol>
+    </div>
+    <div class="col-md-5">
+      <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#">Padres</a></li>
+        <li role="presentation"><a href="listadoEstudiantes.php">Estudiantes</a></li>
+      </ul>
+    </div>
+        </div>
+
+
+
+        
+          <div class="row">
+            <div class="col-md-12">
+             <div class="panel panel-primary">
+              <div class="panel-heading">
+               <strong>
+                 <span class="glyphicon glyphicon-pencil"></span>
+                  <span>Listado Padres Matriculados</span>
+                 </strong>
+                     </div>
+                       <table class="table" id="">
+                          <thead>
+                           <tr>
+                            <th class="text-left" >#</th>
+                              <th class="text-left" >Nombres</th>
+                               <th class="text-left" >Apellidos</th>
+                                <th class="text-left" >Telefono</th>
+                                 <th class="text-left">Genero</th>
+                                 <th class="text-left">Identidad</th>
+                                  <th class="text-left">Correo</th>
+                                   <th class="text-left">Profesion</th>
+                                    <th class="text-left">Direccion</th>
+                                    <th class="text-left">editar</th>
+                                    <th class="text-left">Eliminar</th>
+
+
+
+
+                                 </tr>
+
+                                  </thead>
+
+                                  <tbody>
+
+
+<?php
+$CantidadMostrar=10;
+
+//Conexion  al servidor mysql
+$conetar = new mysqli("localhost", "root", "", "isjobd");
+if ($conetar->connect_errno) {
+    echo "Fallo al conectar a MySQL: (" . $conetar->connect_errno . ") " . $conetar->connect_error;
 }
 
-$encargados = $obj->obtenerEncargados();
-$totalEncargados = mysqli_num_rows($obj->obtenerEncargados());
+
+else{
+       
+
+               
+
+  // Validado  la variable GET
+    $compag =(int)(!isset($_GET['pag'])) ? 1 : $_GET['pag']; 
+  $TotalReg =$conetar->query("SELECT * FROM encargados");
+  //Se divide la cantidad de registro de la BD con la cantidad a mostrar 
+  $TotalRegistro  =ceil($TotalReg->num_rows/$CantidadMostrar);
+  //echo "<b>La cantidad de resgistro se dividio a: </b>".$TotalRegistro." para mostrar 5 en 5<br><br>";
+  
+
+  //Consulta SQL
+  $consultavistas ="SELECT
+            idEncargado,
+            nombreEncargado,
+            apellidoEncargado,
+            telefono,
+            genero,
+            identidad,
+            correo,
+            profesion,
+            direccion
+            FROM
+            encargados
+            ORDER BY
+            idEncargado ASC
+            LIMIT ".(($compag-1)*$CantidadMostrar)." , ".$CantidadMostrar;
+                       // echo $consultavistas;
+  $consulta=$conetar->query($consultavistas);
+
+
+
+        
+/* echo "<table>"
+ <tr>
+ <th>idEstudiante</th>
+ <th>nombreEstudiante</th>
+ <th>apellidoEstudiante</th>
+ </tr>";*/
+  while ($lista=$consulta->fetch_row()) {
+       echo "<tr>
+       <td>".$lista[0]."</td>
+       <td>".$lista[1]."</td>
+       <td>".$lista[2]."</td>
+       <td>".$lista[3]."</td>
+       <td>".$lista[4]."</td>
+       <td>".$lista[5]."</td>
+       <td>".$lista[6]."</td>
+       <td>".$lista[7]."</td>
+       <td>".$lista[8]."</td>
+       <td><a href='admin_encargado.php?id=$lista[0]' class='btn btn-xs btn-info' data-toggle='tooltip' title='Editar'>
+         <span class='glyphicon glyphicon-edit'></span>
+         </a></td>
+      <td>
+
+      <a href='eliminar_encargados.php?id=$lista[0]'  class='btn btn-xs btn-danger' data-toggle='tooltip' title='Eliminar'>
+        <span class='glyphicon glyphicon-trash'></span>
+                        </a>
+      </td
+
+       </tr>";
+  }
+
+      echo "</table>"; 
+    
+     
+    /*Sector de Paginacion */
+    
+    //Operacion matematica para boton siguiente y atras 
+  $IncrimentNum =(($compag +1)<=$TotalRegistro)?($compag +1):1;
+    $DecrementNum =(($compag -1))<1?1:($compag -1);
+  
+  //echo "<ul><li class=\"btn\"><a href=\"?pag=".$DecrementNum."\">◀</a></li>";
+   echo "<ul class=pagination><li class=\"btn\"><a href=\"?pag=".$DecrementNum."\">&laquo</a></li>";
+    //Se resta y suma con el numero de pag actual con el cantidad de 
+    //numeros  a mostrar
+     $Desde=$compag-(ceil($CantidadMostrar/2)-1);
+     $Hasta=$compag+(ceil($CantidadMostrar/2)-1);
+     
+     //Se valida
+     $Desde=($Desde<1)?1: $Desde;
+     $Hasta=($Hasta<$CantidadMostrar)?$CantidadMostrar:$Hasta;
+     //Se muestra los numeros de paginas
+     for($i=$Desde; $i<=$Hasta;$i++){
+      //Se valida la paginacion total
+      //de registros
+      if($i<=$TotalRegistro){
+        //Validamos la pag activo
+        if($i==$compag){
+           echo "<li class=\"active\"><a href=\"?pag=".$i."\">".$i."</a></li>";
+        }else {
+          echo "<li><a href=\"?pag=".$i."\">".$i."</a></li>";
+        }         
+      }
+     }
+  echo "<li class=\"btn\"><a href=\"?pag=".$IncrimentNum."\">&raquo</a></li></ul>";
+  
+}
 
 
 ?>
-<?php include_once('layouts/header.php'); ?>
-
-<h1 class="page-header">
-    Padres de Familia
-</h1>
-  <div class="col-md-7">
-
-      <ol class="breadcrumb">
-          <li>
-              <i class="fa fa-dashboard"></i>  <a href="index.php">Dashboard</a>
-          </li>
-          <li>
-              <i class="fa fa-barcode" aria-hidden="true"></i> Estudiantes
-          </li>
-          <li class="active">
-              <i class="fa fa-barcode" aria-hidden="true"></i> Padres de Familia
-          </li>
-          <a href="insertarEncargado.php" class="btn btn-primary btn-xs pull-right">+ Agregar Padre de F.</a>
-      </ol>
-  </div>
-  <div class="col-md-5">
-    <ul class="nav nav-tabs">
-      <li role="presentation"><a href="listadoEstudiantes.php">Estudiantes</a></li>
-      <li role="presentation" class="active"><a href="modificarEncargados.php">Padres de Familia</a></li>
-    </ul>
-  </div>
-</div>
 
 
-<form action="#" method="post">
-<div class="row">
-    <div class="col-md-12">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        <strong>
-          <span class="glyphicon glyphicon-pencil"></span>
-          <span>Lista de Padres de Famila / Encargados</span>
-       </strong>
-      </div>
-        <div class="panel-body">
-          <table class="table table-bordered table-striped table-hover">
-            <thead>
-                <tr>
-                    <th class="text-center" >Nombre</th>
-                    <th class="text-center" >Telefono</th>
-                    <th class="text-center" >Identidad</th>
-                    <th class="text-center">Acciones</th>
-
-                </tr>
-            </thead>
-            <tbody>
-              <?php
-              if ($totalEncargados == 0) {
-                echo "<script>console.log('chivas')</script>";
-                echo "<tr><td colspan='4'>Nada Para Mostrar, dirijase a <a href='insertarEncargado.php'>Ingresar Padre de Familia/Encargado</a></td><tr>";
-              }
-
-               while ($row = mysqli_fetch_assoc($encargados)){ ?>
-                <tr>
-                    <td class="text-center" ><?php echo $row['nombreEncargado']." ".$row['apellidoEncargado']; ?></td>
-                    <td class="text-center" ><?php echo $row['telefono']; ?></td>
-                    <td class="text-center" ><?php echo $row['identidad']; ?></td>
-                    <td class="text-center">
-                        <div class='btn-group btn-group-sm'>
-                          <button name='eliminarEncargado' type="button" class='btn btn-danger' value="<?php echo $row['idEncargado']; ?>" title='Eliminar Encargado'><span class='glyphicon glyphicon-remove' aria-hidden='true' ></span></button>
-                          <button name='editarEncargado' type="button" value="<?php echo $row['idEncargado']; ?>" data-toggle='modal' data-target='#modalEditarEncargado' class='btn btn-warning' title='Editar Empleado' ><span class='glyphicon glyphicon-pencil' aria-hidden='true' ></span></button>
-                          <button name='verPerfil' type="button" value="<?php echo $row['idEncargado']; ?>" data-toggle='modal' data-target='#modalPerfilEncargado' class='btn btn-info' title='Ver Perfil' ><span class='glyphicon glyphicon-user' aria-hidden='true' ></span></button>
-                        </div>
-                    </td>
-                </tr>
-              <?php }; ?>
-            </tbody>
+                   
           </table>
-       </div>
+  </tbody>
+
+                     
+          <div>
+
+</ul>
+</div>
     </div>
   </div>
 </div>
 
-<!-- Modal -->
-<div id="modalEditarEncargado" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modificar informacion del Padres de Familia</h4>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-3">
-              <label for="">Nombre</label>
-              <input type="text" name="nuevoNombreEncargado" id="nuevoNombreEncargado" class="form-control" value="">
-          </div>
-          <div class="col-md-3">
-              <label for="">Apellidos</label>
-              <input type="text" name="nuevoApellidoEncargado" id="nuevoApellidoEncargado" class="form-control" value="">
-          </div>
-          <div class="col-md-2">
-              <label for="">Telefono</label>
-              <input type="text" name="telefono" id="telefono" class="form-control" value="">
-          </div>
-          <div id="divIdentidad" class="col-md-2">
-              <label class="control-label" for="inputError">Identidad</label>
-                <input type="text" name="identidadEncargado" class="form-control" id="identidadEncargado" onblur="comprobarIdentidad()" required>
-                <input type="hidden" name="" id="indentidadMatch" value="">
-            </div>
-          <div class="col-md-2">
-              <label for="">Genero</label>
-              <button type="button" class="btn btn-default btn-block" name="buttonGenero" id="buttonGenero" value=""></button>
-              <input type="hidden" name="nuevoGeneroEncargado" value="">
-              <small class="text-muted">Click para Cambiar</small>
-          </div>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col-md-4">
-              <label for="">Direccion</label>
-              <input type="text" class="form-control" name="direccionEncargado" id="direccionEncargado" value="">
-          </div>
 
-          <div class="col-md-4">
-              <label for="">Profesion</label>
-              <input type="text" class="form-control" name="profesion" id="profesion" value="">
-          </div>
-          <div class="col-md-4">
-              <label for="">Correo</label>
-              <input type="text" class="form-control" name="correo" id="correo" value="">
-          </div>
 
-        </div>
-      </div>
 
-      <div class="modal-footer">
-        <button type="submit" name="editarEncargadoConfirmado" id="editarEncargadoConfirmado" value="" class="btn btn-success">Aceptar</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
 
-  </div>
-</div>
-
-<!-- Modal -->
-<div id="modalPerfilEncargado" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
-      </div>
-      <div class="modal-body">
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-</form>
-
+   <!--aqui empiza la funcion script de java-->
    <script type="text/javascript">
    function comprobarIdentidad() {
      $.ajax({
        method:"POST",
-       url:"class/scriptComprobarIdentidadEncargado.php",
+       url:"class/ck-scriptComprobarIdentidadEncargado.php",
        data:{identidad: $("#identidadEncargado").val()},
        success:function (respuesta) {
          console.log(respuesta);
@@ -272,7 +297,7 @@ $totalEncargados = mysqli_num_rows($obj->obtenerEncargados());
      $.ajax({
        method:'POST',
        data: {idEncargado: idEncargadoBoton},
-       url:"class/scriptObtenerEncargados.php",
+       url:"class/ck-scriptObtenerEncargados.php",
        dataType:'json',
        success:function (respuesta) {
          console.log(respuesta);
@@ -311,17 +336,15 @@ $totalEncargados = mysqli_num_rows($obj->obtenerEncargados());
      $("#buttonCargo").html($(this).html());
    })
    </script>
+   <!--aqui termina el script de java -->
+
+
+
+
+
+
    <?php
    if (isset($notifyVerification)) {
      echo $obj->notify($notifyVerification[0],$notifyVerification[1]);
-   }
-}
-else{
-   echo '<script>
-  alert("No Tienes acceso a esta pagina");
-   window.location= "home.php";
-
-  </script>';
-}
-?>
+   }?>
    <?php include_once('layouts/footer.php'); ?>

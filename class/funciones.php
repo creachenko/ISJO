@@ -723,6 +723,22 @@ public function obtenerParcialesDeModalidades($idModalidad){
           }
 
 
+ // funcion para eliminar estudiantes//
+  public function eliminar_estudiantes(){
+   $consult ="DELETE FROM estudiantes WHERE idEstudiante='".$_GET["id"]."'";
+
+   $this->bd->query($consult);
+
+   echo "<script>
+                    alert('Registro Eliminado con Exito');
+                    window.location = 'listadoEstudiantes.php';
+                    </script>";
+
+
+  }
+
+
+
 
           /*esta funcion sirve para ver el id de los encargados*/
 
@@ -744,10 +760,6 @@ public function obtenerParcialesDeModalidades($idModalidad){
           genero ='".$_POST["genero"]."',
           identidad ='".$_POST["identidad"]."',
           correo ='".$_POST["correo"]."',
-          genero ='".$_POST["genero"]."',
-          identidad ='".$_POST["identidad"]."',
-          correo ='".$_POST["correo"]."',
-          parentezco ='".$_POST["parentezco"]."',
           profesion ='".$_POST["profesion"]."',
           direccion ='".$_POST["direccion"]."'
           WHERE
@@ -755,9 +767,25 @@ public function obtenerParcialesDeModalidades($idModalidad){
           $this->bd->query($sql);
                              echo "<script>
                     alert('Registro Actualizado con Exito');
-                    window.location = 'modificar_encargados.php';
+                    window.location = 'modificarEncargados.php';
                     </script>";
           }
+
+          // funcion para eliminar encargados//
+  public function eliminar_encargados(){
+   $consult ="DELETE FROM encargados WHERE idEncargado='".$_GET["id"]."'";
+
+   $this->bd->query($consult);
+
+   echo "<script>
+                    alert('Registro Eliminado con Exito');
+                    window.location = 'modificarEncargados.php';
+                    </script>";
+
+
+  }
+
+
 
            /*consulta para busqueda en la opcion de con tratos*/
 
