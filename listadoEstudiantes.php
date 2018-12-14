@@ -11,6 +11,7 @@ if (isset($_SESSION["ses_id"])) {
 };
 
 //hasta aqui es la parte del logueo//
+if($_SESSION['nivelAcceso'] == 3){
 if (isset($_POST['guardar'])){
 
 echo "<script>console.log('Apretado')</script>";
@@ -29,8 +30,8 @@ $estudiantes = $obj->obtenerEstudiantes();
 <div class="row">
   <h1 class="page-header">
       Listado Estudiantes </h1>
-    
-    <div class="col-md-12">
+
+    <div class="col-md-7">
          <ol class="breadcrumb">
             <li><i class="fa fa-dashboard"></i>  <a href="index.php">Dashboard</a>
             </li>
@@ -40,7 +41,6 @@ $estudiantes = $obj->obtenerEstudiantes();
             </li>
              <a href="iniciarMatricula.php" class="btn btn-primary btn-xs pull-right">Matricular
              Alumno</a>
-
            </ol>
     </div>
     <div class="col-md-5">
@@ -50,10 +50,6 @@ $estudiantes = $obj->obtenerEstudiantes();
       </ul>
     </div>
         </div>
-
-
-
-        
           <div class="row">
             <div class="col-md-12">
              <div class="panel panel-primary">
@@ -75,21 +71,13 @@ $estudiantes = $obj->obtenerEstudiantes();
                                   <th class="text-left">Genero</th>
                                    <th class="text-left">Direccion</th>
                                     <th class="text-left">Telefono</th>
-                                    <th class="text-left">editar</th>
-                                    <th class="text-left">Eliminar</th>
-
-
-
-
                                  </tr>
-
                                   </thead>
-
                                   <tbody>
 
 
 <?php
-$CantidadMostrar=10;
+$CantidadMostrar=25;
 
 //Conexion  al servidor mysql
 $conetar = new mysqli("localhost", "root", "", "isjobd");
@@ -99,17 +87,17 @@ if ($conetar->connect_errno) {
 
 
 else{
-       
 
-               
+
+
 
   // Validado  la variable GET
-    $compag =(int)(!isset($_GET['pag'])) ? 1 : $_GET['pag']; 
+    $compag =(int)(!isset($_GET['pag'])) ? 1 : $_GET['pag'];
   $TotalReg =$conetar->query("SELECT * FROM estudiantes");
-  //Se divide la cantidad de registro de la BD con la cantidad a mostrar 
+  //Se divide la cantidad de registro de la BD con la cantidad a mostrar
   $TotalRegistro  =ceil($TotalReg->num_rows/$CantidadMostrar);
   //echo "<b>La cantidad de resgistro se dividio a: </b>".$TotalRegistro." para mostrar 5 en 5<br><br>";
-  
+
 
   //Consulta SQL
   $consultavistas ="SELECT
@@ -132,7 +120,7 @@ else{
 
 
 
-        
+
 /* echo "<table>"
  <tr>
  <th>idEstudiante</th>
@@ -150,35 +138,25 @@ else{
        <td>".$lista[6]."</td>
        <td>".$lista[7]."</td>
        <td>".$lista[8]."</td>
-       <td><a href='admin_estudiantes.php?id=$lista[0]' class='btn btn-xs btn-info' data-toggle='tooltip' title='Editar'>
-         <span class='glyphicon glyphicon-edit'></span>
-         </a></td>
-      <td>
 
-      <a href='eliminar_estudiantes.php?id=$lista[0]'  class='btn btn-xs btn-danger' data-toggle='tooltip' title='Eliminar'>
-        <span class='glyphicon glyphicon-trash'></span>
-                        </a>
-      </td
 
        </tr>";
   }
+      echo "</table>";
 
-      echo "</table>"; 
-    
-     
     /*Sector de Paginacion */
-    
-    //Operacion matematica para boton siguiente y atras 
+
+    //Operacion matematica para boton siguiente y atras
   $IncrimentNum =(($compag +1)<=$TotalRegistro)?($compag +1):1;
     $DecrementNum =(($compag -1))<1?1:($compag -1);
-  
+
   //echo "<ul><li class=\"btn\"><a href=\"?pag=".$DecrementNum."\">◀</a></li>";
-   echo "<ul class=pagination><li class=\"btn\"><a href=\"?pag=".$DecrementNum."\">&laquo</a></li>";
-    //Se resta y suma con el numero de pag actual con el cantidad de 
+   echo "<div class='panel-body text-center'><ul class=pagination><li class=\"btn\"><a href=\"?pag=".$DecrementNum."\">&laquo</a></li>";
+    //Se resta y suma con el numero de pag actual con el cantidad de
     //numeros  a mostrar
      $Desde=$compag-(ceil($CantidadMostrar/2)-1);
      $Hasta=$compag+(ceil($CantidadMostrar/2)-1);
-     
+
      //Se valida
      $Desde=($Desde<1)?1: $Desde;
      $Hasta=($Hasta<$CantidadMostrar)?$CantidadMostrar:$Hasta;
@@ -192,22 +170,20 @@ else{
            echo "<li class=\"active\"><a href=\"?pag=".$i."\">".$i."</a></li>";
         }else {
           echo "<li><a href=\"?pag=".$i."\">".$i."</a></li>";
-        }         
+        }
       }
      }
-  echo "<li class=\"btn\"><a href=\"?pag=".$IncrimentNum."\">&raquo</a></li></ul>";
-  
+  echo "<li class=\"btn\"><a href=\"?pag=".$IncrimentNum."\">&raquo</a></li></ul></div>";
+
 }
+
 
 
 ?>
 
-
-                   
+            </tbody>
           </table>
-  </tbody>
 
-                     
           <div>
 
 </ul>
@@ -216,136 +192,17 @@ else{
   </div>
 </div>
 
-
-
-
-
-
-   <!--aqui empiza la funcion script de java-->
-   <script type="text/javascript">
-   function comprobarIdentidad() {
-     $.ajax({
-       method:"POST",
-       url:"class/ck-scriptComprobarIdentidadEncargado.php",
-       data:{identidad: $("#identidadEncargado").val()},
-       success:function (respuesta) {
-         console.log(respuesta);
-         if (respuesta > 0) {
-           $("#editarEncargadoConfirmado").attr("disabled","disabled");
-
-           $("#divIdentidad").removeClass("has-success has-feedback");
-           $("#iconoexito").remove()
-           $("small[id='mensajeError']").remove()
-
-           $("#divIdentidad").addClass("has-error has-feedback");
-           $("#divIdentidad").append("<span id='iconoError' class='glyphicon glyphicon-remove form-control-feedback'></span>")
-           if ($("#identidadEncargado").val() == "") {
-             $("#divIdentidad").append("<small id='mensajeError' style='color:#ca0303'>Ingrese la Indentidad</small")
-           }else {
-             $("#divIdentidad").append("<small id='mensajeError' style='color:#ca0303'>Ya existe un registro con esa Identidad</small")
-           }
-         }else {
-           $("#editarEncargadoConfirmado").removeAttr("disabled");
-           $("#divIdentidad").removeClass("has-error has-feedback");
-           $("#iconoError").remove()
-           $("small[id='mensajeError']").remove()
-
-           if ($("#identidadEncargado").val() == "") {
-             $("#divIdentidad").append("<small id='mensajeError' style='color:#ca0303'>Ingrese la Identidad</small")
-           }else {
-             $("#iconoError").remove()
-             $("#divIdentidad").addClass("has-success has-feedback");
-             $("#divIdentidad").append("<span id='iconoExito' class='glyphicon glyphicon-ok form-control-feedback'></span>")
-           }
-         }
-       }
-     })
-   }
-
-   $("button[name='eliminarEncargado']").click(function (even) {
-     var idEncargado = $(this).val();
-     var botonPresionado = $(this);
-      bootbox.confirm({
-      title: "Confirmacion",
-      message: "Desea eliminar este registro?, <strong>Advertencia:</strong> Los registros de los estudiantes que tuviere este Padre de Familia/Encargado seran eliminados (Notas,cuadros,datos Personales etc).",
-      buttons: {
-          cancel: {
-              label: '<i class="fa fa-times"></i> Cancelar'
-          },
-          confirm: {
-              label: '<i class="fa fa-check"></i> Eliminar',
-              className: 'btn-danger'
-          }
-      },
-      callback: function (result) {
-          if (result == true) {
-            botonPresionado.attr("type","submit");
-            botonPresionado.attr("name","eliminarEncargadoConfirmado");
-
-          $("button[name='eliminarEncargadoConfirmado']").click();
-          }else {
-            console.log("aca");
-          }
-      }
-    });
-
-   })
-
-
-   $("button[name='editarEncargado']").on("click",function () {
-     var idEncargadoBoton = $(this).val();
-
-     $.ajax({
-       method:'POST',
-       data: {idEncargado: idEncargadoBoton},
-       url:"class/ck-scriptObtenerEncargados.php",
-       dataType:'json',
-       success:function (respuesta) {
-         console.log(respuesta);
-         var encargado = respuesta
-         $("#nuevoNombreEncargado").val(encargado.nombreEncargado);
-         $("#nuevoApellidoEncargado").val(encargado.apellidoEncargado);
-         $("#telefono").val(encargado.telefono)
-         $("#identidadEncargado").val(encargado.identidad);
-         $("#buttonGenero").val(encargado.genero);
-         $("#buttonGenero").html(encargado.genero);
-         $("input[name='nuevoGeneroEncargado").val(encargado.genero);
-         $("#direccionEncargado").val(encargado.direccion)
-         $("#profesion").val(encargado.profesion);
-         $("#correo").val(encargado.correo);
-         $("#editarEncargadoConfirmado").val(encargado.idEncargado);
-
-         $("#indentidadMatch").val(encargado.identidad);
-
-         // $("#nuevoNombreEmpleado").val("1")
-       }
-     })
-   })
-   $("#buttonGenero").on("click",function () {
-
-     if ($(this).html() == "Femenino") {
-       $(this).html("Masculino")
-       $("input[name='nuevoGeneroEncargado").val("Masculino")
-     }else {
-       $(this).html("Femenino")
-       $("input[name='nuevoGeneroEncargado").val("Femenino")
-     }
-   })
-
-   $("button[id='dropdownCargo']").on("click",function () {
-     $("input[name='idCargoEmpleado']").val($(this).val());
-     $("#buttonCargo").html($(this).html());
-   })
-   </script>
-   <!--aqui termina el script de java -->
-
-
-
-
-
-
    <?php
    if (isset($notifyVerification)) {
      echo $obj->notify($notifyVerification[0],$notifyVerification[1]);
-   }?>
+   }
+}
+else{
+   echo '<script>
+  alert("No Tienes acceso a esta pagina");
+   window.location= "home.php";
+
+  </script>';
+}
+?>
    <?php include_once('layouts/footer.php'); ?>
