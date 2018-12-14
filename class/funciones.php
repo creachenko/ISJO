@@ -90,6 +90,7 @@ class funcionesBD extends conexionBD{
 					session_start();
 					$aux = $resp->fetch_assoc();
 					$_SESSION['ses_id'] = $aux['idEmpleado'];
+					$_SESSION['idUser'] = $aux['idUsuario'];
 					$_SESSION['nombreUsuario'] = $aux['nombreEmpleado'];
 					$_SESSION['nivelAcceso']=$aux['idNivelAcceso'];
 					header('location:home.php');
@@ -203,7 +204,17 @@ class funcionesBD extends conexionBD{
 		$query = "UPDATE empleados SET nombreEmpleado='$b',apellidoEmpleado='$c',identidad='$d',correo='$e',fechaNacimiento='$f',genero='$g',imprema='$h',idCargo='$i',direccion='$j',fechaIniLabor='$k',celular='$l',tituloMedia='$m',tituloUniversitario='$n' WHERE idEmpleado='$a'";
 		$this->bd->query($query);
 	}
+	public function editarmiusuario(){
+	 $sql=" SELECT idUsuario, idEmpleado, nombreUsuario, contrasena from usuario where idEmpleado=".$_SESSION['ses_id'];
+	 return $this->bd->query($sql);
+	}
+	public function guardarNusuario($a,$b){
+	$query = "UPDATE usuario SET  contrasena='$b' WHERE idUsuario='$a'";
+	echo "<script>console.log('".$a."')</script>";
+	echo "<script>console.log('".$b."')</script>";
 
+	$this->bd->query($query);
+}
 	//FINAL FUNCIONES PARA GESTION Empleados----------------------------------------------------
 	//INICIO FUNCIONES PARA GESTION Encargados----------------------------------------------------
 	public function insertarEncargado($a,$b,$c,$d,$e,$f,$h,$i){
