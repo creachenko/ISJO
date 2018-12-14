@@ -114,5 +114,4 @@ $totalModalidades = mysqli_num_rows($obj->obtenerModalidades());
    window.location= "home.php";
 
   </script>';
-}
-   <?php include_once('layouts/footer.php'); ?>
+}include_once('layouts/footer.php'); ?>
