@@ -168,7 +168,7 @@ $modalidades = $obj->obtenerModalidades();
         <hr>
       </div>
       <div class="panel-footer">
-        <input type="submit" name="matricularAlumno" value="Matricular Alumno" class="btn btn-success btn-block btn-lg">
+        <input type="submit" name="matricularAlumno" id="matricularAlumno" value="Matricular Alumno" class="btn btn-success btn-block btn-lg">
       </div>
     </div>
   </div>

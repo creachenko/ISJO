@@ -39,6 +39,9 @@ $resp = $conexion->bd->query($sql);
 if ($resp->num_rows > 0) {
   $row2 = $resp->fetch_assoc();?>
   <div class="alert alert-danger" role="alert">Este estudiante ya cuenta con una matricula este año en:<strong> <?php echo $row2['nombreCurso']." - ".$row2['seccion']?></strong></div>
+<?php }else{ ?>
+  <div class="alert alert-info" role="alert">Estudiante de Reingreso: Escoja un Curso Para Matricularlo</div>
+
 <?php } ?>
 
 
