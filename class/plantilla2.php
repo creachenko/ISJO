@@ -35,14 +35,25 @@ $sql ="SELECT * FROM matricula
 
 $resp = $conexion->bd->query($sql);
 
-$modalidades = $conexion->obtenerModalidades();
 if ($resp->num_rows > 0) {
   $row2 = $resp->fetch_assoc();?>
   <div class="alert alert-danger" role="alert">Este estudiante ya cuenta con una matricula este año en:<strong> <?php echo $row2['nombreCurso']." - ".$row2['seccion']?></strong></div>
 <?php }else{ ?>
   <div class="alert alert-info" role="alert">Estudiante de Reingreso: Escoja un Curso Para Matricularlo</div>
 
-<?php } ?>
+<?php }
+
+$sql = "SELECT * FROM cursos
+        INNER JOIN modalidades
+        ON cursos.idModalidad = modalidades.idModalidad
+        INNER JOIN aniolectivo
+        ON cursos.idAnioLectivo = aniolectivo.idAnioLectivo
+        WHERE anio = $anio
+        ORDER BY nombreModalidad";
+
+$resp = $conexion->bd->query($sql);
+
+?>
 
 
 <div class="row">
@@ -88,24 +99,14 @@ if ($resp->num_rows > 0) {
         <h1 class="panel-title">Asignar a Curso</h1>
       </div>
       <div class="panel-body">
-        <div class="col-md-6">
-
+        <div class="col-md-12">
             <label>Modalidad</label>
-            <button type="button" id="dropdownModalidades" class="btn btn-default dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Modalidad <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <?php while ($aux = mysqli_fetch_assoc($modalidades)) { ?>
-                <li> <button type="button" id="butttonDropdownModalidades" class="btn btn-default" value="<?php echo $aux['idModalidad']; ?>"><?php echo $aux['nombreModalidad'] ?></button> </li>
+            <select id="selectModalidadesExistente" name="selectModalidadesExistente" class="form-control" required>
+              <option value="" selected disabled>-Selecione una Modalidad</option>
+              <?php while ($aux = mysqli_fetch_assoc($resp)) { ?>
+                <option value="<?php echo $aux['idCurso'] ?>"><?php echo $aux['nombreModalidad']." // ".$aux['nombreCurso']." - ".$aux['seccion']?></option>
               <?php } ?>
-            </ul>
-
-        </div>
-        <div class="col-md-6">
-          <label for="">Curso y Seccion</label>
-          <select class="form-control" name="selectCurso" id="selectCurso" onchange="cursoCorfirmar()" disabled>
-
-          </select>
+            </select>
         </div>
 
       </div>

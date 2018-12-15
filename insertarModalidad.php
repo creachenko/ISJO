@@ -24,6 +24,8 @@ if (isset($_POST['guardar'])){
 
 }
 
+
+
 ?>
 <?php include_once('layouts/header.php'); ?>
 

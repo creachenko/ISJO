@@ -25,6 +25,10 @@ if (isset($_POST["matricularAlumno"])) {
     $notifyVerification = ["<strong>".$nombreEstudiante." ".$apellidoEstudiante."</strong> Matriculado Exitosamente",'success'];
 }
 
+if (isset($_POST['matricularReingreso'])) {
+  echo "<script>console.log('".$_POST['selectModalidadesExistente']."')</script>";
+}
+
 $modalidades = $obj->obtenerModalidades();
 
 ?>
