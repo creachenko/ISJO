@@ -89,7 +89,7 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Asignar tarea</h4>
+        <h4 class="modal-title">Asignar tarea : <small id="nombreClase"></small></h4>
       </div>
       <div class="modal-body">
 				<div class="row">
@@ -100,7 +100,7 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 				          <span class="glyphicon glyphicon-pencil"></span>
 				          <span>Nueva Tarea</span>
 				       </strong>
-				       <small class="pull-right">Puntos Acumulativos Usados: <strong> <text id="sumaPuntos">--</text> / 70</strong></small>
+				       <small class="pull-right">Puntos Acumulativos Usados: <strong> <text id="sumaPuntos">--</text></strong></small>
 							</div>
 							<div class="panel-body">
 		              <div class="form-row">
@@ -287,7 +287,15 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 			data:{idClase: idClase1},
 			dataType: "json",
 			success:function (respuesta) {
-				console.log(respuesta);
+				$.ajax({
+          method:"POST",
+    			url:"class/scriptObtenerClaseConId.php",
+    			data:{idClase: idClase1},
+          success:function (nombreClase) {
+            $("#nombreClase").html(nombreClase)
+          }
+        })
+
 				var i = 1;
 				$.each(respuesta,function (key,value) {
 					$("#tableTareas").append("<tr><td>"+value.nombreTarea+"</td><td>"+value.fechaEntrega+"</td><td>Eliminar</td></tr>");
@@ -295,7 +303,7 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 
 			},
 			error:function (error,error1,error2) {
-				console.log("Hubo un error");
+				console.log(error2);
 			}
 		})
 

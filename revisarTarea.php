@@ -163,8 +163,9 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
               <div class="form-row">
                 <div class="form-group col-md-3">
                   <label for="">Puntaje Obtenido</label>
-                  <input type="number" name="puntaje" value="0" min="0" max="<?php echo $tarea['valorTarea'] ?>" class="form-control">
-
+                  <input type="number" name="puntaje" id='puntaje' value="" onchange="puntaje2()" min="0" max="<?php echo $tarea['valorTarea'] ?>" class="form-control">
+                  <input type="hidden" name="" id="puntajeHidden" value="">
+                  <input type="hidden" name="" id="puntajeHidden2" value="">
                 </div>
          </div>
          <div class="form-row">
@@ -172,6 +173,7 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
              <button type="button" name="asignarPuntaje" id="asignarPuntaje" value="" class="btn btn-success btn-lg btn-block" >Asignar Puntaje</button>
             <input type="hidden" name="idTarea" id="idTarea" value="<?php echo $_POST["checkTarea"] ?>">
             <input type="hidden" name="idEstudiante" id="idEstudiante" value="">
+            <input type="hidden" name="idEstadoTarea" id="idEstadoTarea" value="">
             <input type="hidden" name="idClase" value="<?php echo $_POST['idClaseCheckTarea'] ?>">
            </div>
          </div>
@@ -185,15 +187,7 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
         </nav>
        </div>
        <hr>
-       <div class="panel-body">
-         <div class="col-md-8">
-           <textarea name="motivoNoPresentada" placeholder="Razon por la que el estudiante no presento la tarea (Opcional)" class="form-control"></textarea>
-         </div>
-         <div class="col-md-4">
-           <input type="button" class="btn btn-danger btn-block" name="noHizoLaTarea" value="No hizo la Tarea">
-         </div>
 
-       </div>
       </form>
 
 <script type="text/javascript">
@@ -237,6 +231,20 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
 
           $("input[name='nombreEstudiante']").val(respuesta.nombreCompleto);
           $("input[name='puntaje']").val(respuesta.puntajeObtenido);
+          $("#puntajeHidden").val(respuesta.puntajeObtenido);
+          $("input[name='idEstadoTarea']").val(respuesta.idEstadoTarea);
+
+          if (respuesta.puntajeObtenido != 0) {
+            $("#asignarPuntaje").html("Reasignar Puntaje")
+
+            $("#asignarPuntaje").removeClass("btn-success")
+            $("#asignarPuntaje").addClass("btn-warning")
+          }else {
+              $("#asignarPuntaje").html("Asignar Puntaje")
+
+              $("#asignarPuntaje").removeClass("btn-warning")
+              $("#asignarPuntaje").addClass("btn-success")
+          }
 
 
         },
@@ -246,6 +254,12 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
       })
     }
   })
+  // Puntaje
+  function puntaje2() {
+    $("#puntajeHidden2").val($("#puntaje").val());
+    console.log("pt2 chk");
+  }
+
   //Asignar puntaje
 $("#asignarPuntaje").on("click",function () {
 
@@ -266,35 +280,75 @@ $("#asignarPuntaje").on("click",function () {
       type:"danger"
     })
   }else{
-    var datos = $("form[name='form']").serialize();
-    console.log(datos);
-    $.ajax({
-    method:"POST",
-    url:"class/scriptAsignarPuntaje.php",
-    data:datos,
-    success:function (respuesta) {
+    if ($("#puntajeHidden2").val() > $("#puntaje").attr('max')) {
+      console.log($("input[id='puntaje']").val()+" <-> "+$("#puntaje").attr('max')+ " comparacion");
+      window.alert("Solo puede asignar un puntaje de "+$("#puntaje").attr('max')+" a esta tarea");
+    }else {
+      if ($("#puntajeHidden").val() != 0) {
 
-      //Actualizo la lista de Alumnos
+        console.log($("input[name='idEstadoTarea']").val());
 
-      itemClass = "list-group-item-success";
+        $.ajax({
+        method:"POST",
+        url:"class/scriptReasignarPuntaje.php",
+        data:{idEstadoTarea:$("input[name='idEstadoTarea']").val(),puntaje:$("#puntaje").val()},
+        success:function (respuesta) {
+          console.log(respuesta);
+          //Actualizo la lista de Alumnos
 
-      $.notify({
-        icon: 'glyphicon glyphicon-ok',
-        message:"Puntaje Asignado"
-      },{
-        placement: {
-      		from: "bottom",
-      		align: "center"
-      	},
-        animate: {
-      		enter: 'animated zoomInUp',
-      		exit: 'animated zoomOutDown'
-      	},
-        delay : 1000,
-        type:'success'
+          itemClass = "list-group-item-success";
+
+          $.notify({
+            icon: 'glyphicon glyphicon-retweet',
+            message:"Puntuacion Reasignada"
+          },{
+            placement: {
+          		from: "bottom",
+          		align: "center"
+          	},
+            animate: {
+          		enter: 'animated zoomInUp',
+          		exit: 'animated zoomOutDown'
+          	},
+            delay : 1000,
+            type:'warning'
+          })
+        }
       })
+
+
+      }else {
+        var datos = $("form[name='form']").serialize();
+        console.log(datos);
+        $.ajax({
+        method:"POST",
+        url:"class/scriptAsignarPuntaje.php",
+        data:datos,
+        success:function (respuesta) {
+
+          //Actualizo la lista de Alumnos
+
+          itemClass = "list-group-item-success";
+
+          $.notify({
+            icon: 'glyphicon glyphicon-ok',
+            message:"Puntaje Asignado"
+          },{
+            placement: {
+          		from: "bottom",
+          		align: "center"
+          	},
+            animate: {
+          		enter: 'animated zoomInUp',
+          		exit: 'animated zoomOutDown'
+          	},
+            delay : 1000,
+            type:'success'
+          })
+        }
+      })
+      }
     }
-  })
   }
 })
   //seleccionar primer elemento
