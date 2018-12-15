@@ -100,7 +100,7 @@ $modalidades = $obj->obtenerModalidades();
     </div>
   </div>
 
-    <div class="col-md-6">
+    <div class="col-md-6" id="divSeleccionCurso">
       <div class="panel panel-primary">
         <div class="panel-heading">
           <h1 class="panel-title">Asignar a Curso</h1>
@@ -132,7 +132,7 @@ $modalidades = $obj->obtenerModalidades();
 </div>
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-12" id="divResumentMatricula">
     <div class="panel panel-green">
       <div class="panel-heading">
         <h1 class="panel-title">Resumen Matricula</h1>
@@ -274,7 +274,7 @@ $modalidades = $obj->obtenerModalidades();
    <script type="text/javascript">
    //Confirmar Cursos segun modalidad
    $("button[id='butttonDropdownModalidades']").on("click",function (ev) {
-     $("button[id='butttonDropdownModalidades']").html($(this).html());
+     $("#dropdownModalidades").html($(this).html());
      var idModalidad1 = $(this).val();
      $("#modalidadResumen").html($(this).html());
       $.ajax({
@@ -310,6 +310,12 @@ $modalidades = $obj->obtenerModalidades();
      var optionSelected = $("#selectCurso");
      $("#cursoResumen").html($('option:selected', optionSelected).html());
    }
+   //Oculto campos hasta que los necesite
+   $(function () {
+     $("#divEncargado").hide();
+     $("#divSeleccionCurso").hide();
+     $("#divResumentMatricula").hide();
+   })
    //Comprobar si no existe otra Identidad Igual
    $("#verificarIdentidadAlumno").on("click",function () {
      var identidad = $("#identidadEstudiante").val()
@@ -329,8 +335,8 @@ $modalidades = $obj->obtenerModalidades();
            $("#identidadEncargado").attr("disabled","disabled");
            $("#buttonVerficarIdentidadEncargado").attr("disabled","disabled");
 
-
-
+           $("#divEncargado").hide();
+           $("#divSeleccionCurso").hide();
            $.ajax({
              method:"POST",
              url:"class/plantilla2.php",
@@ -348,6 +354,9 @@ $modalidades = $obj->obtenerModalidades();
          }else {
            $("#divIdentidadEstudiante").removeClass("has-error has-feedback");
            $("#mensajeErrorIdentidadEstudiante").remove()
+           $("#divEncargado").show();
+           $("#divSeleccionCurso").show();
+           $("#divResumentMatricula").show();
 
            $.ajax({
              url:"class/plantilla1.html",
@@ -446,14 +455,18 @@ $modalidades = $obj->obtenerModalidades();
     $("#generoEstudianteResumen").html($("#generoEstudiante").val());
    }
    //Calculo la edad del Estudiantes
-   $("#nacimientoEstudiante").on("blur",function () {
+   $("#nacimientoEstudiante").on("change",function () {
      $.ajax({
        url:"class/calcularEdad.php",
        method:"post",
        data:{nacimiento:$(this).val()},
        success: function (respuesta) {
+         console.log(respuesta);
         $("#edadEstudiante").html(respuesta+" Años");
-       }
+      },
+      error:function (e1,e2,e3) {
+        console.log();
+      }
      })
    })
    //Comprobar identidad del encargado si no existe un registro de el

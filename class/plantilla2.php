@@ -1,6 +1,6 @@
 <?php
-require_once "conexionbd.php";
-$conexion = new conexionBD;
+require_once "funciones.php";
+$conexion = new funcionesBD;
 $identidad = $_POST['identidadEstudiante'];
 //Pregunto en que año estamos
 $sql = "SELECT YEAR(CURDATE()) AS anio";
@@ -35,7 +35,7 @@ $sql ="SELECT * FROM matricula
 
 $resp = $conexion->bd->query($sql);
 
-
+$modalidades = $conexion->obtenerModalidades();
 if ($resp->num_rows > 0) {
   $row2 = $resp->fetch_assoc();?>
   <div class="alert alert-danger" role="alert">Este estudiante ya cuenta con una matricula este año en:<strong> <?php echo $row2['nombreCurso']." - ".$row2['seccion']?></strong></div>
@@ -78,5 +78,47 @@ if ($resp->num_rows > 0) {
   <div class="col-md-6">
     <label>Correo</label>
     <input type="text" class="form-control" name="correoEstudiante" id="correoEstudiante" value="<?php echo $row['correo'] ?>" disabled>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h1 class="panel-title">Asignar a Curso</h1>
+      </div>
+      <div class="panel-body">
+        <div class="col-md-6">
+
+            <label>Modalidad</label>
+            <button type="button" id="dropdownModalidades" class="btn btn-default dropdown-toggle btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Modalidad <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <?php while ($aux = mysqli_fetch_assoc($modalidades)) { ?>
+                <li> <button type="button" id="butttonDropdownModalidades" class="btn btn-default" value="<?php echo $aux['idModalidad']; ?>"><?php echo $aux['nombreModalidad'] ?></button> </li>
+              <?php } ?>
+            </ul>
+
+        </div>
+        <div class="col-md-6">
+          <label for="">Curso y Seccion</label>
+          <select class="form-control" name="selectCurso" id="selectCurso" onchange="cursoCorfirmar()" disabled>
+
+          </select>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <small>Seleccione el curso correcto y presione "Matricular Alumno"</small>
+      </div>
+      <div class="panel-body">
+        <button type="submit" class="btn btn-success btn-block btn-lg" name="matricularReingreso">Matricular Alumno</button>
+      </div>
+    </div>
   </div>
 </div>
