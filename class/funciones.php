@@ -453,7 +453,7 @@ public function obtenerEstudiantesPorTarea($idTarea,$idClase){
 		return $this->bd->query($sql);
 }
 
-public function insertarTarea($nombreTarea,$valorTarea,$fechaEntrega,$idClase){
+public function insertarTarea($nombreTarea,$valorTarea,$fechaEntrega,$idClase,$tipoTarea){
 	$sql = "SELECT parcialespormodalidad.nombreParcialPorModalidad,parcialespormodalidad.idParcialPorModalidad FROM parcialactual
 			INNER JOIN parcialespormodalidad
 	        ON parcialactual.idParcialPorModalidad = parcialespormodalidad.idParcialPorModalidad
@@ -469,10 +469,57 @@ public function insertarTarea($nombreTarea,$valorTarea,$fechaEntrega,$idClase){
 
 
 
-	$sql="INSERT INTO tareas (nombreTarea,valorTarea,fechaEntrega,idClase,idParcialPorModalidad)
-							VALUES ('$nombreTarea','$valorTarea','$fechaEntrega','$idClase','$idParcialActual')";
+	$sql="INSERT INTO tareas (nombreTarea,valorTarea,fechaEntrega,idClase,idParcialPorModalidad,tipoTarea)
+							VALUES ('$nombreTarea','$valorTarea','$fechaEntrega','$idClase','$idParcialActual','$tipoTarea')";
 
 	$this->bd->query($sql);
+}
+
+public function checkSiExisteExamen($idClase){
+	//pregunto en que parcial estamos
+	$sql = "SELECT parcialespormodalidad.nombreParcialPorModalidad,parcialespormodalidad.idParcialPorModalidad FROM parcialactual
+			INNER JOIN parcialespormodalidad
+					ON parcialactual.idParcialPorModalidad = parcialespormodalidad.idParcialPorModalidad
+					INNER JOIN modalidades
+					ON parcialespormodalidad.idModalidad = modalidades.idModalidad
+					INNER JOIN cursos
+					ON modalidades.idModalidad = cursos.idModalidad
+					INNER JOIN clases
+					ON clases.idCurso = cursos.idCurso
+					WHERE clases.idClase = $idClase";
+	$resp = $this->bd->query($sql)->fetch_assoc();
+	$idParcialActual = $resp['idParcialPorModalidad'];
+
+
+	$sql="SELECT idtarea FROM tareas
+				WHERE tipoTarea = 'Examen'
+				AND idParcialPorModalidad = $idParcialActual";
+
+	 return $this->bd->query($sql)->num_rows;
+
+}
+
+public function insertarExamen($idClase){
+	//pregunto en que parcial estamos
+	$sql = "SELECT parcialespormodalidad.nombreParcialPorModalidad,parcialespormodalidad.idParcialPorModalidad FROM parcialactual
+			INNER JOIN parcialespormodalidad
+					ON parcialactual.idParcialPorModalidad = parcialespormodalidad.idParcialPorModalidad
+					INNER JOIN modalidades
+					ON parcialespormodalidad.idModalidad = modalidades.idModalidad
+					INNER JOIN cursos
+					ON modalidades.idModalidad = cursos.idModalidad
+					INNER JOIN clases
+					ON clases.idCurso = cursos.idCurso
+					WHERE clases.idClase = $idClase";
+	$resp = $this->bd->query($sql)->fetch_assoc();
+	$idParcialActual = $resp['idParcialPorModalidad'];
+	$nombreExamen = 'Examen '.$resp['nombreCurso'].' - '.$resp['seccion'];
+
+$sql ="INSERT INTO tareas (nombreTarea,valorTarea,idClase,idParcialPorModalidad,tipoTarea)
+				VALUES ('$nombreExamen','$valorExamen','$idClase','$idParcialActual')";
+
+	 $this->bd->query($sql);
+
 }
 
 public function obtenerParcialesActuales(){

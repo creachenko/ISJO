@@ -11,16 +11,21 @@ if (isset($_SESSION["ses_id"])) {
 };
 
 if (isset($_POST['programar'])) {
-  $obj->insertarTarea($_POST['nombreTarea'],$_POST['valorTarea'],$_POST['fechaEntrega'],$_POST['programar']);
+  $obj->insertarTarea($_POST['nombreTarea'],$_POST['valorTarea'],$_POST['fechaEntrega'],$_POST['programar'],$_POST['tipoTarea']);
   $notifyVerification = ['Tarea Programada: <strong>'.$_POST['nombreTarea']."</strong>","success"];
 }
 
 if (isset($_POST['revisarHoy'])) {
-  $obj->insertarTareaHoy($_POST['nombreTarea'],$_POST['valorTarea'],'CURDATE()',$_POST['programar']);
+  //$obj->insertarTareaHoy($_POST['nombreTarea'],$_POST['valorTarea'],'CURDATE()',$_POST['programar']);
 
 
   $notifyVerification = ['Tarea Programada: <strong>'.$_POST['nombreTarea']."</strong>","success"];
 }
+
+if (isset($_POST['revisarExamen'])) {
+  $obj->checkSiExisteExamen($_POST['revisarExamen']);
+
+  }
 
 $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 
@@ -70,7 +75,9 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 						<button type="button" class="btn btn-success btn-block" name="revisarTarea" value="<?php echo $row['idClase'] ?>" data-toggle='modal' data-target='#modalRevisarTarea'><i class="fa fa-chesquare-o"></i>Tareas</button>
 					</div>
 					<div class="btn-group">
-						<button type="button" class="btn btn-info btn-block" name="button"><i class="fa fa-chesquare-o"></i>Examen</button>
+						<form action="revisarTarea.php" method="post">
+              <button type="submit" class="btn btn-info btn-block" name="revisarExamen"  value="<?php echo $row['idClase'] ?>"><i class="fa fa-chesquare-o"></i>Examen</button>
+            </form>
 					</div>
 				</div>
 
@@ -120,8 +127,8 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 		                  <label>Tipo Tarea</label>
 		                  <select class="form-control" name="tipoTarea" required>
 		                    <option selected disabled>--Seleccione una Opcion</option>
-		                    <option value="">Tarea en Clase</option>
-		                    <option value="">Tarea extra Clase</option>
+		                    <option>Tarea en Clase</option>
+		                    <option>Tarea extra Clase</option>
 		                  </select>
 		                  <small class="text-muted">Seleccione si la tarea es en clase o para casa</small>
 		                </div>
@@ -227,7 +234,8 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
         		<tr>
 							<th>#</th>
         			<th>Nombre</th>
-							<th>Nota</th>
+							<th>Acumulativo</th>
+              <th>Examen</th>
         		</tr>
         	</thead>
 					<tbody id="tableAlumnos"></tbody>
