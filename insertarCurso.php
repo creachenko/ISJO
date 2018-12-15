@@ -12,9 +12,11 @@ if (isset($_SESSION["ses_id"])) {
 
 if($_SESSION['nivelAcceso'] == 3){
 if (isset($_POST['guardar'])){
-  for ($i=1; $i <= $_POST['cantCursos'] ; $i++) {
-    echo "<script>console.log('".$_POST['nombreCurso'.$i],$_POST['seccionCurso'.$i],$_POST['selectModalidad'],$_POST['selectAnioLectivo']."')</script>";
-    $obj->insertarCurso($_POST['nombreCurso'.$i],$_POST['seccionCurso'.$i],$_POST['selectModalidad'],$_POST['selectAnioLectivo']);
+
+  for ($i=0; $i <= $_POST['cantCursos'] ; $i++) {
+    echo "<script>console.log('".$_POST['nombreCurso'.($i+1)],$_POST['seccionCurso'.($i+1)],$_POST['selectModalidad'],$_POST['selectAnioLectivo']."')</script>";
+    
+    $obj->insertarCurso($_POST['nombreCurso'.($i+1)],$_POST['seccionCurso'.($i+1)],$_POST['selectModalidad'],$_POST['selectAnioLectivo']);
   }
   $notifyVerification=['Cursos Ingresados con Exito <strong><a href="modificarCursos.php"> Ir a Cursos</a></strong>','success'];
 }

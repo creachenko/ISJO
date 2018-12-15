@@ -45,8 +45,8 @@ $estudiantes = $obj->obtenerEstudiantes();
     </div>
     <div class="col-md-5">
       <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="#">Estudiantes</a></li>
-        <li role="presentation"><a href="listadoMatricula.php">Matricula</a></li>
+        <li role="presentation" ><a href="listadoEstudiantes.php">Estudiantes</a></li>
+        <li role="presentation" class="active"><a href="listadoMatricula.php">Matricula</a></li>
         <li role="presentation"><a href="modificarEncargados.php">Padres de Familia</a></li>
       </ul>
     </div>
@@ -61,7 +61,7 @@ $estudiantes = $obj->obtenerEstudiantes();
               <div class="panel-heading">
                <strong>
                  <span class="glyphicon glyphicon-pencil"></span>
-                  <span>Listado Estudiantes Registrados</span>
+                  <span>Listado Estudiantes Matriculados en el <?php echo date("Y"); ?></span>
                  </strong>
                      </div>
                        <table class="table" id="">
@@ -106,28 +106,44 @@ else{
 
   // Validado  la variable GET
     $compag =(int)(!isset($_GET['pag'])) ? 1 : $_GET['pag'];
-  $TotalReg =$conetar->query("SELECT * FROM estudiantes");
+  $TotalReg =$conetar->query("SELECT estudiantes.idEstudiante,nombreEstudiante,apellidoEstudiante,identidad,nombreCurso,seccion FROM estudiantes
+                              INNER JOIN matricula
+                              ON estudiantes.idEstudiante = matricula.idEstudiante
+                              INNER JOIN cursos
+                              ON cursos.idCurso = matricula.idCurso
+                              INNER JOIN aniolectivo
+                              ON cursos.idAnioLectivo = aniolectivo.idAnioLectivo
+                              WHERE anio = YEAR(CURDATE())");
   //Se divide la cantidad de registro de la BD con la cantidad a mostrar
+  if ($TotalReg->num_rows == 0) {
+    $dia = date("Y");
+
+    echo "<h1 style='color:red'>No hay Estudiantes Matriculados en el ".$dia."</h1>";
+  }
   $TotalRegistro  =ceil($TotalReg->num_rows/$CantidadMostrar);
   //echo "<b>La cantidad de resgistro se dividio a: </b>".$TotalRegistro." para mostrar 5 en 5<br><br>";
 
 
   //Consulta SQL
-  $consultavistas ="SELECT
-            idEstudiante,
-            nombreEstudiante,
-            apellidoEstudiante,
-            identidad,
-            correo,
-            fechaNacimiento,
-            genero,
-            direccion,
-            telefono
-            FROM
-            estudiantes
-            ORDER BY
-            idEstudiante ASC
-            LIMIT ".(($compag-1)*$CantidadMostrar)." , ".$CantidadMostrar;
+  $consultavistas ="SELECT estudiantes.idEstudiante,
+                              nombreEstudiante,
+                              apellidoEstudiante,
+                              identidad,
+                              correo,
+                              fechaNacimiento,
+                              genero,
+                              direccion,
+                              telefono FROM estudiantes
+                              INNER JOIN matricula
+                              ON estudiantes.idEstudiante = matricula.idEstudiante
+                              INNER JOIN cursos
+                              ON cursos.idCurso = matricula.idCurso
+                              INNER JOIN aniolectivo
+                              ON cursos.idAnioLectivo = aniolectivo.idAnioLectivo
+                              WHERE anio = YEAR(CURDATE())
+                              ORDER BY
+                              estudiantes.idEstudiante ASC
+                              LIMIT ".(($compag-1)*$CantidadMostrar)." , ".$CantidadMostrar;
                        // echo $consultavistas;
   $consulta=$conetar->query($consultavistas);
 

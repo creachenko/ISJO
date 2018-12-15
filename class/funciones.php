@@ -60,9 +60,8 @@ class funcionesBD extends conexionBD{
 
 		if ($resp->num_rows == 0) {
 			$sql = "INSERT INTO aniolectivo (anio) VALUES ('$anio')";
-			echo "<script>window.alert('Un Nuevo Año :) ha sido detectado = ".$anio." ,
-			 Limpiando registros para un nuevo año lectivo, exitos en sus Funciones
-			 ')</script>";
+			$resp = $this->bd->query($sql);
+			echo "<script>window.alert('Un Nuevo Año :) ha sido detectado = ".$anio." ,Limpiando registros para un nuevo año lectivo, exitos en sus Funciones')</script>";
 		}
 
 	 }
@@ -283,6 +282,12 @@ class funcionesBD extends conexionBD{
 		$sql = "INSERT INTO matricula (idEstudiante,idCurso) VALUES ('$idEstudiante','$b1')";
 		$this->bd->query($sql);
 	}
+
+	public function matricularAlumnoReingreso($idEstudiante,$idCurso){
+		$sql = "INSERT INTO matricula (idEstudiante,idCurso) VALUES ('$idEstudiante','$idCurso')";
+		$this->bd->query($sql);
+	}
+
 
 	public function obtenerEstudiantes(){
 		$sql ="SELECT estudiantes.idEstudiante,nombreEstudiante,apellidoEstudiante,identidad,nombreCurso,seccion FROM estudiantes

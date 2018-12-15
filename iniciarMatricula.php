@@ -26,7 +26,10 @@ if (isset($_POST["matricularAlumno"])) {
 }
 
 if (isset($_POST['matricularReingreso'])) {
-  echo "<script>console.log('".$_POST['selectModalidadesExistente']."')</script>";
+    //Traigo los Ids para insertar en la tabla matricula
+    $obj->matricularAlumnoReingreso($_POST['matricularReingreso'],$_POST['selectModalidadesExistente']);
+    $notifyVerification = ["Matricula de <strong>Reingreso</strong> exitosa",'success'];
+
 }
 
 $modalidades = $obj->obtenerModalidades();

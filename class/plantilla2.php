@@ -36,9 +36,9 @@ $sql ="SELECT * FROM matricula
 $resp = $conexion->bd->query($sql);
 
 if ($resp->num_rows > 0) {
-  $row2 = $resp->fetch_assoc();?>
+  $row2 = $resp->fetch_assoc(); $disabled ="disabled";?>
   <div class="alert alert-danger" role="alert">Este estudiante ya cuenta con una matricula este año en:<strong> <?php echo $row2['nombreCurso']." - ".$row2['seccion']?></strong></div>
-<?php }else{ ?>
+<?php }else{ $disabled =""; ?>
   <div class="alert alert-info" role="alert">Estudiante de Reingreso: Escoja un Curso Para Matricularlo</div>
 
 <?php }
@@ -118,7 +118,7 @@ $resp = $conexion->bd->query($sql);
         <small>Seleccione el curso correcto y presione "Matricular Alumno"</small>
       </div>
       <div class="panel-body">
-        <button type="submit" class="btn btn-success btn-block btn-lg" name="matricularReingreso">Matricular Alumno</button>
+        <button type="submit" class="btn btn-success btn-block btn-lg" value="<?php echo $row['idEstudiante'] ?>" name="matricularReingreso" <?php echo $disabled?>>Matricular Alumno</button>
       </div>
     </div>
   </div>
