@@ -247,7 +247,6 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 		console.log(idClase1);
 			$("#tableAlumnos").empty();
 
-
 		$.ajax({
 			method:"POST",
 			url:"class/scriptObtenerEstudiantesPorClase.php",
@@ -256,8 +255,15 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 			success:function (respuesta) {
 				var i = 1;
 				$.each(respuesta,function (key,value) {
-					$("#tableAlumnos").append("<tr><td>"+i+"</td><td>"+value.nombreEstudiante+" "+value.apellidoEstudiante+"</td></tr>")
-					i++;
+          $.ajax({
+            method:"POST",
+      			url:"class/scriptObtenerNotaEstudiante.php",
+      			data:{idClase: idClase1,idEstudiante:value.idEstudiante},
+            success:function (respuesta) {
+              $("#tableAlumnos").append("<tr><td>"+i+"</td><td>"+value.nombreEstudiante+" "+value.apellidoEstudiante+"</td><td class='center-text'>"+respuesta+" <small class='text-muted'>pts</small></td></tr>")
+                i++;
+            }
+          })
 				})
 
 			},

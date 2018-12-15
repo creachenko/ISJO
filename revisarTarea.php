@@ -163,7 +163,7 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
               <div class="form-row">
                 <div class="form-group col-md-3">
                   <label for="">Puntaje Obtenido</label>
-                  <input type="number" name="puntaje" value="0" class="form-control">
+                  <input type="number" name="puntaje" value="0" min="0" max="<?php echo $tarea['valorTarea'] ?>" class="form-control">
 
                 </div>
          </div>

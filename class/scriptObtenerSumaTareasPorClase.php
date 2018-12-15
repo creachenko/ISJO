@@ -17,13 +17,19 @@ $sql = "SELECT parcialespormodalidad.nombreParcialPorModalidad,parcialespormodal
 $resp = $conexion->bd->query($sql)->fetch_assoc();
 $idParcialActual = $resp['idParcialPorModalidad'];
 
-$sql="SELECT SUM(valorTarea) AS sumaTareas from tareas
+$sql="SELECT * from tareas
       WHERE idParcialPorModalidad = $idParcialActual
 			AND idClase = $idClase";
 
-$resp = $conexion->bd->query($sql)->fetch_assoc();
+$resp = $conexion->bd->query($sql);
 
+$array = array();
+$i = 0;
+while ($row = mysqli_fetch_array($resp)) {
+  $array[$i] = $row;
+  $i++;
+}
 
-echo $resp['sumaTareas'];
+echo json_encode($array);
 
  ?>
