@@ -6,7 +6,6 @@ $obj->AddPage();//agregar pagina
 $ob=new funcionesBD();
 
 $estudiante = $ob->report();
-$dia = date("Y");
 $info = $ob->infoc();//Cabecera
 $infor = mysqli_fetch_assoc($info);
 
@@ -61,7 +60,7 @@ $obj->cell(45,5,'CATEDRATICO :',0,0,'c');
 //LETRAS SIN NEGRITA
 $obj->setFont('Arial','',8);
 $obj->setxy(35,40);
-$obj->cell(50,5,'PERIODO  '.$dia,0,1,'c');
+$obj->cell(50,5,'PERIODO  '."jola",0,1,'c');
 $obj->setxy(35,45);
 $obj->cell(50,5,'SEPIMO GRADO',0,1,'c');
 $obj->setxy(35,50);
@@ -206,11 +205,7 @@ $i=$i+5;
 }
 
 
-
-
-
 $obj->setfont('Arial','',10);
 $obj->Output();
-
 
 ?>
