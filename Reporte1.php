@@ -211,6 +211,4 @@ $i=$i+5;
 
 $obj->setfont('Arial','',10);
 $obj->Output();
-
-
 ?>
