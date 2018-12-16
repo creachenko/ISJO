@@ -1,5 +1,8 @@
 <?php
-require '../pdf/fpdf.php';
+
+require 'pdf/fpdf.php';
+
+
 
 /**
 *
@@ -8,8 +11,6 @@ class PDF extends FPDF{
 	public function header()
 	{
 
-
-		$this->ln(20);
 	}
 
 	public function footer(){
@@ -19,6 +20,5 @@ class PDF extends FPDF{
 
 	}
 }
-
 
 ?>
