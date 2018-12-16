@@ -42,49 +42,49 @@ $obj= new funcionesBD();
             <tbody>
               <tr>
                 <td>Cuadro de Calificaciones</td>
-                <td class="text-center"> <a href="http://localhost/ISJO/Reporte1.php" type="button " class="btn btn-primary" name="A">Ver</a </td>
+                <td class="text-center"> <a href="Reporte1.php" type="button " class="btn btn-primary" name="A">Ver</a </td>
                     </tr>
                 <tr>
                 <td> Cuadro</td>
-                <td class="text-center"> <a href="http://localhost/ISJO/cuadropdf.php" type="button " class="btn btn-primary" name="B">Ver</a </td>
+                <td class="text-center"> <a href="cuadropdf.php" type="button " class="btn btn-primary" name="B">Ver</a </td>
                 </tr>
                 <tr>
                 <td>Horario</td>
-                <td class="text-center"> <a href="http://localhost/ISJO/Horariopdf.php" type="button " class="btn btn-primary" name="C">Ver</a </td>
+                <td class="text-center"> <a href="Horariopdf.php" type="button " class="btn btn-primary" name="C">Ver</a </td>
                 </tr>
                 <tr>
                   <td>Diario Pedagogo</td>
-                  <td class="text-center"> <a href="http://localhost/ISJO/HorarioMaestro.php" type="button " class="btn btn-primary" name="D">Ver</a </td>
+                  <td class="text-center"> <a href="HorarioMaestro.php" type="button " class="btn btn-primary" name="D">Ver</a </td>
                       </tr>
                   <tr>
                   <td>Informe Mensual de Educacion</td>
-                  <td class="text-center"> <a href="http://localhost/ISJO/informeestadistico.php" type="button " class="btn btn-primary" name="E">Ver</a </td>
+                  <td class="text-center"> <a href="informeestadistico.php" type="button " class="btn btn-primary" name="E">Ver</a </td>
                   </tr>
                   <tr>
                   <td>Hoja de Asistencia</td>
-                  <td class="text-center"> <a href="http://localhost/ISJO/asistenciapadre.php" type="button " class="btn btn-primary" name="F">Ver</a </td>
+                  <td class="text-center"> <a href="asistenciapadre.php" type="button " class="btn btn-primary" name="F">Ver</a </td>
                   </tr>
                   <td>Plan Operativo Anual</td>
-                  <td class="text-center"> <a href="http://localhost/ISJO/PlanOPAnual.php" type="button " class="btn btn-primary" name="D">Ver</a </td>
+                  <td class="text-center"> <a href="PlanOPAnual.php" type="button " class="btn btn-primary" name="D">Ver</a </td>
                       </tr>
                   <tr>
                   <td>Certificado de Estudio</td>
-                  <td class="text-center"> <a href="http://localhost/ISJO/Cartificacionestudio.php" type="button " class="btn btn-primary" name="E">Ver</a </td>
+                  <td class="text-center"> <a href="Cartificacionestudio.php" type="button " class="btn btn-primary" name="E">Ver</a </td>
                   </tr>
                   <tr>
                   <td>Constancia de Conducta</td>
-                  <td class="text-center"> <a href="http://localhost/ISJO/constanciacond.php" type="button " class="btn btn-primary" name="F">Ver</a </td>
+                  <td class="text-center"> <a href="constanciacond.php" type="button " class="btn btn-primary" name="F">Ver</a </td>
                   </tr>
                   <td>Boleta de Inscripcion de Matricula</td>
-                  <td class="text-center"> <a href="http://localhost/ISJO/inscripcion.php" type="button " class="btn btn-primary" name="D">Ver</a </td>
+                  <td class="text-center"> <a href="inscripcion.php" type="button " class="btn btn-primary" name="D">Ver</a </td>
                       </tr>
                   <tr>
                   <td>Informacion de Docentes</td>
-                  <td class="text-center"> <a href="http://localhost/ISJO/informedocente.php" type="button " class="btn btn-primary" name="E">Ver</a </td>
+                  <td class="text-center"> <a href="informedocente.php" type="button " class="btn btn-primary" name="E">Ver</a </td>
                   </tr>
                   <tr>
                   <td>Constancia de Matricula</td>
-                  <td class="text-center"> <a href="http://localhost/ISJO/Consmatricula.php" type="button " class="btn btn-primary" name="F">Ver</a </td>
+                  <td class="text-center"> <a href="Consmatricula.php" type="button " class="btn btn-primary" name="F">Ver</a </td>
                   </tr>
 
             </tbody>
