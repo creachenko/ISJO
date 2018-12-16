@@ -1075,6 +1075,42 @@ public function selec_encargado(){
 		return "<script>".$notify."</script>";
 
 	}
+
+
+	/*esta funcion es para que nos muestre las cargos por id */
+ public function obtener_cargos($id){
+          $empleados = "SELECT * FROM cargos WHERE idCargo ='".$id."'";
+          $resultado=$this->bd->query($empleados);
+          $emp = $resultado->fetch_all(MYSQLI_ASSOC);
+
+          return $emp;
+          }
+
+
+           /*funcion para actualizar datos de cargos*/
+                  public function editar_cargos(){
+          $sql = "UPDATE cargos SET nombreCargo = '".$_POST["nombre"]."',
+          descripcion ='".$_POST["descripcion"]."'
+          WHERE
+          idCargo ='".$_POST["id"]."'";
+          $this->bd->query($sql);
+                             echo "<script>
+                    alert('Registro Actualizado con Exito');
+                    window.location = 'modificarCargos.php';
+                    </script>";
+          }
+
+          /// funcion para eliminar cargos//
+   public function eliminar_cargos(){
+   $consult ="DELETE FROM cargos WHERE idcargo='".$_GET["id"]."'";
+
+   $this->bd->query($consult);
+
+   echo "<script>
+                    alert('Registro Eliminado con Exito');
+                    window.location = 'modificarCargos.php';
+                    </script>";}
+
 //fin de la clase
 
 //clase

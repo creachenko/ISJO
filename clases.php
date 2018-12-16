@@ -351,8 +351,18 @@ $("button[name='revisarExamen'").on("click",function () {
       			url:"class/scriptObtenerNotaEstudiante.php",
       			data:{idClase: idClase1,idEstudiante:value.idEstudiante},
             success:function (respuesta) {
-              $("#tableAlumnos").append("<tr><td>"+i+"</td><td>"+value.nombreEstudiante+" "+value.apellidoEstudiante+"</td><td class='center-text'>"+respuesta+" <small class='text-muted'>pts</small></td></tr>")
-                i++;
+              $.ajax({
+                method:"POST",
+          			url:"class/scriptObtenerNotaEstudianteExamen.php",
+          			data:{idClase: idClase1,idEstudiante:value.idEstudiante},
+                success:function (respuesta2) {
+
+
+                  $("#tableAlumnos").append("<tr><td>"+i+"</td><td>"+value.nombreEstudiante+" "+value.apellidoEstudiante+"</td><td class='center-text'>"+respuesta+" <small class='text-muted'>pts</small></td><td class='center-text'>"+respuesta2+" <small class='text-muted'>pts</small></td></tr>")
+                    i++;
+                }
+              })
+
             }
           })
 				})

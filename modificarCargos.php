@@ -25,15 +25,18 @@ function tablaCargos($cargos){
   while ($aux = mysqli_fetch_assoc($cargos)) {
     echo "<tr>";
     echo "<td id='".$i."'>".$aux['nombreCargo']."</td>";
-    //botnes de accion
-    echo "<td>
-      <div class='btn-group btn-group-sm'>
-        <button name='eliminarCargo' value='".$aux['idCargo']."' id='confirmarEliminarCargo'  class='btn btn-danger' title='Eliminar Tarea'><span class='glyphicon glyphicon-remove' aria-hidden='true' ></span></button>
-        <button name='editarCargo' value='".$aux['idCargo']."' id='$i' class='btn btn-warning' title='Editar Tarea'><span class='glyphicon glyphicon-pencil' aria-hidden='true' ></span></button>
-      </div>
-    </td>";
-    echo "</tr>";
-    $i++;
+    //botnes de accion ?>
+    <td class="text-center">
+                      <div class="btn-group">
+                        <a href="admin_cargo.php?id=<?php echo $aux['idCargo'];?>"  class="btn btn-xs btn-info" data-toggle="tooltip" title="Editar">
+                          <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        <a href="eliminar_cargos.php?id=<?php echo $aux['idCargo'];?>"  class="btn btn-xs btn-danger" data-toggle="tooltip" title="Eliminar">
+                          <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                      </div>
+                    </td>
+    <?php $i++;
   }
 }
 ?>

@@ -28,7 +28,7 @@ $sql = "SELECT SUM(puntajeObtenido) AS nota
 				WHERE estadotareas.idEstudiante = $idEstudiante
 				AND tareas.idClase = $idClase
 				AND tareas.idParcialPorModalidad = '$idParcialActual'
-				AND tipoTarea <> 'Examen'";
+				AND tipoTarea = 'Examen'";
 $resp = $conexion->bd->query($sql)->fetch_assoc();
 
 
