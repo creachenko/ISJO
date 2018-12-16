@@ -8,13 +8,18 @@ class funcionesBD extends conexionBD{
 
 	}
 
-	
+
 	public function infoc(){
 		$sql = "SELECT * FROM informacioncolegio ";
 		$resp = $this->bd->query($sql);
 		return  $resp;
 	}
 
+	public function curso(){
+		$sql = "SELECT * FROM clases inner join cursos where idEmpleado = 3 ";
+		$resp = $this->bd->query($sql);
+		return  $resp;
+	}
 
 
 

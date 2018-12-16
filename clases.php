@@ -233,8 +233,10 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 					<tbody id="tableAlumnos"></tbody>
         </table>
       </div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" a href="http://localhost/ISJO/Reporte1.php" class="btn btn-default" data-dismiss="modal">Reporte</button>
+        <button type="button" <class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 

@@ -1,10 +1,11 @@
 <?php
+session_start();
 include 'plantillapdfcalificaciones.php';
 require_once "class/funciones.php";
 $obj=new PDF('l','mm','LETTER');
 $obj->AddPage();//agregar pagina
 $ob=new funcionesBD();
-
+$mod = $ob->obtenerClasesDeMaestro($_SESSION['ses_id']);
 $estudiante = $ob->report();
 $dia = date("Y");
 $info = $ob->infoc();//Cabecera
@@ -63,11 +64,11 @@ $obj->setFont('Arial','',8);
 $obj->setxy(35,40);
 $obj->cell(50,5,'PERIODO  '.$dia,0,1,'c');
 $obj->setxy(35,45);
-$obj->cell(50,5,'SEPIMO GRADO',0,1,'c');
+$obj->cell(50,5,'',0,1,'c');
 $obj->setxy(35,50);
 $obj->cell(50,5,'LUIS SANTIAGO',0,1,'c');
 $obj->setxy(120,45);
-$obj->cell(50,5,'TERCERO CICLO COMUN',0,1,'c');
+$obj->cell(50,5,'1',0,1,'c');
 $obj->setxy(120,50);
 $obj->cell(50,5,'JORNADA VESPERTINA',0,1,'c');
 $obj->setxy(246,50);
