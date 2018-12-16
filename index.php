@@ -45,9 +45,7 @@ require_once("class/funciones.php");
         </div>
         <br>
         <br>
-        <div class="form-group">
-                <button type="submit"><a href="nuevoUsuario.php" class="btn btn-danger  pull-right">Registrar</a></button>
-    </div>
+  
     </form>
 </div>
 <?php include_once('layouts/footer.php'); ?>
