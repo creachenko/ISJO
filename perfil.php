@@ -64,30 +64,30 @@ $cargos = $obj->obtenerCargos();
       </div>
         <div class="panel-body">
        <ul class="nav nav-pills nav-stacked">
-         
-            <li role="presentation"><a href="#"> <strong>Nombre:</strong> 
+
+            <li role="presentation"><a href="#"> <strong>Nombre:</strong>
             <text class="pull-right"> <i><?php echo $row['nombreEmpleado']; ?></i> </text></a></li>
-            <li role="presentation"><a href="#"><strong>Apellido:</strong> 
+            <li role="presentation"><a href="#"><strong>Apellido:</strong>
             <text class="pull-right" ><i><?php echo $row['apellidoEmpleado']; ?></i></text></a></li>
-            <li role="presentation"><a href="#"><strong>Cargo</strong> 
+            <li role="presentation"><a href="#"><strong>Cargo</strong>
             <text class="pull-right" ><i><?php echo $row['nombreCargo']; ?></i></text></a></li>
-            <li role="presentation"><a href="#"><strong>Correo</strong> 
+            <li role="presentation"><a href="#"><strong>Correo</strong>
             <text class="pull-right" ><i><?php echo $row['correo']; ?></i></text></a></li>
-             <li role="presentation"><a href="#"><strong>Identidad</strong> 
+             <li role="presentation"><a href="#"><strong>Identidad</strong>
             <text class="pull-right" ><i><?php echo $row['identidad']; ?></i></text></a></li>
-             <li role="presentation"><a href="#"><strong>Fecha de Nacimiento</strong> 
+             <li role="presentation"><a href="#"><strong>Fecha de Nacimiento</strong>
             <text class="pull-right" ><i><?php echo $row['fechaNacimiento']; ?></i></text></a></li>
-            <li role="presentation"><a href="#"><strong>IMPREMA</strong> 
+            <li role="presentation"><a href="#"><strong>IMPREMA</strong>
             <text class="pull-right" ><i><?php echo $row['imprema']; ?></i></text></a></li>
-            <li role="presentation"><a href="#"><strong>Direccion</strong> 
+            <li role="presentation"><a href="#"><strong>Direccion</strong>
             <text class="pull-right" ><i><?php echo $row['direccion']; ?></i></text></a></li>
-            <li role="presentation"><a href="#"><strong>Fecha que Inicio a Laborar</strong> 
+            <li role="presentation"><a href="#"><strong>Fecha que Inicio a Laborar</strong>
             <text class="pull-right" ><i><?php echo $row['fechaIniLabor']; ?></i></text></a></li>
-            <li role="presentation"><a href="#"><strong>Celular</strong> 
+            <li role="presentation"><a href="#"><strong>Celular</strong>
             <text class="pull-right" ><i><?php echo $row['celular']; ?></i></text></a></li>
-            <li role="presentation"><a href="#"><strong>Titulo Media</strong> 
+            <li role="presentation"><a href="#"><strong>Titulo Media</strong>
             <text class="pull-right" ><i><?php echo $row['tituloMedia']; ?></i></text></a></li>
-            <li role="presentation"><a href="#"><strong>Titulo Universitario</strong> 
+            <li role="presentation"><a href="#"><strong>Titulo Universitario</strong>
             <text class="pull-right" ><i><?php echo $row['tituloUniversitario']; ?></i></text></a></li>
            </ul>
           <?php }; ?>
@@ -195,7 +195,7 @@ $cargos = $obj->obtenerCargos();
      $.ajax({
        method:'POST',
        data: {idEmpleado: $(this).val()},
-       url:"class/ck-scriptObtenerEmpleados.php",
+       url:"class/scriptObtenerEmpleados.php",
        dataType:'json',
        success:function (respuesta) {
          // console.log(respuesta);
