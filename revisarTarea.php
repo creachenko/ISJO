@@ -197,6 +197,10 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
   $("button[name='buttonEstudiante']").on("click",function () {
     console.log(itemId+" <->"+$(this).attr("id"));
 
+    $("#asignarPuntaje").removeClass("btn-warning");
+    $("#asignarPuntaje").removeAttr("disabled")
+
+
     if (itemId != $(this).attr("id")) {
       $("#"+itemId).children("#flecha").removeClass("fa fa-arrow-right");
       $("#"+itemId).removeClass('list-group-item-info')
@@ -262,6 +266,8 @@ $nombreCurso =  $obj->obtenerClasePorId($_POST["idClaseCheckTarea"])->fetch_asso
 
   //Asignar puntaje
 $("#asignarPuntaje").on("click",function () {
+  $("#asignarPuntaje").addClass("btn-warning");
+  $("#asignarPuntaje").attr("disabled","disabled")
 
   if ($("input[name='puntaje']").val() == 0) {
     $.notify({

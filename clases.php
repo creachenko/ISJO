@@ -247,8 +247,13 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
       <div class="modal-footer">
         <form action="formatos/reporte1.php" method="post">
           <input type="hidden" name="idClaseReporte1" value="">
-          <button class="btn btn-primary pull-left">General Cuadro 1</button>
+          <button class="btn btn-primary pull-left">Cuadro 1(C.C)</button>
         </form>
+        <form action="formatos/Cuadropdf.php" method="post">
+          <input type="hidden" name="idClaseReporte1" value="">
+          <button class="btn btn-info pull-left">Cuadro 1(bachillerao)</button>
+        </form>
+
 
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
       </div>

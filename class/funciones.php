@@ -192,6 +192,25 @@ class funcionesBD extends conexionBD{
 		$sql="INSERT INTO asignaturas (nombreAsignatura,descripcion,idModalidad) VALUES ('$a','$b','$c')";
 		$this->bd->query($sql);
 	}
+	public function eliminarAsignatura($idAsignatura){
+		$sql ="DELETE FROM asignaturas WHERE idAsignatura = $idAsignatura";
+		$this->bd->query($sql);
+	}
+	public function editarAsignatura($nombreAsignatura,$idAsignatura){
+	 $sql = "UPDATE asignaturas
+	 						SET nombreAsignatura = '$nombreAsignatura'
+							WHERE idAsignatura = '$idAsignatura'";
+	// echo "<script>window.alert('".$nombreAsignatura."')</script>";
+	 $this->bd->query($sql);
+
+	 }
+
+
+
+
+
+
+
 	public function obtenerAsignaturas(){
 		$sql="SELECT idAsignatura,nombreAsignatura,nombreModalidad FROM asignaturas
 						INNER JOIN modalidades
@@ -587,6 +606,44 @@ public function obtenerParcialesDeModalidades($idModalidad){
 		}
 
 	}
+
+	public function obtenerSumaTareasEstudianPorParcialExamen($idEstudiante,$idParcial){
+		$sql = "SELECT SUM(puntajeObtenido) AS nota
+						FROM estadotareas
+						INNER JOIN tareas
+						ON estadotareas.idTarea = tareas.idTarea
+						WHERE estadotareas.idEstudiante = $idEstudiante
+						AND tipoTarea = 'Examen'
+						AND tareas.idParcialPorModalidad = $idParcial";
+		$comprob = $this->bd->query($sql)->num_rows;
+
+		if ($comprob > 0) {
+			$nota = $this->bd->query($sql)->fetch_assoc();
+			return $nota['nota'];
+		}	else {
+			return $comprob;
+		}
+
+	}
+
+		public function obtenerSumaTareasEstudianPorParcialAcumulativa($idEstudiante,$idParcial){
+			$sql = "SELECT SUM(puntajeObtenido) AS nota
+							FROM estadotareas
+							INNER JOIN tareas
+							ON estadotareas.idTarea = tareas.idTarea
+							WHERE estadotareas.idEstudiante = $idEstudiante
+							AND tipoTarea <> 'Examen'
+							AND tareas.idParcialPorModalidad = $idParcial";
+			$comprob = $this->bd->query($sql)->num_rows;
+
+			if ($comprob > 0) {
+				$nota = $this->bd->query($sql)->fetch_assoc();
+				return $nota['nota'];
+			}	else {
+				return $comprob;
+			}
+
+		}
 	//fin FUNCIONES PARA REPORTES
 
 

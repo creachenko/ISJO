@@ -21,12 +21,23 @@ if($_SESSION['nivelAcceso'] == 3){
     }
     $notifyVerification = ["Asignaturas asignadas con Exito ",'success'];
   }
+
+  if (isset($_POST['borrarAsignatura'])) {
+    $obj->eliminarAsignatura($_POST['borrarAsignatura']);
+    $notifyVerification = ["Asignatura Borrasa",'danger'];
+  }
+
+  if (isset($_POST['editarAsignatura'])) {
+    $obj->editarAsignatura($_POST['nombreNewAsignatura'],$_POST['editarAsignatura']);
+    $notifyVerification = [$_POST['editarAsignatura'],'info'];
+  }
+
   $asignaturas = $obj->obtenerAsignaturas();
 
   $modalidades = $obj->obtenerModalidades();
 ?>
 <?php include_once('layouts/header.php'); ?>
-<form method="post" action="">
+<form method="post" action="" id="form">
   <div class="row">
       <div class="col-lg-12">
         <div class="page-header">
@@ -126,8 +137,8 @@ if($_SESSION['nivelAcceso'] == 3){
                     <td><?php echo $row['nombreModalidad'] ?></td>
                     <td>
                       <div class="btn-group btn-group-xs">
-                        <button type="button" class="btn btn-danger" title="Eliminar Asignatura" name="button"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                        <button type="button" class="btn btn-warning" title="Editar Asignatura" name="button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                        <button type="submit" value="<?php echo $row['idAsignatura'] ?>" class="btn btn-danger" title="Eliminar Asignatura" name="borrarAsignatura"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                        <button type="button" value="<?php echo $row['idAsignatura'] ?>" class="btn btn-warning" title="Editar Asignatura" name="editarAsignatura"><i class="fa fa-pencil" aria-hidden="true"></i></button>
 
                       </div>
                     </td>
@@ -140,9 +151,26 @@ if($_SESSION['nivelAcceso'] == 3){
       </div>
     </div>
     </div>
+    <input type="hidden" name="nombreNewAsignatura" value="">
   </form>
 
     <script>
+    var again = true;
+    $("button[name='editarAsignatura']").on("click",function () {
+      var element = $(this);
+      if (again == true) {
+        bootbox.prompt("Editar Nombre Asignatura", function(result){
+          if (result != null) {
+            $("input[name='nombreNewAsignatura']").val(result);
+            element.attr("type","submit");
+            element.click();
+            again = false;
+          }
+         });
+      }
+
+})
+
       var vecesApretadoAgregarCampo = 0;
       var plantilla = "<tr>"+
         "<td>:i:</td>"+

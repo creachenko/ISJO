@@ -1,15 +1,16 @@
 <?php
 //consulta llenado de cuadro
-
 include 'plantillapdfcuadro.php';
-
-require_once "class/funciones.php";
+require_once "../class/funciones.php";
 $obj=new PDF('l','mm','LETTER');
 $obj->AddPage();//agregar pagina
- 
 
-$ob=new funcionesBD();
-$estudiante = $ob->cuadro();
+$idClase = $_POST['idClaseReporte1'];
+
+$methods=new funcionesBD();
+
+$estudiantes = $methods->obtenerEstudiantesPorClase($idClase);
+$datosClase = $methods->obtenerDatosClaseConId($idClase);
 
 $y=$obj->Gety();
 $x=$obj->GetX();
@@ -22,13 +23,16 @@ $obj->setFont('Arial','B','8');
 
 $obj->setxy(20,45);
 $obj->cell(45,5,'NOMBRE :',0,0,'c');
-
+$obj->setxy(35,38);
+$obj->cell(50,17,strtoupper($datosClase['nombreEmpleado']." ".$datosClase['apellidoEmpleado']),0,0,'C');
 $obj->setxy(130,45);
 $obj->cell(45,5,'JORNADA :',0,0,'c');
-
+$obj->setxy(153,44);
+$obj->cell(45,5,strtoupper($datosClase['jornada']),0,0,'c');
 $obj->setxy(190,45);
 $obj->cell(50,5,'MODALIDAD :',0,0,'c');
-
+$obj->setxy(213,44);
+$obj->cell(45,5,strtoupper($datosClase['nombreModalidad']),0,0,'c');
 //LINEAS
 $obj->Line(36, 48, 100, 48);
 
@@ -45,6 +49,9 @@ $obj->cell(5,17,'#',1,1,'c');
 
 $obj->setxy(15,60);
 $obj->cell(50,17,'NOMBRE',1,0,'C');
+
+
+
 
 $obj->cell(30,17,'IDENTIDAD',1,0,'C');
 
@@ -105,8 +112,14 @@ $obj->cell(13,17,'Inasi',1,0,'C');
 $cont=0;
 
 //AQUI COOMIENSA EL AUTOINCREMENTABLE
+$parciales = $methods->obtenerParcialesConidModalidad($datosClase['idModalidad']);
+$j = 0;
+while ($row = mysqli_fetch_assoc($parciales)) {
+	$array[$j] = $row["idParcialPorModalidad"];
+	$j++;
+}
 $i=22;
-while($row = mysqli_fetch_assoc($estudiante)){
+while($row = mysqli_fetch_assoc($estudiantes)){
 
 $cont=$cont+1;
   $obj->sety($y+$i);
@@ -115,26 +128,33 @@ $cont=$cont+1;
 
 $obj->setFont('Arial','B','9');
 
-  $obj->sety($y+$i);
-  $obj->setx($x+5);
-  $obj->cell(50,6,$row['nombreEstudiante'],1,0,'C');
-  $obj->sety($y+$i);
-  $obj->setx($x+55);
-  $obj->cell(30,6,$row['identidad'],1,0,'C');
+
 
   $obj->sety($y+$i);
+  $obj->setx($x+5);
+  $obj->cell(50,6,$row["nombreCompleto"],1,0,'L');
+  $obj->sety($y+$i);
+  $obj->setx($x+55);
+  $obj->cell(30,6,$row["identidad"],1,0,'C');
+
+  $primerParcial = $methods->obtenerSumaTareasEstudianPorParcialAcumulativa($row["idEstudiante"],$array[0]);
+  $segundoParcial = $methods->obtenerSumaTareasEstudianPorParcialAcumulativa($row["idEstudiante"],$array[1]);
+
+  $examen1 =$methods->obtenerSumaTareasEstudianPorParcialExamen($row["idEstudiante"],$array[0]);
+  $examen2 = $methods->obtenerSumaTareasEstudianPorParcialExamen($row["idEstudiante"],$array[1]);
+  $obj->sety($y+$i);
   $obj->setx($x+85);
-  $obj->cell(6,6,'  ',1,0,'C');
+  $obj->cell(6,6,$primerParcial,1,0,'C');
   $obj->sety($y+$i);
   $obj->setx($x+91);
-  $obj->cell(7,6,'',1,0,'C');
+  $obj->cell(7,6,$examen1,1,0,'C');
   $obj->sety($y+$i);
   $obj->setx($x+98);
-  $obj->cell(7,6,'',1,0,'C');
+  $obj->cell(7,6,"",1,0,'C');
   $obj->setFont('Arial','B','6');
   $obj->sety($y+$i);
   $obj->setx($x+105);
-  $obj->cell(7,6,'',1,0,'C');
+  $obj->cell(7,6,$primerParcial+$examen1,1,0,'C');
   $obj->sety($y+$i);
   $obj->setx($x+112);
   $obj->cell(13,6,'',1,0,'C');
@@ -142,22 +162,22 @@ $obj->setFont('Arial','B','9');
   $obj->setFont('Arial','B','8');
   $obj->sety($y+$i);
   $obj->setx($x+125);
-  $obj->cell(9,6,'',1,0,'C');
+  $obj->cell(9,6,$segundoParcial,1,0,'C');//Acumulativo IIPacrcial
   $obj->sety($y+$i);
   $obj->setx($x+134);
-  $obj->cell(9,6,'',1,0,'C');
+  $obj->cell(9,6,$examen2,1,0,'C');//Examen IIPacrcial
 
-  $obj->setFont('Arial','B','6');
+  $obj->setFont('Arial','B','8');
   $obj->sety($y+$i);
   $obj->setx($x+143);
-  $obj->cell(9,6,'',1,0,'C');
+  $obj->cell(9,6,$segundoParcial+$examen2,1,0,'C');//Total II Parcial
   $obj->sety($y+$i);
   $obj->setx($x+152);
-  $obj->cell(13,6,'',1,0,'C');
+  $obj->cell(13,6,"",1,0,'C');
 
   $obj->sety($y+$i);
   $obj->setx($x+165);
-  $obj->cell(30,6,'',1,1,'C');
+  $obj->cell(30,6,$segundoParcial+$examen2+$primerParcial+$examen1,1,1,'C');
 
   $obj->sety($y+$i);
   $obj->setx($x+195);
