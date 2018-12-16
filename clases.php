@@ -245,7 +245,12 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <form action="formatos/reporte1.php" method="post">
+          <input type="hidden" name="idClaseReporte1" value="">
+          <button class="btn btn-primary pull-left">General Cuadro 1</button>
+        </form>
+
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
 
@@ -313,6 +318,9 @@ $("button[name='revisarExamen'").on("click",function () {
 //Listado alumnos
 	$("button[name='verAlumnos']").on('click',function () {
 		var idClase1 = $(this).val();
+
+    $("input[name='idClaseReporte1']").val($(this).val());
+
 		console.log(idClase1);
 			$("#tableAlumnos").empty();
 

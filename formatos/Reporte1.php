@@ -1,13 +1,23 @@
 <?php
 include 'plantillapdfcalificaciones.php';
-require_once "class/funciones.php";
+require_once "../class/funciones.php";
+
+$idClase = $_POST['idClaseReporte1'];
+
 $obj=new PDF('l','mm','LETTER');
 $obj->AddPage();//agregar pagina
-$ob=new funcionesBD();
+$methods=new funcionesBD();
 
-$estudiante = $ob->report();
-$info = $ob->infoc();//Cabecera
-$infor = mysqli_fetch_assoc($info);
+$datosClase = $methods->obtenerDatosClaseConId($idClase);
+
+$estudiantes = $methods->obtenerEstudiantesPorClase($idClase);
+
+$parciales = $methods->obtenerParcialesConidModalidad($datosClase['idModalidad']);
+$i = 0;
+while ($row = mysqli_fetch_assoc($parciales)) {
+	$array[$i] = $row["idParcialPorModalidad"];
+	$i++;
+}
 
 $y=$obj->Gety();
 $x=$obj->GetX();
@@ -30,15 +40,15 @@ $obj->AliasNbpages();
 
 		$obj->setxy(110,30);
 
-		$obj->cell(57,5,$infor['codigoCentro'],0,1,'c');
+		$obj->cell(57,5,"",0,1,'c');
 
 		$obj->setxy(132,30);
-		$obj->cell(57,5,$infor['nombreColegio'] ,0,1,'c');
+		$obj->cell(57,5,"" ,0,1,'c');
 			$obj->setxy(130,30);
 		$obj->cell(57,5,'|',0,1,'c');
-		$obj->setFont('Arial','','5	');
+		$obj->setFont('Arial','','5');
 				$obj->setxy(90,33);
-		$obj->cell(57,5,$infor['direccion'] ,0,1,'c');
+		$obj->cell(57,5,"",0,1,'c');
 		$obj->ln(20);
 // lETRAS CON NEGRITA
 $obj->setFont('Arial','B','8');
@@ -60,17 +70,17 @@ $obj->cell(45,5,'CATEDRATICO :',0,0,'c');
 //LETRAS SIN NEGRITA
 $obj->setFont('Arial','',8);
 $obj->setxy(35,40);
-$obj->cell(50,5,'PERIODO  '."jola",0,1,'c');
+$obj->cell(50,5,'PERIODO  '.date("Y"),0,1,'c');
 $obj->setxy(35,45);
-$obj->cell(50,5,'SEPIMO GRADO',0,1,'c');
+$obj->cell(50,5,strtoupper($datosClase['nombreCurso']),0,1,'c');
 $obj->setxy(35,50);
-$obj->cell(50,5,'LUIS SANTIAGO',0,1,'c');
+$obj->cell(50,5,strtoupper($datosClase['nombreEmpleado']." ".$datosClase['apellidoEmpleado']),0,1,'c');
 $obj->setxy(120,45);
-$obj->cell(50,5,'TERCERO CICLO COMUN',0,1,'c');
+$obj->cell(50,5,strtoupper($datosClase['nombreModalidad']),0,1,'c');
 $obj->setxy(120,50);
-$obj->cell(50,5,'JORNADA VESPERTINA',0,1,'c');
+$obj->cell(50,5,'JORNADA '.strtoupper($datosClase['jornada']),0,1,'c');
 $obj->setxy(246,50);
-$obj->cell(50,5,'A',0,1,'c');
+$obj->cell(50,5,strtoupper($datosClase['seccion']),0,1,'c');
 
 //Cabecera de la trabla
 
@@ -83,7 +93,7 @@ $obj->cell(50,20,'NOMBRE',1,0,'C');
 
 $obj->cell(30,20,'IDENTIDAD',1,0,'C');
 
-$obj->cell(135,5,'CIENTCIAS NATURALES',1,0,'C');
+$obj->cell(135,5,strtoupper($datosClase['nombreAsignatura']),1,0,'C');
 
 $obj->setxy(95,65);
 $obj->cell(20,7,'PARCIAL I',1,1,'C');
@@ -141,69 +151,86 @@ $obj->cell(7,8,'NF',1,0,'C');
 $a=1;
 $i=70;
 
+while ($row = mysqli_fetch_assoc($estudiantes)) {
 
-While($row = mysqli_fetch_assoc($estudiante)){
+	$obj->sety($y+$i);
+	$obj->cell(5,5,$a,1,1,'c');
 
-$obj->sety($y+$i);
-$obj->cell(5,5,$a,1,1,'c');
-
-$obj->sety($y+$i);
-$obj->setx(15);
-$obj->cell(50,5,$row['nombreEstudiante'],1,0,'C');
-$obj->setx($y+$i);
-$obj->setx(65);
-$obj->cell(30,5,$row['identidad'],1,0,'C');
-$obj->sety($y+$i);
-
-$obj->setx(175);
-$obj->cell(30,5,'',1,0,'C');
-$obj->sety($y+$i);
-$obj->setx(205);
-$obj->cell(25,5,'',1,0,'C');
-$obj->sety($y+$i);
-$obj->setx(230);
-$obj->cell(40,5,'',1,0,'C');
+$primerParcial = $methods->obtenerSumaTareasEstudianPorParcial($row["idEstudiante"],$array[0]);
+$segundoParcial = $methods->obtenerSumaTareasEstudianPorParcial($row["idEstudiante"],$array[1]);
+$tercerParcial = $methods->obtenerSumaTareasEstudianPorParcial($row["idEstudiante"],$array[2]);
+$cuartoParcial = $methods->obtenerSumaTareasEstudianPorParcial($row["idEstudiante"],$array[3]);
 
 
-$obj->sety($y+$i);
-$obj->setx(95);
-$obj->cell(6,5,'',1,0,'C');
-$obj->sety($y+$i);
-$obj->setx(101);
-$obj->cell(7,5,'',1,0,'C');
-$obj->sety($y+$i);
-$obj->setx(108);
-$obj->cell(7,5,'',1,0,'C');
+$promedio = ($primerParcial+$segundoParcial+$tercerParcial+$cuartoParcial)/4;
 
-$obj->sety($y+$i);
-$obj->setx(115);
-$obj->cell(6,5,'',1,0,'C');
-$obj->sety($y+$i);
-$obj->setx(121);
-$obj->cell(7,5,'',1,0,'C');
-$obj->sety($y+$i);
-$obj->setx(128);
-$obj->cell(7,5,'',1,0,'C');
+	$obj->sety($y+$i);
+	$obj->setx(15);
+	$obj->cell(50,5,$row["nombreCompleto"],1,0,'C');
+	$obj->setx($y+$i);
+	$obj->setx(65);
+	$obj->cell(30,5,$row["identidad"],1,0,'C');
+	$obj->sety($y+$i);
+
+	$obj->setx(175);
+	$obj->cell(30,5,'',1,0,'C');
+	$obj->sety($y+$i);
+	$obj->setx(205);
+	$obj->cell(25,5,intval($promedio),1,0,'C');
+	$obj->sety($y+$i);
+	$obj->setx(230);
+	$obj->cell(40,5,'',1,0,'C');
 
 
-$obj->setx(135);
-$obj->cell(6,5,'',1,0,'C');
-$obj->setx(141);
-$obj->cell(7,5,'',1,0,'C');
-$obj->setx(148);
-$obj->cell(7,5,'',1,0,'C');
+	$obj->sety($y+$i);
+	$obj->setx(95);
 
-$obj->setx(155);
-$obj->cell(6,5,'',1,0,'C');
-$obj->setx(161);
-$obj->cell(7,5,'',1,0,'C');
-$obj->setx(168);
-$obj->cell(7,5,'',1,0,'C');
 
-$a=$a+1;
-$i=$i+5;
+
+
+	$obj->cell(6,5,"",1,0,'C'); //Primer Parcial
+	$obj->sety($y+$i);
+	$obj->setx(101);
+	$obj->cell(7,5,$primerParcial,1,0,'C');
+	$obj->sety($y+$i);
+	$obj->setx(108);
+	$obj->cell(7,5,$primerParcial,1,0,'C');
+
+
+
+	$obj->sety($y+$i);
+	$obj->setx(115);
+	$obj->cell(6,5,'',1,0,'C');
+	$obj->sety($y+$i);
+	$obj->setx(121);
+	$obj->cell(7,5,$segundoParcial,1,0,'C');
+	$obj->sety($y+$i);
+	$obj->setx(128);
+	$obj->cell(7,5,$segundoParcial,1,0,'C');
+
+
+
+	$obj->setx(135);
+	$obj->cell(6,5,'',1,0,'C');
+	$obj->setx(141);
+	$obj->cell(7,5,$tercerParcial,1,0,'C');
+	$obj->setx(148);
+	$obj->cell(7,5,$tercerParcial,1,0,'C');
+
+
+
+	$obj->setx(155);
+	$obj->cell(6,5,'',1,0,'C');
+	$obj->setx(161);
+	$obj->cell(7,5,$cuartoParcial,1,0,'C');
+	$obj->setx(168);
+	$obj->cell(7,5,$cuartoParcial,1,0,'C');
+
+	$a=$a+1;
+	$i=$i+5;
+
+
 }
-
 
 $obj->setfont('Arial','',10);
 $obj->Output();

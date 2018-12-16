@@ -326,7 +326,7 @@ class funcionesBD extends conexionBD{
 		$resp = $this->bd->query($sql)->fetch_assoc();
 		$idParcialActual = $resp['idParcialPorModalidad'];
 
-		$sql ="SELECT estudiantes.idEstudiante,CONCAT(nombreEstudiante,' ',apellidoEstudiante) AS nombreCompleto FROM estudiantes INNER JOIN matricula
+		$sql ="SELECT estudiantes.idEstudiante,CONCAT(nombreEstudiante,' ',apellidoEstudiante) AS nombreCompleto,identidad FROM estudiantes INNER JOIN matricula
 		        ON matricula.idEstudiante = estudiantes.idEstudiante
 		        INNER JOIN cursos
 		        ON matricula.idCurso = cursos.idCurso
@@ -518,12 +518,12 @@ public function insertarExamen($idClase,$valorExamen){
 	$resp = $this->bd->query($sql)->fetch_assoc();
 	$idParcialActual = $resp['idParcialPorModalidad'];
 	$nombreExamen = 'Examen '.$resp['nombreParcialPorModalidad']." ".$resp['nombreCurso'].' - '.$resp['seccion'];
-	echo "<script>window.alert('Armando tu pedido')</script>";
+
 	$sql ="INSERT INTO tareas (nombreTarea,valorTarea,idClase,idParcialPorModalidad,tipoTarea)
 				VALUES ('$nombreExamen','$valorExamen','$idClase','$idParcialActual','Examen')";
-	echo "<script>window.alert('Ejecutanto tu pedido')</script>";
+
 	$this->bd->query($sql);
-echo "<script>window.alert('Pedido Ejecutado')</script>";
+
 	return $this->bd->insert_id;
 }
 
@@ -548,6 +548,46 @@ public function obtenerParcialesDeModalidades($idModalidad){
 		$sql="SELECT * FROM aniolectivo";
 		return $this->bd->query($sql);
 	}
+	//INICIO FUNCIONES PARA REPORTES
+	public function obtenerDatosClaseConId($idClase){
+		$sql ="SELECT * FROM clases
+					INNER JOIN cursos
+				    ON clases.idCurso = cursos.idCurso
+				    INNER JOIN empleados
+				    ON empleados.idEmpleado = clases.idEmpleado
+				    INNER JOIN modalidades
+				    ON cursos.idModalidad = modalidades.idModalidad
+						INNER JOIN asignaturas
+						ON clases.idAsignatura = asignaturas.idAsignatura
+				    WHERE clases.idClase = $idClase";
+	 return $this->bd->query($sql)->fetch_assoc();
+	}
+
+	public function obtenerParcialesConidModalidad($idModalidad){
+		$sql = "SELECT * FROM parcialespormodalidad WHERE idModalidad = '$idModalidad'";
+
+		return $this->bd->query($sql);
+
+	}
+
+	public function obtenerSumaTareasEstudianPorParcial($idEstudiante,$idParcial){
+		$sql = "SELECT SUM(puntajeObtenido) AS nota
+						FROM estadotareas
+						INNER JOIN tareas
+						ON estadotareas.idTarea = tareas.idTarea
+						WHERE estadotareas.idEstudiante = $idEstudiante
+						AND tareas.idParcialPorModalidad = $idParcial";
+		$comprob = $this->bd->query($sql)->num_rows;
+
+		if ($comprob > 0) {
+			$nota = $this->bd->query($sql)->fetch_assoc();
+			return $nota['nota'];
+		}	else {
+			return $comprob;
+		}
+
+	}
+	//fin FUNCIONES PARA REPORTES
 
 
           public function RegistrarEmp(){
