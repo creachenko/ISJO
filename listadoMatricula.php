@@ -76,8 +76,6 @@ $estudiantes = $obj->obtenerEstudiantes();
                                   <th class="text-left">Genero</th>
                                    <th class="text-left">Direccion</th>
                                     <th class="text-left">Telefono</th>
-                                    <th class="text-left">editar</th>
-                                    <th class="text-left">Eliminar</th>
 
 
 
@@ -167,16 +165,7 @@ else{
        <td>".$lista[6]."</td>
        <td>".$lista[7]."</td>
        <td>".$lista[8]."</td>
-       <td><a href='admin_estudiantes.php?id=$lista[0]' class='btn btn-xs btn-info' data-toggle='tooltip' title='Editar'>
-         <span class='glyphicon glyphicon-edit'></span>
-         </a></td>
-      <td>
-
-      <a href='eliminar_estudiantes.php?id=$lista[0]'  class='btn btn-xs btn-danger' data-toggle='tooltip' title='Eliminar'>
-        <span class='glyphicon glyphicon-trash'></span>
-                        </a>
-      </td
-
+       
        </tr>";
   }
 

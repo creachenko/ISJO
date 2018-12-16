@@ -183,8 +183,21 @@ class funcionesBD extends conexionBD{
 	}
 
 	public function eliminarModalidad($idModalidad){
+		// echo "<script>window.alert('".$idModalidad."')</script>";
 		$query = "DELETE FROM modalidades WHERE idModalidad='$idModalidad'";
 		$this->bd->query($query);
+
+		if ($this->bd->error != "") {
+			echo "<script>window.alert('Existen Registros dependientes de esta modalidad, eliminelos primero antes de continuar')</script>";
+		}
+
+	}
+
+	public function editarModalidad($idModalidad,$nombre,$jornada){
+
+		$sql = "UPDATE modalidades SET nombreModalidad='$nombre' ,jornada='$jornada' WHERE idModalidad='$idModalidad'";
+		$this->bd->query($sql);
+
 	}
 	//FIN FUNCIONES PARA GESTION Modalidades----------------------------------------------------
 	//INICIO FUNCIONES PARA GESTION Asignaturas----------------------------------------------------
@@ -242,7 +255,6 @@ class funcionesBD extends conexionBD{
 		$this->bd->query($query);
 	}
 	public function editarCurso($a,$b,$c){
-		$query = "UPDATE cursos SET nombreCurso='$a', seccion='$b' WHERE idCurso='$c'";
 		$this->bd->query($query);
 	}
 
@@ -360,6 +372,10 @@ class funcionesBD extends conexionBD{
 
 	//Fin FUNCIONES PARA GESTION Estudiantes------------------------------------------------
 //Inicio FUNCIONES GESTION DE Clases----------------------------
+public function eliminarClase($idClase){
+	$sql = "DELETE FROM clases WHERE idClase = '$idClase' ";
+	$this->bd->query($sql);
+}
 
 public function insertarClase($a,$b,$c,$d){
 
@@ -474,6 +490,12 @@ public function obtenerEstudiantesPorTarea($idTarea,$idClase){
         WHERE tareas.idClase = $idClase AND
             tareas.idParcialPorModalidad = $idParcialActual";
 		return $this->bd->query($sql);
+}
+public function eliminarTarea($idTarea){
+	$sql = "DELETE FROM tareas WHERE idTarea = '$idTarea'";
+	$this->bd->query($sql);
+
+	echo $this->bd->error;
 }
 
 public function insertarTarea($nombreTarea,$valorTarea,$fechaEntrega,$idClase,$tipoTarea){
@@ -645,6 +667,8 @@ public function obtenerParcialesDeModalidades($idModalidad){
 
 		}
 	//fin FUNCIONES PARA REPORTES
+
+
 
 
           public function RegistrarEmp(){
@@ -880,6 +904,19 @@ public function obtenerParcialesDeModalidades($idModalidad){
                     </script>";
           }
 
+					// funcion para eliminar estudiantes//
+					  public function eliminar_estudiantes(){
+					   $consult ="DELETE FROM estudiantes WHERE idEstudiante='".$_GET["id"]."'";
+
+					   $this->bd->query($consult);
+
+					   echo "<script>
+					                    alert('Registro Eliminado con Exito');
+					                    window.location = 'listadoEstudiantes.php';
+					                    </script>";
+
+
+					  }
 
 
           /*esta funcion sirve para ver el id de los encargados*/
@@ -894,28 +931,38 @@ public function obtenerParcialesDeModalidades($idModalidad){
           }
 
 
-/*funcion para actualizar datos de encargados*/
-                  public function editar_encargados(){
-          $sql = "UPDATE encargados SET nombreEncargado = '".$_POST["nombre"]."',
-          apellidoEncargado ='".$_POST["apellido"]."',
-          telefono ='".$_POST["telefono"]."',
-          genero ='".$_POST["genero"]."',
-          identidad ='".$_POST["identidad"]."',
-          correo ='".$_POST["correo"]."',
-          genero ='".$_POST["genero"]."',
-          identidad ='".$_POST["identidad"]."',
-          correo ='".$_POST["correo"]."',
-          parentezco ='".$_POST["parentezco"]."',
-          profesion ='".$_POST["profesion"]."',
-          direccion ='".$_POST["direccion"]."'
-          WHERE
-          idEncargado ='".$_POST["id"]."'";
-          $this->bd->query($sql);
-                             echo "<script>
-                    alert('Registro Actualizado con Exito');
-                    window.location = 'modificar_encargados.php';
-                    </script>";
-          }
+					/*funcion para actualizar datos de encargados*/
+					                  public function editar_encargados(){
+					          $sql = "UPDATE encargados SET nombreEncargado = '".$_POST["nombre"]."',
+					          apellidoEncargado ='".$_POST["apellido"]."',
+					          telefono ='".$_POST["telefono"]."',
+					          genero ='".$_POST["genero"]."',
+					          identidad ='".$_POST["identidad"]."',
+					          correo ='".$_POST["correo"]."',
+					          profesion ='".$_POST["profesion"]."',
+					          direccion ='".$_POST["direccion"]."'
+					          WHERE
+					          idEncargado ='".$_POST["id"]."'";
+					          $this->bd->query($sql);
+					                             echo "<script>
+					                    alert('Registro Actualizado con Exito');
+					                    window.location = 'modificarEncargados.php';
+					                    </script>";
+					          }
+
+					          // funcion para eliminar encargados//
+					  public function eliminar_encargados(){
+					   $consult ="DELETE FROM encargados WHERE idEncargado='".$_GET["id"]."'";
+
+					   $this->bd->query($consult);
+
+					   echo "<script>
+					                    alert('Registro Eliminado con Exito');
+					                    window.location = 'modificarEncargados.php';
+					                    </script>";
+
+
+					  }
 
            /*consulta para busqueda en la opcion de con tratos*/
 

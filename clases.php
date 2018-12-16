@@ -27,6 +27,11 @@ if (isset($_POST['revisarExamen'])) {
 
   }
 
+if(isset($_POST['idTareaEliminar2'])){
+  $obj->eliminarTarea($_POST['idTareaEliminar2']);
+  $notifyVerification = ["<strong>Tarea Eliminada</strong>","danger"];
+}
+
 $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 
 ?>
@@ -90,7 +95,6 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 	</div>
 <?php } ?>
 
-<form action="" method="post">
 <!-- Modal -->
 <div id="modalAsignarTarea" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -102,6 +106,7 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
         <h4 class="modal-title">Asignar tarea : <small id="nombreClase"></small></h4>
       </div>
       <div class="modal-body">
+        <form action="" method="post">
 				<div class="row">
 					<div class="col-md-7">
 						<div class="panel panel-primary">
@@ -154,6 +159,7 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 						       </div>
 						</div>
 					</div>
+        </form>
 					<div class="col-md-5">
 		      <div class="panel panel-info">
 		        <div class="panel-heading">
@@ -162,6 +168,9 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 		            <span>Tarea Ingresadas</span>
 		         </strong>
 		        </div>
+            <form action="cte.php" method="post" id="formEliminar">
+              <input type="hidden" name="idTareaEliminar" id="idTareaEliminar" value="">
+
 		           <table class="table table-bordered">
 		             <thead>
 		               <tr>
@@ -172,6 +181,7 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 		             </thead>
 		             <tbody id='tableTareas'></tbody>
 		           </table>
+             </form>
 		         <div class="panel-footer">
 
 		         </div>
@@ -185,7 +195,6 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 
   </div>
 </div>
-</form>
 
 <form action="revisarTarea.php" method="post">
 <!-- Modal -->
@@ -355,6 +364,11 @@ $("button[name='revisarExamen'").on("click",function () {
 		})
 	})
 
+  function asignar(id) {
+    $("#idTareaEliminar").val(id)
+    $("#formEliminar").submit();
+  }
+
 	$("button[name='asignarTarea']").on('click',function () {
 		var idClase1 = $(this).val();
 		console.log(idClase1);
@@ -380,7 +394,7 @@ $("button[name='revisarExamen'").on("click",function () {
 
 				var i = 1;
 				$.each(respuesta,function (key,value) {
-					$("#tableTareas").append("<tr><td>"+value.nombreTarea+"</td><td>"+value.fechaEntrega+"</td><td>Eliminar</td></tr>");
+					$("#tableTareas").append("<tr><td>"+value.nombreTarea+"</td><td>"+value.fechaEntrega+"</td><td><button name='eliminarTarea' class='btn btn-danger' onclick='asignar("+value.idTarea+")' value='"+value.idTarea+"' type='button'>Eliminar</button></td></tr>");
 				})
 
 			},
@@ -388,7 +402,18 @@ $("button[name='revisarExamen'").on("click",function () {
 				console.log(error2);
 			}
 		})
+    //Eliminar Tarea
+    $("button[name='eliminarTarea']").on("click",function () {
+        var idTarea = $(this).val();
+        $("#idTareaEliminar").val(idTarea);
 
+        var r = confirm("Desea eliminar esta tarea?");
+        if (r == true) {
+          $("#formEliminar").submit();
+        } else {
+
+        }
+    })
     //Obtener suma total de los Puntos
     $.ajax({
 			method:"POST",

@@ -20,6 +20,10 @@ if (isset($_POST['asignarAsignatura'])) {
   }
 }
 
+if (isset($_POST['idClaseEliminar'])) {
+  $obj->eliminarClase($_POST['idClaseEliminar']);
+}
+
 $modalidades = $obj->obtenerModalidades();
 $Empleados = $obj->obtenerEmpleados();
 $clases = $obj->obtenerClases();
@@ -98,7 +102,10 @@ $clases = $obj->obtenerClases();
       </div>
     </div>
   </div>
+</form>
 
+<form action="" id="confirmarEliminar" method="post">
+  <input type="hidden" id="idClaseEliminar" name="idClaseEliminar" value="">
   <div class="col-md-6">
     <div class="panel panel-primary">
       <div class="panel-heading">
@@ -117,7 +124,7 @@ $clases = $obj->obtenerClases();
               <td><?php echo $row2['nombreEmpleado'] ?></td>
               <td><?php echo $row2['nombreAsignatura'] ?></td>
               <td><?php echo $row2['nombreCurso']." ".$row2['seccion'] ?></td>
-              <td><button class="btn btn-danger btn-sm btn-block" name="eliminarClase<?php echo $row2["idClase"];?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
+              <td><button type="button" class="btn btn-danger btn-sm btn-block" value="<?php echo $row2["idClase"];?>" name="eliminarClase"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
 
             </tr>
           <?php } ?>
@@ -130,6 +137,22 @@ $clases = $obj->obtenerClases();
 
 
    <script type="text/javascript">
+
+   $("button[name='eliminarClase']").on("click",function (ev) {
+     var idClase1 = $(this).val();
+     $("#idClaseEliminar").val(idClase1)
+
+    var r = confirm("Desea continuar?, se eliminaran todos los registros de esta clase, incluyendo notas");
+
+    if (r == true){
+      $("#confirmarEliminar").submit();
+    } else {
+
+    }
+
+
+   })
+
    //Confirmar Cursos segun modalidad
    $("#selectModalidad").on("change",function (ev) {
 
