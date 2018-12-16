@@ -144,19 +144,17 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 		              <div class="form-row">
 		                <div class="form-group col-md-7">
 		                  <label for="">Fecha Entrega de la Tarea</label>
-		                  <input type="date" class="form-control" name="fechaEntrega">
-		                  <small class="form-text text-muted">Si la tarea sera revisada hoy mismo NO escoja una fecha solo presione el boton 'Revisar Tarea Hoy'</small>
+		                  <input type="date" class="form-control" name="fechaEntrega" required>
+
 		                </div>
 						         </div>
 						         <div class="form-row">
-						           <div class="col-md-6">
-						             <button type="submit" name="revisarHoy" class="btn btn-primary btn-lg btn-block">Revisar Tarea Hoy</button>
-						           </div>
-						           <div class="col-md-6">
-						             <button type="submit" name="programar" value="" class="btn btn-warning btn-lg btn-block" >Programar</button>
-						           </div>
+
 						         </div>
 						       </div>
+                   <div class="panel-footer">
+                     <button type="submit" name="programar" value="" class="btn btn-warning btn-lg btn-block" >Programar</button>
+                   </div>
 						</div>
 					</div>
         </form>
@@ -344,6 +342,8 @@ $("button[name='revisarExamen'").on("click",function () {
 			data:{idClase: idClase1},
 			dataType: "json",
 			success:function (respuesta) {
+        console.log(respuesta);
+        
 				var i = 1;
 				$.each(respuesta,function (key,value) {
           $.ajax({

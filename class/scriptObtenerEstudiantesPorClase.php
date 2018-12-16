@@ -11,14 +11,14 @@ $sql ="SELECT * FROM estudiantes INNER JOIN matricula
         INNER JOIN clases
         ON cursos.idCurso = clases.idCurso
         WHERE idClase='$idClase'
-        ORDER BY genero,nombreEstudiante
+        ORDER BY genero,nombreEstudiante DESC
         ";
 
 $resp = $conexion->bd->query($sql);
 
 $array = array();
 $i = 0;
-while ($row = mysqli_fetch_array($resp)) {
+while ($row = mysqli_fetch_assoc($resp)) {
   $array[$i] = $row;
   $i++;
 }

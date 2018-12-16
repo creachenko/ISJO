@@ -151,8 +151,16 @@ class funcionesBD extends conexionBD{
 	}
 
 	public function ingresarCargo($cargo,$descrip){
-		$query = "INSERT INTO cargos (nombreCargo,descripcion) VALUES ('$cargo','$descrip')";
-		$this->bd->query($query);
+		$sql = "SELECT * FROM cargos WHERE nombreCargo = '$cargo'";
+		$resp = $this->bd->query($sql);
+
+		if ($resp->num_rows > 0) {
+			echo "<script>window.alert('Existe un cargo con un nombre parecido al ingresado')</script>";
+		}else {
+			$query = "INSERT INTO cargos (nombreCargo,descripcion) VALUES ('$cargo','$descrip')";
+			$this->bd->query($query);
+		}
+
 	}
 
 	public function eliminarCargo($idCargo){

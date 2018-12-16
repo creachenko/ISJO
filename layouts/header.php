@@ -47,7 +47,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">Instituto San Jorde de Olancho</a>
+                <a class="navbar-brand" href="index.php">Instituto San Jorge de Olancho</a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">

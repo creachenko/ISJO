@@ -97,6 +97,7 @@ $clases = $obj->obtenerClases()
 <script type="text/javascript">
 $("button[name='verAlumnos']").on('click',function () {
   var idClase1 = $(this).val();
+  $("#tableAlumnos").empty();
 
   $("input[name='idClaseReporte1']").val($(this).val());
 
@@ -109,6 +110,7 @@ $("button[name='verAlumnos']").on('click',function () {
     data:{idClase: idClase1},
     dataType: "json",
     success:function (respuesta) {
+      console.log(respuesta);
       var i = 1;
       $.each(respuesta,function (key,value) {
         $.ajax({
@@ -116,8 +118,18 @@ $("button[name='verAlumnos']").on('click',function () {
           url:"class/scriptObtenerNotaEstudiante.php",
           data:{idClase: idClase1,idEstudiante:value.idEstudiante},
           success:function (respuesta) {
-            $("#tableAlumnos").append("<tr><td>"+i+"</td><td>"+value.nombreEstudiante+" "+value.apellidoEstudiante+"</td><td class='center-text'>"+respuesta+" <small class='text-muted'>pts</small></td></tr>")
-              i++;
+            $.ajax({
+              method:"POST",
+              url:"class/scriptObtenerNotaEstudianteExamen.php",
+              data:{idClase: idClase1,idEstudiante:value.idEstudiante},
+              success:function (respuesta2) {
+
+
+                $("#tableAlumnos").append("<tr><td>"+i+"</td><td>"+value.nombreEstudiante+" "+value.apellidoEstudiante+"</td><td class='center-text'>"+respuesta+" <small class='text-muted'>pts</small></td><td class='center-text'>"+respuesta2+" <small class='text-muted'>pts</small></td></tr>")
+                  i++;
+              }
+            })
+
           }
         })
       })
