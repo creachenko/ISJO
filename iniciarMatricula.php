@@ -57,46 +57,19 @@ $modalidades = $obj->obtenerModalidades();
       </div>
       <div class="panel-body">
         <div class="row">
-          <div class="col-md-6">
-            <label for="">Nombre</label>
-            <input type="text" class="form-control" name="nombreEstudiante" id="nombreEstudiante" onkeyup="nombreEstudianteCorfirmar()" value="">
-          </div>
-          <div class="col-md-6">
-            <label for="">Apellidos</label>
-            <input type="text" class="form-control" name="apellidoEstudiante" id="apellidoEstudiante" onkeyup="nombreEstudianteCorfirmar()" value="">
+          <div class="col-md-6 col-md-offset-3" id="divIdentidadEstudiante">
+            <label for="">Identidad</label>
+            <div class="input-group">
+              <input type="number" class="form-control" name="identidadEstudiante" id="identidadEstudiante" value="">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="button" id="verificarIdentidadAlumno">Verificar</button>
+              </span>
+            </div>
           </div>
         </div>
         <hr>
-        <div class="row">
-          <div class="col-md-3 form-group" id="divIdentidadEstudiante">
-            <label for="">Identidad</label>
-            <input type="number" class="form-control" name="identidadEstudiante" id="identidadEstudiante" value="">
-          </div>
-          <div class="col-md-3">
-            <label>Genero</label>
-            <select class="form-control" name="generoEstudiante" id="generoEstudiante" onchange="generoEstudianteCorfirmar()">
-              <option>Masculino</option>
-              <option>Femenino</option>
-            </select>
-          </div>
-          <div class="col-md-3">
-            <label>Nacimiento</label>
-            <input type="date" class="form-control" name="nacimientoEstudiante" id="nacimientoEstudiante" value="">
-          </div>
-          <div class="col-md-3">
-            <label>Direccion</label>
-            <input type="text" class="form-control" name="direccionEstudiante" id="direccionEstudiante" value="">
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <label for="">Telefono</label>
-            <input type="number" class="form-control" name="telefonoEstudiante" id="telefonoEstudiante" value="" placeholder="(Opcional)">
-          </div>
-          <div class="col-md-6">
-            <label>Correo</label>
-            <input type="text" class="form-control" name="correoEstudiante" id="correoEstudiante" value="" placeholder="(Opcional)">
-          </div>
+        <div id="datosEstudiante">
+
         </div>
       </div>
     </div>
@@ -104,7 +77,7 @@ $modalidades = $obj->obtenerModalidades();
 </div>
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-6" id="divEncargado">
     <div class="panel panel-yellow">
       <div class="panel-heading">
         <h1 class="panel-title">Datos del Encargado: Ingrese el numero de Identidad</h1>
@@ -127,7 +100,7 @@ $modalidades = $obj->obtenerModalidades();
     </div>
   </div>
 
-    <div class="col-md-6">
+    <div class="col-md-6" id="divSeleccionCurso">
       <div class="panel panel-primary">
         <div class="panel-heading">
           <h1 class="panel-title">Asignar a Curso</h1>
@@ -159,7 +132,7 @@ $modalidades = $obj->obtenerModalidades();
 </div>
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-12" id="divResumentMatricula">
     <div class="panel panel-green">
       <div class="panel-heading">
         <h1 class="panel-title">Resumen Matricula</h1>
@@ -195,7 +168,7 @@ $modalidades = $obj->obtenerModalidades();
         <hr>
       </div>
       <div class="panel-footer">
-        <input type="submit" name="matricularAlumno" value="Matricular Alumno" class="btn btn-success btn-block btn-lg">
+        <input type="submit" name="matricularAlumno" id="matricularAlumno" value="Matricular Alumno" class="btn btn-success btn-block btn-lg">
       </div>
     </div>
   </div>
@@ -297,6 +270,7 @@ $modalidades = $obj->obtenerModalidades();
   </div>
 </div>
 
+
    <script type="text/javascript">
    //Confirmar Cursos segun modalidad
    $("button[id='butttonDropdownModalidades']").on("click",function (ev) {
@@ -309,10 +283,10 @@ $modalidades = $obj->obtenerModalidades();
         data:{idModalidad: idModalidad1},
         dataType: "json",
         success:function (respuesta) {
-          $("#selectCurso").removeAttr("disabled");
-          $("#selectCurso").empty();
+          $("select[id='selectCurso']").removeAttr("disabled");
+          $("select[id='selectCurso']").empty();
           $.each(respuesta,function (key,value) {
-            $("#selectCurso").append("<option value="+value.idCurso+">"+value.nombreCurso+" - "+value.seccion+"</option>")
+            $("select[id='selectCurso']").append("<option value="+value.idCurso+">"+value.nombreCurso+" - "+value.seccion+"</option>")
             console.log(key + " "+ value.nombreCurso)
           })
           //Muestro el primer curso seleccionado en la ficha de resumen
@@ -336,9 +310,15 @@ $modalidades = $obj->obtenerModalidades();
      var optionSelected = $("#selectCurso");
      $("#cursoResumen").html($('option:selected', optionSelected).html());
    }
+   //Oculto campos hasta que los necesite
+   $(function () {
+     $("#divEncargado").hide();
+     $("#divSeleccionCurso").hide();
+     $("#divResumentMatricula").hide();
+   })
    //Comprobar si no existe otra Identidad Igual
-   $("#identidadEstudiante").on("blur",function () {
-     var identidad = $(this).val()
+   $("#verificarIdentidadAlumno").on("click",function () {
+     var identidad = $("#identidadEstudiante").val()
      $.ajax({
        method:"post",
        data: {identidadEstudiante:identidad},
@@ -347,15 +327,51 @@ $modalidades = $obj->obtenerModalidades();
          if (respuesta > 0) {
            $("#divIdentidadEstudiante").removeClass("has-success has-feedback");
            $("#iconoExitoIdentidadEstudiate").remove()
+           $("#verificarIdentidadAlumno").removeClass("btn-primary");
+           $("#verificarIdentidadAlumno").removeClass("btn-success");
 
-           $("#divIdentidadEstudiante").addClass("has-error has-feedback");
-           $("#divIdentidadEstudiante").append("<small id='mensajeErrorIdentidadEstudiante' style='color:#ca0303'>Ingrese la Identidad</small")
-           window.alert("Ya existe un alumno con ese Numero de Identidad, revise nuevamente")
+           $("#verificarIdentidadAlumno").addClass("btn-info");
+           $("#verificarIdentidadAlumno").html("Estudiante Encontrado!")
+           $("#identidadEncargado").attr("disabled","disabled");
+           $("#buttonVerficarIdentidadEncargado").attr("disabled","disabled");
+
+           $("#divEncargado").hide();
+           $("#divSeleccionCurso").hide();
+           $.ajax({
+             method:"POST",
+             url:"class/plantilla2.php",
+             data:{identidadEstudiante:identidad},
+             success:function (respuesta) {
+               $("#datosEstudiante").empty();
+               $("#datosEstudiante").append(respuesta)
+             }
+           })
+
+
+           // $("#divIdentidadEstudiante").addClass("has-error has-feedback");
+           // $("#divIdentidadEstudiante").append("<small id='mensajeErrorIdentidadEstudiante' style='color:#ca0303'>Ingrese la Identidad</small")
+           // window.alert("Ya existe un alumno con ese Numero de Identidad")
          }else {
            $("#divIdentidadEstudiante").removeClass("has-error has-feedback");
            $("#mensajeErrorIdentidadEstudiante").remove()
+           $("#divEncargado").show();
+           $("#divSeleccionCurso").show();
+           $("#divResumentMatricula").show();
 
+           $.ajax({
+             url:"class/plantilla1.html",
+             success:function (respuesta) {
+               $("#datosEstudiante").empty();
+               $("#datosEstudiante").append(respuesta)
+             }
+           })
+           $("#identidadEncargado").removeAttr("disabled");
+           $("#buttonVerficarIdentidadEncargado").removeAttr("disabled");
 
+           $("#verificarIdentidadAlumno").removeClass("btn-primary");
+           $("#verificarIdentidadAlumno").removeClass("btn-danger");
+           $("#verificarIdentidadAlumno").addClass("btn-success");
+           $("#verificarIdentidadAlumno").html("Nuevo Alumno Detectado!")
            $("#divIdentidadEstudiante").addClass("has-success has-feedback");
            $("#divIdentidadEstudiante").append("<span id='iconoExitoIdentidadEstudiate' class='glyphicon glyphicon-ok form-control-feedback'></span>")
            $("#identidadEstudianteResumen").html(identidad)
@@ -439,14 +455,18 @@ $modalidades = $obj->obtenerModalidades();
     $("#generoEstudianteResumen").html($("#generoEstudiante").val());
    }
    //Calculo la edad del Estudiantes
-   $("#nacimientoEstudiante").on("blur",function () {
+   $("#nacimientoEstudiante").on("change",function () {
      $.ajax({
        url:"class/calcularEdad.php",
        method:"post",
        data:{nacimiento:$(this).val()},
        success: function (respuesta) {
+         console.log(respuesta);
         $("#edadEstudiante").html(respuesta+" Años");
-       }
+      },
+      error:function (e1,e2,e3) {
+        console.log();
+      }
      })
    })
    //Comprobar identidad del encargado si no existe un registro de el

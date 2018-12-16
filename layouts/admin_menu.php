@@ -1,4 +1,7 @@
+<?php
+$obj->checkNuevoAnio();
 
+ ?>
 
 <ul class="nav navbar-nav side-nav">
     <li class="active">

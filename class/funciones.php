@@ -45,13 +45,34 @@ class funcionesBD extends conexionBD{
 					 if (mysqli_num_rows($respuesta)==0){
 			 $query="INSERT into usuario VALUES (not null ,'".$_POST["idEmpleado"]."','".$_POST["nombre"]."','".md5($_POST["pass"])."','".($_POST["idNivelAcceso"])."')";
 			 $this->bd->query($query);
-						echo '<script type="text/javascript">alert("Usted se ha registrado correctamente");window.location="index.php";</script>';
+						echo '<script type="text/javascript">alert("El Usuario se ha registrado correctamente");window.location="nuevoUsuario.php";</script>';
 			 }
 			 else{
 			 echo '<script type="text/javascript">alert("El empleado ya tiene un usuario");window.location="nuevoUsuario.php";</script>';
 			 }}
 
 	 //
+	 public function checkNuevoAnio(){
+	 	$sql ="SELECT YEAR(CURDATE()) AS anio";
+		$resp = $this->bd->query($sql)->fetch_assoc();
+		$anio = $resp['anio'];
+
+		$sql ="SELECT idAnioLectivo FROM
+					aniolectivo
+					WHERE anio = $anio";
+		$resp = $this->bd->query($sql);
+
+
+		if ($resp->num_rows == 0) {
+			$sql = "INSERT INTO aniolectivo (anio) VALUES ('$anio')";
+			echo "<script>window.alert('Un Nuevo Año :) ha sido detectado = ".$anio." ,
+			 Limpiando registros para un nuevo año lectivo, exitos en sus Funciones
+			 ')</script>";
+		}
+
+	 }
+
+
 
 	 public function passEstablecida($idEmpleado){
 		 $sql = "SELECT * FROM usuario WHERE idEmpleado = '$idEmpleado'";

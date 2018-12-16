@@ -6,7 +6,7 @@ if (isset($_SESSION["ses_id"])) {
 }else{
   echo '<script>
   alert("Tienes que loguearte");
-  window.location= "index.php";
+  window.location= "index.php";+
   </script>';
 };
 
