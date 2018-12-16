@@ -138,7 +138,11 @@ class funcionesBD extends conexionBD{
 
 
 
-
+		public function get_perfil(){
+		      $sql="SELECT idEmpleado,nombreEmpleado,apellidoEmpleado,identidad,correo,fechaNacimiento,genero,imprema,empleados.idCargo AS empleadoIdCargo,nombreCargo,direccion,empleados.fechaIniLabor,celular,tituloMedia,tituloUniversitario FROM empleados INNER JOIN cargos ON empleados.idCargo = cargos.idCargo
+		      WHERE idEmpleado=".$_SESSION['ses_id'];
+		      	return $this->bd->query($sql);
+		    }
 
 	//Inicio FUNCIONES PARA LA GESTION DE Cargos
 	public function obtenerCargos(){
