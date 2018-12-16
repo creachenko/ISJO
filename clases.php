@@ -75,12 +75,15 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 						<button type="button" class="btn btn-success btn-block" name="revisarTarea" value="<?php echo $row['idClase'] ?>" data-toggle='modal' data-target='#modalRevisarTarea'><i class="fa fa-chesquare-o"></i>Tareas</button>
 					</div>
 					<div class="btn-group">
-						<form action="revisarTarea.php" method="post">
-              <button type="submit" class="btn btn-info btn-block" name="revisarExamen"  value="<?php echo $row['idClase'] ?>"><i class="fa fa-chesquare-o"></i>Examen</button>
-            </form>
+              <button type="button" class="btn btn-info btn-block" name="revisarExamen" id="revisarExamen"  value="<?php echo $row['idClase'] ?>"><i class="fa fa-chesquare-o"></i>Examen</button>
 					</div>
 				</div>
-
+        <form action="revisarExamen.php" id="formExamen" method="post">
+          <input type="hidden" name="go" id="go" value="">
+          <input type="hidden" name="examId" id="examId" value="">
+          <input type="hidden" name="examValue" id="examValue" value="">
+          <input type="hidden" name="classId" id="classId" value="">
+        </form>
 			</div>
 
 		</div>
@@ -250,6 +253,64 @@ $clases = $obj->obtenerClasesDeMaestro($_SESSION['ses_id']);
 </div>
 
 <script type="text/javascript">
+//Compro Examen
+$("button[name='revisarExamen'").on("click",function () {
+  var idClase1 = $(this).val();
+    $("#classId").val(idClase1)
+
+  $.ajax({
+    method:"POST",
+    url:"class/scriptCheckExisteExamen.php",
+    data:{idClase:idClase1},
+    success:function (respuesta) {
+      if (respuesta == 0) {
+        console.log(idClase1);
+
+        bootbox.prompt({
+          title: "Asigne un valor al examen de esta clase",
+          inputType: 'number',
+          size: 'small',
+          buttons: {
+              confirm: {
+                  label: 'Continuar',
+                  className: 'btn-success'
+              },
+              cancel: {
+                  label: 'Cancelar',
+                  className: 'btn-danger'
+              }
+          },
+          callback: function (result) {
+            if (result != null) {
+              $("#go").val('go')
+              $("#examValue").val(result)
+              $("#formExamen").submit();
+            }
+
+          }
+      });
+    }else {
+      $.ajax({
+        method:"POST",
+        url:"class/scriptObtenerIdExamen.php",
+        data:{idClase:idClase1},
+        success:function (respuesta) {
+          console.log(respuesta);
+          $("#go").val("1");
+          $("#classId").val(idClase1);
+          $("#examId").val(respuesta);
+          $("#formExamen").submit();
+        }
+      })
+
+
+    }
+    }
+  })
+
+
+})
+//Listado alumnos
 	$("button[name='verAlumnos']").on('click',function () {
 		var idClase1 = $(this).val();
 		console.log(idClase1);

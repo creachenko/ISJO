@@ -499,9 +499,9 @@ public function checkSiExisteExamen($idClase){
 
 }
 
-public function insertarExamen($idClase){
+public function insertarExamen($idClase,$valorExamen){
 	//pregunto en que parcial estamos
-	$sql = "SELECT parcialespormodalidad.nombreParcialPorModalidad,parcialespormodalidad.idParcialPorModalidad FROM parcialactual
+	$sql = "SELECT * FROM parcialactual
 			INNER JOIN parcialespormodalidad
 					ON parcialactual.idParcialPorModalidad = parcialespormodalidad.idParcialPorModalidad
 					INNER JOIN modalidades
@@ -513,13 +513,14 @@ public function insertarExamen($idClase){
 					WHERE clases.idClase = $idClase";
 	$resp = $this->bd->query($sql)->fetch_assoc();
 	$idParcialActual = $resp['idParcialPorModalidad'];
-	$nombreExamen = 'Examen '.$resp['nombreCurso'].' - '.$resp['seccion'];
-
-$sql ="INSERT INTO tareas (nombreTarea,valorTarea,idClase,idParcialPorModalidad,tipoTarea)
-				VALUES ('$nombreExamen','$valorExamen','$idClase','$idParcialActual')";
-
-	 $this->bd->query($sql);
-
+	$nombreExamen = 'Examen '.$resp['nombreParcialPorModalidad']." ".$resp['nombreCurso'].' - '.$resp['seccion'];
+	echo "<script>window.alert('Armando tu pedido')</script>";
+	$sql ="INSERT INTO tareas (nombreTarea,valorTarea,idClase,idParcialPorModalidad,tipoTarea)
+				VALUES ('$nombreExamen','$valorExamen','$idClase','$idParcialActual','Examen')";
+	echo "<script>window.alert('Ejecutanto tu pedido')</script>";
+	$this->bd->query($sql);
+echo "<script>window.alert('Pedido Ejecutado')</script>";
+	return $this->bd->insert_id;
 }
 
 public function obtenerParcialesActuales(){

@@ -1,4 +1,10 @@
  <?php
+
+session_start();
+if (isset($_SESSION['ses_id'])) {
+  header('Location: home.php');
+}
+
 require_once("class/funciones.php");
   if (isset($_POST["enviar"])) {
     $tra = new funcionesBD();
